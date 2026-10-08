@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Configuração inicial da empresa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0}
+a{color:#2F7A28}a:hover{color:#1B4A20}
+</style>
+
+<div style="min-height: 100vh; background: #F7F8F8; color: #16302B; font-family: 'Montserrat', system-ui, sans-serif; font-size: 14px; line-height: 1.5">
+
+<header style="background: #FFFFFF; border-bottom: 1px solid #E8EBEA">
+<div style="max-width: 1120px; margin: 0 auto; box-sizing: border-box; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; gap: 16px">
+<div style="font-weight: 700; font-size: 18px">Fatturo</div>
+<a href="login.html" style="font-weight: 600; font-size: 13px">Sair</a>
+</div>
+</header>
+
+<!-- Mockup estático: os três passos aparecem empilhados. No app, um passo por vez, com Voltar/Continuar. -->
+<main style="box-sizing: border-box; padding: 48px 20px 64px; display: flex; justify-content: center">
+<div style="width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 28px">
+
+<div>
+<h1 style="margin: 0; font-size: 26px; font-weight: 700">Configure sua empresa</h1>
+<div style="color: #5F6B6A">Essas informações definem o limite e o DAS mostrados no painel.</div>
+</div>
+
+<ol aria-label="Etapas" style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 24px">
+<li style="display: flex; align-items: center; gap: 8px"><span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;font-size:13px;font-weight:700;box-sizing:border-box;background:#16302B;color:#FFFFFF;">1</span><span style="font-weight:600;color:#16302B;">Empresa</span></li>
+<li style="display: flex; align-items: center; gap: 8px"><span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;font-size:13px;font-weight:700;box-sizing:border-box;border:1px solid #C5CCCA;color:#5F6B6A;">2</span><span style="color:#5F6B6A;">Enquadramento</span></li>
+<li style="display: flex; align-items: center; gap: 8px"><span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;font-size:13px;font-weight:700;box-sizing:border-box;border:1px solid #C5CCCA;color:#5F6B6A;">3</span><span style="color:#5F6B6A;">Ponto de partida</span></li>
+</ol>
+
+<div style="background: #FFFFFF; border: 1px solid #E8EBEA; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 20px">
+
+
+<div style="display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="cnpj" style="font-size: 13px; font-weight: 600">CNPJ</label>
+<input id="cnpj" type="text" inputmode="numeric" placeholder="00.000.000/0000-00" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="nomeempresa" style="font-size: 13px; font-weight: 600">Nome da empresa</label>
+<input id="nomeempresa" type="text" placeholder="Razão social ou nome fantasia" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="abertura" style="font-size: 13px; font-weight: 600">Data de abertura</label>
+<input id="abertura" type="text" placeholder="dd/mm/aaaa" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B">
+<div style="font-size: 12px; color: #5F6B6A">Usada para calcular o limite proporcional no ano de abertura.</div>
+</div>
+</div>
+
+
+
+<div style="display: flex; flex-direction: column; gap: 18px">
+<fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px">
+<legend style="padding: 0; margin-bottom: 8px; font-size: 13px; font-weight: 600">Porte</legend>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<button type="button" aria-pressed="false" style="flex:1 1 200px;min-height:72px;text-align:left;padding:12px 16px;border-radius:12px;font:inherit;color:#16302B;cursor:pointer;box-sizing:border-box;background:#FFFFFF;border:1px solid #E8EBEA;"><span style="display: block; font-weight: 700">MEI</span><span style="display: block; font-size: 12px; color: #5F6B6A">Até R$ 81 mil por ano</span></button>
+<button type="button" aria-pressed="true" style="flex:1 1 200px;min-height:72px;text-align:left;padding:12px 16px;border-radius:12px;font:inherit;color:#16302B;cursor:pointer;box-sizing:border-box;background:#EFF8E6;border:2px solid #3FA535;"><span style="display: block; font-weight: 700">ME</span><span style="display: block; font-size: 12px; color: #5F6B6A">Até R$ 360 mil por ano</span></button>
+</div>
+</fieldset>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="regime" style="font-size: 13px; font-weight: 600">Regime tributário</label>
+<select id="regime" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B; background: #FFFFFF"><option>Simples Nacional</option><option disabled>Lucro Presumido (em breve)</option></select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="atividade" style="font-size: 13px; font-weight: 600">Atividade</label>
+<select id="atividade" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B; background: #FFFFFF"><option>Prestação de serviços</option><option>Comércio</option><option>Comércio e serviços</option></select>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="anexo" style="font-size: 13px; font-weight: 600">Anexo do Simples</label>
+<select id="anexo" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B; background: #FFFFFF"><option>Anexo III · Serviços</option><option>Anexo I · Comércio</option><option>Anexo II · Indústria</option><option>Anexo IV · Serviços</option><option>Anexo V · Serviços</option><option>Não sei</option></select>
+<div style="font-size: 12px; color: #5F6B6A">Na dúvida, confira com seu contador. Você pode alterar depois em Configurações.</div>
+</div>
+
+
+<div style="background: #EFF8E6; border-radius: 10px; padding: 12px 14px; font-size: 13px">O DAS do MEI tem valor fixo e será preenchido automaticamente conforme a atividade.</div>
+
+</div>
+
+
+
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div>
+<div style="font-weight: 600">Faturamento já realizado em 2026</div>
+<div style="font-size: 13px; color: #5F6B6A">Opcional. Preencha os meses anteriores para o painel já começar com o acumulado certo, sem importar arquivos antigos.</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 140px; display: flex; flex-direction: column; gap: 4px"><label for="m1" style="font-size: 12px; font-weight: 600">Janeiro</label><input id="m1" type="text" inputmode="decimal" placeholder="R$ 0,00" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B"></div>
+<div style="flex: 1 1 140px; display: flex; flex-direction: column; gap: 4px"><label for="m2" style="font-size: 12px; font-weight: 600">Fevereiro</label><input id="m2" type="text" inputmode="decimal" placeholder="R$ 0,00" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B"></div>
+<div style="flex: 1 1 140px; display: flex; flex-direction: column; gap: 4px"><label for="m3" style="font-size: 12px; font-weight: 600">Março</label><input id="m3" type="text" inputmode="decimal" placeholder="R$ 0,00" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B"></div>
+<div style="flex: 1 1 140px; display: flex; flex-direction: column; gap: 4px"><label for="m4" style="font-size: 12px; font-weight: 600">Abril</label><input id="m4" type="text" inputmode="decimal" placeholder="R$ 0,00" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B"></div>
+<div style="flex: 1 1 140px; display: flex; flex-direction: column; gap: 4px"><label for="m5" style="font-size: 12px; font-weight: 600">Maio</label><input id="m5" type="text" inputmode="decimal" placeholder="R$ 0,00" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B"></div>
+<div style="flex: 1 1 140px; display: flex; flex-direction: column; gap: 4px"><label for="m6" style="font-size: 12px; font-weight: 600">Junho</label><input id="m6" type="text" inputmode="decimal" placeholder="R$ 0,00" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B"></div>
+<div style="flex: 1 1 140px; display: flex; flex-direction: column; gap: 4px"><label for="m7" style="font-size: 12px; font-weight: 600">Julho</label><input id="m7" type="text" inputmode="decimal" placeholder="R$ 0,00" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B"></div>
+<div style="flex: 1 1 140px; display: flex; flex-direction: column; gap: 4px"><label for="m8" style="font-size: 12px; font-weight: 600">Agosto</label><input id="m8" type="text" inputmode="decimal" placeholder="R$ 0,00" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B"></div>
+<div style="flex: 1 1 140px; display: flex; flex-direction: column; gap: 4px"><label for="m9" style="font-size: 12px; font-weight: 600">Setembro</label><input id="m9" type="text" inputmode="decimal" placeholder="R$ 0,00" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #879290; border-radius: 10px; font: inherit; color: #16302B"></div>
+</div>
+</div>
+
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding-top: 8px; border-top: 1px solid #EEF0EF">
+
+<button type="button" style="height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid #E8EBEA; background: #FFFFFF; color: #16302B; font: inherit; font-weight: 600; cursor: pointer">Voltar</button>
+
+
+<span></span>
+
+
+<button type="button" style="height: 48px; padding: 0 28px; border-radius: 999px; border: 0; background: #8FDD55; color: #16302B; font: inherit; font-weight: 600; cursor: pointer">Continuar</button>
+
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
+<a href="painel.html" style="font-weight: 600">Pular</a>
+<a href="painel.html" style="display: flex; align-items: center; height: 48px; padding: 0 28px; border-radius: 999px; background: #8FDD55; color: #16302B; font-weight: 600; text-decoration: none">Concluir</a>
+</div>
+
+</div>
+
+</div>
+</div>
+</main>
+</div>
+
+</body>
+</html>

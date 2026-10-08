@@ -1,0 +1,149 @@
+/*
+ * Estilos globais e tokens do design system (docs/design-system/tokens.json).
+ * No Laravel, equivale ao resources/css/app.css somado ao tailwind.config.js:
+ * no Tailwind 4 o tema fica aqui, no bloco @theme, e não num arquivo de config.
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Tokens como variáveis CSS. Valores copiados de docs/design-system/tokens.json. */
+:root {
+  --surface: #ffffff;
+  --surface-muted: #f7f8f8;
+  --surface-tint: #eff8e6;
+  --surface-tint-strong: #cff0ae;
+  --ink: #16302b;
+  --ink-muted: #5f6b6a;
+  --on-ink: #ffffff;
+  --on-ink-muted: #c9d6d2;
+  --accent: #8fdd55;
+  --accent-strong: #3fa535;
+  --brand-deep: #1e4d45;
+  --link: #2f7a28;
+  --border: #e8ebea;
+  --divider: #eef0ef;
+  --border-dashed: #c5ccca;
+  --border-control: #879290;
+  --warning-surface: #fbf3dc;
+  --warning-ink: #6b4e0a;
+  --warning-solid: #b07d10;
+  --info-surface: #e6f2f3;
+  --info-ink: #1d4f5c;
+  --info-solid: #2f7f8f;
+  --error-surface: #fbeae6;
+  --error-ink: #8a2a1e;
+  --error-solid: #c2412d;
+
+  --control-sm: 44px;
+  --control-lg: 48px;
+  --sidebar-width: 220px;
+  --content-max: 1120px;
+}
+
+/*
+ * Expõe os tokens ao Tailwind. As linhas "initial" apagam a paleta, os raios, os
+ * tamanhos de fonte e as sombras padrão do Tailwind: só existem as classes dos tokens
+ * (bg-accent, text-ink, rounded-pill, text-page-title...). O espaçamento usa a base
+ * de 4px do Tailwind, igual à do design system (gap-5 = space-5 = 20px).
+ */
+@theme inline {
+  --color-*: initial;
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-tint: var(--surface-tint);
+  --color-surface-tint-strong: var(--surface-tint-strong);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-on-ink: var(--on-ink);
+  --color-on-ink-muted: var(--on-ink-muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-brand-deep: var(--brand-deep);
+  --color-link: var(--link);
+  --color-border: var(--border);
+  --color-divider: var(--divider);
+  --color-border-dashed: var(--border-dashed);
+  --color-border-control: var(--border-control);
+  --color-warning-surface: var(--warning-surface);
+  --color-warning-ink: var(--warning-ink);
+  --color-warning-solid: var(--warning-solid);
+  --color-info-surface: var(--info-surface);
+  --color-info-ink: var(--info-ink);
+  --color-info-solid: var(--info-solid);
+  --color-error-surface: var(--error-surface);
+  --color-error-ink: var(--error-ink);
+  --color-error-solid: var(--error-solid);
+
+  --radius-*: initial;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+
+  --shadow-*: initial;
+
+  --font-sans: var(--font-montserrat), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --text-*: initial;
+  --text-display: 52px;
+  --text-display--line-height: 1.15;
+  --text-display--font-weight: 700;
+  --text-display--letter-spacing: -0.02em;
+  --text-hero: 34px;
+  --text-hero--line-height: 1.2;
+  --text-hero--font-weight: 700;
+  --text-hero--letter-spacing: -0.01em;
+  --text-page-title: 26px;
+  --text-page-title--line-height: 1.3;
+  --text-page-title--font-weight: 700;
+  --text-metric: 22px;
+  --text-metric--line-height: 1.4;
+  --text-metric--font-weight: 600;
+  --text-wordmark-lg: 20px;
+  --text-wordmark-lg--line-height: 1.3;
+  --text-wordmark-lg--font-weight: 700;
+  --text-wordmark: 18px;
+  --text-wordmark--line-height: 1.3;
+  --text-wordmark--font-weight: 700;
+  --text-section-title: 16px;
+  --text-section-title--line-height: 1.4;
+  --text-section-title--font-weight: 600;
+  --text-lead: 15px;
+  --text-lead--line-height: 1.5;
+  --text-body: 14px;
+  --text-body--line-height: 1.5;
+  --text-label: 13px;
+  --text-label--line-height: 1.4;
+  --text-label--font-weight: 600;
+  --text-caption: 12px;
+  --text-caption--line-height: 1.5;
+
+  --spacing-control-sm: var(--control-sm);
+  --spacing-control-lg: var(--control-lg);
+  --spacing-sidebar: var(--sidebar-width);
+  --container-content: var(--content-max);
+  --container-form: 380px;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Foco visível: contorno de 2px em accent-strong, afastado 2px (README, Acessibilidade). */
+  :focus-visible {
+    outline: 2px solid var(--accent-strong);
+    outline-offset: 2px;
+  }
+}

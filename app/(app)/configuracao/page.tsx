@@ -1,30 +1,22 @@
-// Página /configuracao, PROVISÓRIA: só confirma que o login funcionou.
-// Equivale a uma rota protegida pelo middleware 'auth' com uma view simples.
-// A etapa 2 troca o conteúdo pela configuração inicial (docs/mockups/configuracao.html).
+// Página /configuracao: configuração inicial da empresa, feita uma única vez.
+// Equivale à rota GET /empresa/create com a view do formulário. Quem já tem empresa
+// é mandado ao painel. Mockup: docs/mockups/configuracao.html.
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { sair } from "@/app/(acesso)/actions";
-import { Alert, AlertTitle } from "@/components/ui/alert";
-import { textLinkClassName } from "@/components/ui/text-link";
-import { usuarioAtual } from "@/lib/usuario";
+import { AppHeader } from "@/components/app/app-header";
+import { formatarReaisCurto } from "@/lib/dinheiro";
+import { empresaAtual } from "@/lib/empresa";
+import { parametrosVigentes } from "@/lib/parametros";
+import { ROTA_INICIAL } from "@/lib/rotas";
+import { ConfiguracaoForm } from "./configuracao-form";
 
 export const metadata: Metadata = { title: "Configure sua empresa" };
 
 export default function ConfiguracaoPage() {
   return (
     <div className="min-h-screen bg-surface-muted">
-      <header className="border-b border-border bg-surface">
-        <div className="mx-auto flex max-w-content items-center justify-between gap-4 px-8 py-4">
-          <div className="text-wordmark">Fatturo</div>
-          {/* Sair é um formulário que chama a Server Action, como um POST /logout. */}
-          <form action={sair}>
-            <button type="submit" className={`cursor-pointer text-label ${textLinkClassName}`}>
-              Sair
-            </button>
-          </form>
-        </div>
-      </header>
-
+      <AppHeader />
       <main className="flex justify-center px-5 pt-12 pb-16">
         <div className="flex w-full max-w-[560px] flex-col gap-7">
           <div>
@@ -33,31 +25,32 @@ export default function ConfiguracaoPage() {
               Essas informações definem o limite e o DAS mostrados no painel.
             </div>
           </div>
-
-          <div className="flex flex-col gap-5 rounded-xl border border-border bg-surface p-7">
-            {/* Ler o usuário depende do cookie da requisição, então fica atrás de um
-                Suspense: o resto da página aparece antes e este trecho chega em seguida. */}
-            <Suspense fallback={<div className="text-ink-muted">Carregando sua conta…</div>}>
-              <Saudacao />
-            </Suspense>
-            <Alert variant="info">
-              <AlertTitle>Tela provisória</AlertTitle>
-              A configuração da empresa (dados, enquadramento e ponto de partida) chega na
-              próxima etapa.
-            </Alert>
-          </div>
+          {/* O formulário depende do usuário logado e da tabela de parâmetros, lidos na
+              requisição; o Suspense mostra o resto da página enquanto isso chega. */}
+          <Suspense
+            fallback={
+              <div className="rounded-xl border border-border bg-surface p-7 text-ink-muted">
+                Carregando…
+              </div>
+            }
+          >
+            <Configuracao />
+          </Suspense>
         </div>
       </main>
     </div>
   );
 }
 
-async function Saudacao() {
-  const usuario = await usuarioAtual();
-  return (
-    <div>
-      <div className="font-semibold">Você entrou como {usuario.nome}.</div>
-      <div className="text-ink-muted">Sua conta está criada e o e-mail, confirmado.</div>
-    </div>
-  );
+async function Configuracao() {
+  if (await empresaAtual()) redirect(ROTA_INICIAL);
+
+  // Os limites exibidos nos cartões de porte vêm da tabela `parametro`, nunca do código.
+  const { valores: parametros } = await parametrosVigentes();
+  const limites = {
+    MEI: formatarReaisCurto(parametros.limite_anual_mei),
+    ME: formatarReaisCurto(parametros.limite_anual_me),
+  };
+
+  return <ConfiguracaoForm limites={limites} />;
 }

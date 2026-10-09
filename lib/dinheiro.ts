@@ -15,6 +15,16 @@ function normalizar(texto: string): string {
   return texto.replace(/ /g, " ");
 }
 
+/**
+ * Converte um decimal em texto ("3200.00", "7500.5", "150") em centavos inteiros.
+ * Trabalha só com texto e inteiros, sem passar por float. Devolve null se não for um valor válido.
+ */
+export function centavosDeDecimal(valor: string): number | null {
+  const partes = /^(\d{1,13})(?:\.(\d{1,2}))?$/.exec(valor.trim());
+  if (!partes) return null;
+  return Number(partes[1]) * 100 + Number((partes[2] ?? "").padEnd(2, "0"));
+}
+
 /** 8605 vira "R$ 86,05". */
 export function formatarReais(centavos: number): string {
   return normalizar(REAIS.format(centavos / 100));

@@ -4,10 +4,37 @@
 
 const FUSO = "America/Sao_Paulo";
 
+/** Dia em que um instante cai em São Paulo, como "aaaa-mm-dd". */
+export function dataEmSaoPaulo(instante: Date): string {
+  // O formato "en-CA" já devolve aaaa-mm-dd.
+  return new Intl.DateTimeFormat("en-CA", { timeZone: FUSO }).format(instante);
+}
+
 /** Data de hoje em São Paulo, como "aaaa-mm-dd". */
 export function hojeIso(agora: Date = new Date()): string {
-  // O formato "en-CA" já devolve aaaa-mm-dd.
-  return new Intl.DateTimeFormat("en-CA", { timeZone: FUSO }).format(agora);
+  return dataEmSaoPaulo(agora);
+}
+
+/** Confere se o texto é uma data "aaaa-mm-dd" que existe. */
+export function dataIsoValida(valor: string): boolean {
+  const partes = /^(\d{4})-(\d{2})-(\d{2})$/.exec(valor);
+  return partes !== null && parseDataBr(`${partes[3]}/${partes[2]}/${partes[1]}`) !== null;
+}
+
+const MESES_CURTOS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+const MESES = [
+  "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+  "julho", "agosto", "setembro", "outubro", "novembro", "dezembro",
+];
+
+/** Nome do mês (1 a 12): "outubro". */
+export function nomeDoMes(mes: number): string {
+  return MESES[mes - 1];
+}
+
+/** Nome curto do mês (1 a 12): "out". */
+export function nomeCurtoDoMes(mes: number): string {
+  return MESES_CURTOS[mes - 1];
 }
 
 /** Converte "dd/mm/aaaa" em "aaaa-mm-dd". Devolve null se a data não existir. */

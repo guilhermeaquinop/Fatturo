@@ -5,7 +5,27 @@ export type Database = {
   
   "public": {
           Tables: {
-            "empresa": {
+            "arquivo_importado": {
+                  Row: {
+                    "duplicados": number,"empresa_id": string,"erros": number,"hash_sha256": string,"id": string,"importado_em": string,"lidos": number,"nome": string,"novos": number,"tipo": Database["public"]['Enums']["tipo_arquivo"]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "duplicados"?: number,"empresa_id": string,"erros"?: number,"hash_sha256": string,"id"?: string,"importado_em"?: string,"lidos"?: number,"nome": string,"novos"?: number,"tipo": Database["public"]['Enums']["tipo_arquivo"]
+                  }
+                  Update: {
+                    "duplicados"?: number,"empresa_id"?: string,"erros"?: number,"hash_sha256"?: string,"id"?: string,"importado_em"?: string,"lidos"?: number,"nome"?: string,"novos"?: number,"tipo"?: Database["public"]['Enums']["tipo_arquivo"]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "arquivo_importado_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresa"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"empresa": {
                   Row: {
                     "atividade": Database["public"]['Enums']["atividade"],"cnpj": string,"criado_em": string,"data_abertura": string,"id": string,"nome": string,"usuario_id": string
                   }
@@ -39,6 +59,32 @@ isOneToOne: true
                   Relationships: [
                     {
       foreignKeyName: "enquadramento_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresa"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"nota_fiscal": {
+                  Row: {
+                    "arquivo_id": string | null,"chave_acesso": string,"criado_em": string,"data_competencia": string,"data_emissao": string,"empresa_id": string,"id": string,"numero": string,"situacao": Database["public"]['Enums']["situacao_nota"],"tomador_doc": string | null,"tomador_nome": string | null,"valor_centavos": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "arquivo_id"?: string | null,"chave_acesso": string,"criado_em"?: string,"data_competencia": string,"data_emissao": string,"empresa_id": string,"id"?: string,"numero": string,"situacao"?: Database["public"]['Enums']["situacao_nota"],"tomador_doc"?: string | null,"tomador_nome"?: string | null,"valor_centavos": number
+                  }
+                  Update: {
+                    "arquivo_id"?: string | null,"chave_acesso"?: string,"criado_em"?: string,"data_competencia"?: string,"data_emissao"?: string,"empresa_id"?: string,"id"?: string,"numero"?: string,"situacao"?: Database["public"]['Enums']["situacao_nota"],"tomador_doc"?: string | null,"tomador_nome"?: string | null,"valor_centavos"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "nota_fiscal_arquivo_id_fkey"
+      columns: ["arquivo_id"]
+isOneToOne: false
+      referencedRelation: "arquivo_importado"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "nota_fiscal_empresa_id_fkey"
       columns: ["empresa_id"]
 isOneToOne: false
       referencedRelation: "empresa"
@@ -81,10 +127,13 @@ isOneToOne: false
           Functions: {
             "configurar_empresa":
 { Args: { "p_anexo"?: Database["public"]['Enums']["anexo_simples"],"p_atividade": Database["public"]['Enums']["atividade"],"p_cnpj": string,"p_data_abertura": string,"p_nome": string,"p_porte": Database["public"]['Enums']["porte"],"p_regime": Database["public"]['Enums']["regime"] }; Returns: string
+                           },
+"importar_nfse":
+{ Args: { "p_cancelamentos": Json,"p_erros"?: number,"p_hash": string,"p_nome": string,"p_notas": Json }; Returns: Json
                            }
           }
           Enums: {
-            "anexo_simples": "I"|"II"|"III"|"IV"|"V"|"nao_sei","atividade": "comercio"|"servico"|"ambos","porte": "MEI"|"ME","regime": "SIMPLES"
+            "anexo_simples": "I"|"II"|"III"|"IV"|"V"|"nao_sei","atividade": "comercio"|"servico"|"ambos","porte": "MEI"|"ME","regime": "SIMPLES","situacao_nota": "emitida"|"cancelada","tipo_arquivo": "XML_NFSE"|"OFX"|"CSV"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -200,7 +249,7 @@ export type CompositeTypes<
 export const Constants = {
   "public": {
           Enums: {
-            "anexo_simples": ["I", "II", "III", "IV", "V", "nao_sei"],"atividade": ["comercio", "servico", "ambos"],"porte": ["MEI", "ME"],"regime": ["SIMPLES"]
+            "anexo_simples": ["I", "II", "III", "IV", "V", "nao_sei"],"atividade": ["comercio", "servico", "ambos"],"porte": ["MEI", "ME"],"regime": ["SIMPLES"],"situacao_nota": ["emitida", "cancelada"],"tipo_arquivo": ["XML_NFSE", "OFX", "CSV"]
           }
         }
 } as const

@@ -1,6 +1,11 @@
 // Testes da formatação de dinheiro. Equivalem a testes unitários de helper no Pest/PHPUnit.
 import { describe, expect, it } from "vitest";
-import { formatarReais, formatarReaisCurto, formatarReaisInteiros } from "@/lib/dinheiro";
+import {
+  centavosDeDecimal,
+  formatarReais,
+  formatarReaisCurto,
+  formatarReaisInteiros,
+} from "@/lib/dinheiro";
 
 describe("formatarReais", () => {
   it("formata centavos em reais com separador brasileiro", () => {
@@ -27,5 +32,23 @@ describe("formatarReaisCurto", () => {
 
   it("mantém o valor completo abaixo de mil reais", () => {
     expect(formatarReaisCurto(8605)).toBe("R$ 86,05");
+  });
+});
+
+describe("centavosDeDecimal", () => {
+  it("converte texto decimal em centavos inteiros", () => {
+    expect(centavosDeDecimal("3200.00")).toBe(320000);
+    expect(centavosDeDecimal("7500.5")).toBe(750050);
+    expect(centavosDeDecimal("150")).toBe(15000);
+    expect(centavosDeDecimal("0.07")).toBe(7);
+    // Valores que em float dariam erro de arredondamento.
+    expect(centavosDeDecimal("1.15")).toBe(115);
+    expect(centavosDeDecimal("4.35")).toBe(435);
+  });
+
+  it("recusa formatos que não são decimal com ponto", () => {
+    for (const valor of ["", "3.200,00", "1,50", "-10.00", "10.999", "abc", "1e3"]) {
+      expect(centavosDeDecimal(valor)).toBeNull();
+    }
   });
 });

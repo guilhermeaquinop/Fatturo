@@ -116,7 +116,7 @@ Nove entidades. Todo dado de negócio pertence a uma empresa, e o acesso é rest
 | `parametro` | chave (ex.: limite_anual_mei), valor, vigencia_inicio, vigencia_fim | global, versionado por vigência |
 | `arquivo_importado` | id, nome, tipo (XML_NFSE, OFX, CSV), hash_sha256, importado_em, resumo (lidos, novos, duplicados, erros) | pertence a empresa |
 | `lancamento` | id, data, valor_centavos, sentido (entrada, saida), descricao, contraparte_nome, contraparte_doc, categoria, origem (arquivo, manual), id_externo, regra_id | pertence a empresa; opcionalmente a um arquivo e a uma regra |
-| `nota_fiscal` | id, numero, chave_acesso (única), data_emissao, tomador_nome, tomador_doc, valor_centavos, situacao (emitida, cancelada), lancamento_id | pertence a empresa; vínculo opcional com um lançamento |
+| `nota_fiscal` | id, numero, chave_acesso (única por empresa), data_emissao, data_competencia, tomador_nome, tomador_doc, valor_centavos, situacao (emitida, cancelada), lancamento_id (etapa 5) | pertence a empresa; vínculo opcional com um lançamento |
 | `regra_classificacao` | id, campo (contraparte_doc, contraparte_nome, descricao), operador (igual, contem), valor, categoria, ativa | pertence a empresa |
 | `guia_das` | id, competencia (AAAA-MM), vencimento, valor_centavos, situacao, pago_em | pertence a empresa; única por competência |
 
@@ -128,12 +128,14 @@ A importação nunca duplica dados: reenviar o mesmo arquivo, ou um extrato que 
 
 | Formato | De onde vem | O que se lê | Chave contra duplicados |
 | --- | --- | --- | --- |
-| XML de NFS-e (padrão nacional) | Emissor Nacional da NFS-e, em "NFS-e emitidas" | chave de acesso, número, data de emissão, tomador (nome e CPF/CNPJ), valor do serviço, situação | chave de acesso |
+| XML de NFS-e (padrão nacional) | Emissor Nacional da NFS-e, em "NFS-e emitidas" | chave de acesso, número, data de emissão (`dhEmi`), competência (`dCompet`), tomador (nome e CPF/CNPJ, opcional), valor do serviço (`vServ`); o cancelamento vem em arquivo próprio (evento `e101101`) | chave de acesso |
 | OFX | Exportação de extrato do banco | data, valor, tipo (crédito ou débito), descrição (MEMO), FITID | conta + FITID |
 | CSV | Exportação de extrato quando o banco não oferece OFX | colunas mapeadas pelo usuário: data, descrição, valor (ou crédito e débito) | hash de data + valor + descrição + posição no dia |
 
 - O arquivo inteiro também recebe um hash; o mesmo arquivo enviado de novo é recusado com aviso.
 - Nota cancelada importada depois da emitida atualiza a situação e sai do faturamento.
+- Só entram notas emitidas pelo CNPJ da empresa; nota de outro emitente é recusada com aviso.
+- No painel, a nota conta no mês da competência (`dCompet`), não no da emissão.
 - Ao importar, cada lançamento novo passa pelas regras ativas; o que não casar fica "sem classificação".
 - Erros de leitura não interrompem o arquivo: a linha com problema é listada no resumo e as demais entram.
 - Os arquivos são lidos no navegador; só os dados extraídos vão para o servidor, e o arquivo original nunca é enviado.

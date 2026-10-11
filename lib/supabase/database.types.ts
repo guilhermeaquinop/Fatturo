@@ -65,6 +65,52 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"lancamento": {
+                  Row: {
+                    "arquivo_id": string | null,"categoria": Database["public"]['Enums']["categoria_lancamento"] | null,"contraparte_doc": string | null,"contraparte_nome": string | null,"criado_em": string,"data": string,"descricao": string,"empresa_id": string,"id": string,"id_externo": string | null,"origem": Database["public"]['Enums']["origem_lancamento"],"sentido": Database["public"]['Enums']["sentido_lancamento"],"valor_centavos": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "arquivo_id"?: string | null,"categoria"?: Database["public"]['Enums']["categoria_lancamento"] | null,"contraparte_doc"?: string | null,"contraparte_nome"?: string | null,"criado_em"?: string,"data": string,"descricao": string,"empresa_id": string,"id"?: string,"id_externo"?: string | null,"origem": Database["public"]['Enums']["origem_lancamento"],"sentido": Database["public"]['Enums']["sentido_lancamento"],"valor_centavos": number
+                  }
+                  Update: {
+                    "arquivo_id"?: string | null,"categoria"?: Database["public"]['Enums']["categoria_lancamento"] | null,"contraparte_doc"?: string | null,"contraparte_nome"?: string | null,"criado_em"?: string,"data"?: string,"descricao"?: string,"empresa_id"?: string,"id"?: string,"id_externo"?: string | null,"origem"?: Database["public"]['Enums']["origem_lancamento"],"sentido"?: Database["public"]['Enums']["sentido_lancamento"],"valor_centavos"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "lancamento_arquivo_id_fkey"
+      columns: ["arquivo_id"]
+isOneToOne: false
+      referencedRelation: "arquivo_importado"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "lancamento_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresa"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"mapeamento_csv": {
+                  Row: {
+                    "assinatura": string,"coluna_credito": number | null,"coluna_data": number,"coluna_debito": number | null,"coluna_descricao": number,"coluna_valor": number | null,"criado_em": string,"empresa_id": string,"id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "assinatura": string,"coluna_credito"?: number | null,"coluna_data": number,"coluna_debito"?: number | null,"coluna_descricao": number,"coluna_valor"?: number | null,"criado_em"?: string,"empresa_id": string,"id"?: string
+                  }
+                  Update: {
+                    "assinatura"?: string,"coluna_credito"?: number | null,"coluna_data"?: number,"coluna_debito"?: number | null,"coluna_descricao"?: number,"coluna_valor"?: number | null,"criado_em"?: string,"empresa_id"?: string,"id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "mapeamento_csv_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresa"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"nota_fiscal": {
                   Row: {
                     "arquivo_id": string | null,"chave_acesso": string,"criado_em": string,"data_competencia": string,"data_emissao": string,"empresa_id": string,"id": string,"numero": string,"situacao": Database["public"]['Enums']["situacao_nota"],"tomador_doc": string | null,"tomador_nome": string | null,"valor_centavos": number
@@ -128,12 +174,15 @@ isOneToOne: false
             "configurar_empresa":
 { Args: { "p_anexo"?: Database["public"]['Enums']["anexo_simples"],"p_atividade": Database["public"]['Enums']["atividade"],"p_cnpj": string,"p_data_abertura": string,"p_nome": string,"p_porte": Database["public"]['Enums']["porte"],"p_regime": Database["public"]['Enums']["regime"] }; Returns: string
                            },
+"importar_extrato":
+{ Args: { "p_erros"?: number,"p_hash": string,"p_lancamentos": Json,"p_nome": string,"p_tipo": Database["public"]['Enums']["tipo_arquivo"] }; Returns: Json
+                           },
 "importar_nfse":
 { Args: { "p_cancelamentos": Json,"p_erros"?: number,"p_hash": string,"p_nome": string,"p_notas": Json }; Returns: Json
                            }
           }
           Enums: {
-            "anexo_simples": "I"|"II"|"III"|"IV"|"V"|"nao_sei","atividade": "comercio"|"servico"|"ambos","porte": "MEI"|"ME","regime": "SIMPLES","situacao_nota": "emitida"|"cancelada","tipo_arquivo": "XML_NFSE"|"OFX"|"CSV"
+            "anexo_simples": "I"|"II"|"III"|"IV"|"V"|"nao_sei","atividade": "comercio"|"servico"|"ambos","categoria_lancamento": "receita"|"despesa"|"pessoal"|"transferencia"|"imposto","origem_lancamento": "arquivo"|"manual","porte": "MEI"|"ME","regime": "SIMPLES","sentido_lancamento": "entrada"|"saida","situacao_nota": "emitida"|"cancelada","tipo_arquivo": "XML_NFSE"|"OFX"|"CSV"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -249,7 +298,7 @@ export type CompositeTypes<
 export const Constants = {
   "public": {
           Enums: {
-            "anexo_simples": ["I", "II", "III", "IV", "V", "nao_sei"],"atividade": ["comercio", "servico", "ambos"],"porte": ["MEI", "ME"],"regime": ["SIMPLES"],"situacao_nota": ["emitida", "cancelada"],"tipo_arquivo": ["XML_NFSE", "OFX", "CSV"]
+            "anexo_simples": ["I", "II", "III", "IV", "V", "nao_sei"],"atividade": ["comercio", "servico", "ambos"],"categoria_lancamento": ["receita", "despesa", "pessoal", "transferencia", "imposto"],"origem_lancamento": ["arquivo", "manual"],"porte": ["MEI", "ME"],"regime": ["SIMPLES"],"sentido_lancamento": ["entrada", "saida"],"situacao_nota": ["emitida", "cancelada"],"tipo_arquivo": ["XML_NFSE", "OFX", "CSV"]
           }
         }
 } as const

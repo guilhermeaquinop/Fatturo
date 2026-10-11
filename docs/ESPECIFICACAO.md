@@ -78,11 +78,13 @@ São 11 telas: 4 de acesso e configuração, 6 de uso diário e 1 de conta. O us
 
 **Recuperar senha.** Pede o e-mail e responde sempre "se existir uma conta, enviamos o link". O link vale 1 hora e um único uso, e leva à tela de nova senha. Sem mockup: seguir o layout do login.
 
-**Configuração inicial.** Em até 3 passos (mockup: `configuracao.html`, que mostra os três passos empilhados):
+**Configuração inicial.** Em 3 passos, um por vez (mockup: `configuracao.html`, que mostra os passos empilhados e ainda traz o antigo passo "Ponto de partida", substituído pela revisão):
 
-1. Empresa: CNPJ (validado pelo dígito verificador), razão social ou nome fantasia, data de abertura.
-2. Enquadramento: porte (MEI ou ME), regime (Simples Nacional; outros regimes aparecem como "em breve"), atividade (comércio, serviço ou ambos) e, para ME, o anexo do Simples.
-3. Ponto de partida: faturamento já realizado no ano antes de usar o Fatturo, por mês, opcional. Permite começar no meio do ano sem importar tudo.
+1. Empresa: CNPJ (validado pelo dígito verificador, numérico ou alfanumérico), razão social ou nome fantasia, data de abertura.
+2. Enquadramento: porte (MEI ou ME), regime (Simples Nacional; outros regimes aparecem como "em breve"), atividade (comércio, serviço ou ambos) e, para ME, o anexo do Simples. O anexo aceita "Não sei", tratado como anexo indefinido.
+3. Revisão: mostra tudo o que foi informado. O usuário volta para corrigir ou salva. Nada é gravado antes do "Salvar"; depois dele, empresa e enquadramento só mudam pela tela de Configurações.
+
+Não há cadastro de faturamento anterior na configuração inicial. O histórico entra pela importação de XML de NFS-e e, quando não houver arquivo, por lançamento manual com data retroativa na tela de Lançamentos.
 
 ### Uso diário
 
@@ -90,7 +92,7 @@ São 11 telas: 4 de acesso e configuração, 6 de uso diário e 1 de conta. O us
 
 **Importar arquivos.** Área de arrastar e soltar que aceita vários arquivos de uma vez (XML, OFX, CSV). Para cada arquivo mostra: tipo detectado, quantidade lida, novos, duplicados ignorados e erros. CSV pede o mapeamento de colunas na primeira vez por banco e guarda esse mapeamento.
 
-**Lançamentos.** Tabela com data, descrição, remetente ou destinatário, valor, categoria e origem (arquivo ou manual). Filtros por mês, categoria e "sem classificação". Classificação em lote, edição, exclusão e botão de lançamento manual.
+**Lançamentos.** Tabela com data, descrição, remetente ou destinatário, valor, categoria e origem (arquivo ou manual). Filtros por mês, categoria e "sem classificação". Classificação em lote, edição, exclusão e botão de lançamento manual, que aceita datas passadas para registrar faturamento anterior ao uso do Fatturo.
 
 **Notas.** Lista das NFS-e importadas com número, data, tomador, valor e situação (vinculada a recebimento ou não). Ação de vincular a um recebimento sugerido ou escolhido.
 
@@ -109,8 +111,8 @@ Nove entidades. Todo dado de negócio pertence a uma empresa, e o acesso é rest
 | Entidade | Campos principais | Relações |
 | --- | --- | --- |
 | `usuario` | id (o mesmo de auth.users), nome, criado_em; e-mail e senha ficam no Supabase Auth | 1 usuário → 1 empresa |
-| `empresa` | id, cnpj, nome, data_abertura, atividade (comercio, servico, ambos), alertas (faixas, e-mail) | pertence a usuário |
-| `enquadramento` | id, porte (MEI, ME), regime (SIMPLES), anexo, inicio_em, fim_em | vários por empresa; guarda o histórico de MEI para ME |
+| `empresa` | id, cnpj, nome, data_abertura, atividade (comercio, servico, ambos), alertas (faixas, e-mail; entram na etapa 7) | pertence a usuário |
+| `enquadramento` | id, porte (MEI, ME), regime (SIMPLES), anexo (I a V ou nao_sei; só ME), inicio_em, fim_em | vários por empresa; guarda o histórico de MEI para ME |
 | `parametro` | chave (ex.: limite_anual_mei), valor, vigencia_inicio, vigencia_fim | global, versionado por vigência |
 | `arquivo_importado` | id, nome, tipo (XML_NFSE, OFX, CSV), hash_sha256, importado_em, resumo (lidos, novos, duplicados, erros) | pertence a empresa |
 | `lancamento` | id, data, valor_centavos, sentido (entrada, saida), descricao, contraparte_nome, contraparte_doc, categoria, origem (arquivo, manual), id_externo, regra_id | pertence a empresa; opcionalmente a um arquivo e a uma regra |
@@ -193,7 +195,7 @@ Três decisões derivadas da stack:
 Cada etapa entrega algo usável; o painel já é útil ao fim da etapa 3.
 
 1. **Base:** projeto, banco, autenticação completa (cadastro, confirmação, login, recuperação) e tabela de parâmetros.
-2. **Empresa:** configuração inicial com enquadramento e ponto de partida.
+2. **Empresa:** configuração inicial com enquadramento e revisão antes de salvar.
 3. **Notas e painel:** importação de XML de NFS-e e painel com acumulado, limite e projeção.
 4. **Extratos:** importação de OFX e CSV, tela de lançamentos e lançamento manual.
 5. **Classificação:** regras, pendências no painel e vínculo entre nota e recebimento.

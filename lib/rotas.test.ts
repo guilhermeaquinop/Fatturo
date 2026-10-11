@@ -5,7 +5,7 @@ import { redirecionamento } from "@/lib/rotas";
 describe("redirecionamento", () => {
   it("manda a raiz para o login ou para o app", () => {
     expect(redirecionamento("/", false)).toBe("/login");
-    expect(redirecionamento("/", true)).toBe("/configuracao");
+    expect(redirecionamento("/", true)).toBe("/painel");
   });
 
   it("deixa o visitante nas telas de acesso", () => {
@@ -16,7 +16,7 @@ describe("redirecionamento", () => {
 
   it("tira o usuário logado das telas de acesso", () => {
     for (const rota of ["/login", "/cadastro", "/cadastro/confirmar", "/recuperar-senha"]) {
-      expect(redirecionamento(rota, true)).toBe("/configuracao");
+      expect(redirecionamento(rota, true)).toBe("/painel");
     }
   });
 

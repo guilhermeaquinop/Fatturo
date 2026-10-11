@@ -5,7 +5,47 @@ export type Database = {
   
   "public": {
           Tables: {
-            "parametro": {
+            "empresa": {
+                  Row: {
+                    "atividade": Database["public"]['Enums']["atividade"],"cnpj": string,"criado_em": string,"data_abertura": string,"id": string,"nome": string,"usuario_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "atividade": Database["public"]['Enums']["atividade"],"cnpj": string,"criado_em"?: string,"data_abertura": string,"id"?: string,"nome": string,"usuario_id": string
+                  }
+                  Update: {
+                    "atividade"?: Database["public"]['Enums']["atividade"],"cnpj"?: string,"criado_em"?: string,"data_abertura"?: string,"id"?: string,"nome"?: string,"usuario_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "empresa_usuario_id_fkey"
+      columns: ["usuario_id"]
+isOneToOne: true
+      referencedRelation: "usuario"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"enquadramento": {
+                  Row: {
+                    "anexo": Database["public"]['Enums']["anexo_simples"] | null,"criado_em": string,"empresa_id": string,"fim_em": string | null,"id": string,"inicio_em": string,"porte": Database["public"]['Enums']["porte"],"regime": Database["public"]['Enums']["regime"]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "anexo"?: Database["public"]['Enums']["anexo_simples"] | null,"criado_em"?: string,"empresa_id": string,"fim_em"?: string | null,"id"?: string,"inicio_em": string,"porte": Database["public"]['Enums']["porte"],"regime": Database["public"]['Enums']["regime"]
+                  }
+                  Update: {
+                    "anexo"?: Database["public"]['Enums']["anexo_simples"] | null,"criado_em"?: string,"empresa_id"?: string,"fim_em"?: string | null,"id"?: string,"inicio_em"?: string,"porte"?: Database["public"]['Enums']["porte"],"regime"?: Database["public"]['Enums']["regime"]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "enquadramento_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresa"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"parametro": {
                   Row: {
                     "a_confirmar": boolean,"chave": string,"descricao": string,"id": number,"valor": number,"vigencia_fim": string | null,"vigencia_inicio": string
                   }
@@ -39,10 +79,12 @@ export type Database = {
             [_ in never]: never
           }
           Functions: {
-            [_ in never]: never
+            "configurar_empresa":
+{ Args: { "p_anexo"?: Database["public"]['Enums']["anexo_simples"],"p_atividade": Database["public"]['Enums']["atividade"],"p_cnpj": string,"p_data_abertura": string,"p_nome": string,"p_porte": Database["public"]['Enums']["porte"],"p_regime": Database["public"]['Enums']["regime"] }; Returns: string
+                           }
           }
           Enums: {
-            [_ in never]: never
+            "anexo_simples": "I"|"II"|"III"|"IV"|"V"|"nao_sei","atividade": "comercio"|"servico"|"ambos","porte": "MEI"|"ME","regime": "SIMPLES"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -158,7 +200,7 @@ export type CompositeTypes<
 export const Constants = {
   "public": {
           Enums: {
-            
+            "anexo_simples": ["I", "II", "III", "IV", "V", "nao_sei"],"atividade": ["comercio", "servico", "ambos"],"porte": ["MEI", "ME"],"regime": ["SIMPLES"]
           }
         }
 } as const

@@ -107,7 +107,7 @@ Não há cadastro de faturamento anterior na configuração inicial. O históric
 
 ## Modelo de dados
 
-Nove entidades. Todo dado de negócio pertence a uma empresa, e o acesso é restrito por RLS à empresa do usuário logado. Valores em centavos (inteiro), nunca em ponto flutuante.
+Dez entidades. Todo dado de negócio pertence a uma empresa, e o acesso é restrito por RLS à empresa do usuário logado. Valores em centavos (inteiro), nunca em ponto flutuante.
 
 | Entidade | Campos principais | Relações |
 | --- | --- | --- |
@@ -116,7 +116,8 @@ Nove entidades. Todo dado de negócio pertence a uma empresa, e o acesso é rest
 | `enquadramento` | id, porte (MEI, ME), regime (SIMPLES), anexo (I a V ou nao_sei; só ME), inicio_em, fim_em | vários por empresa; guarda o histórico de MEI para ME |
 | `parametro` | chave (ex.: limite_anual_mei), valor, vigencia_inicio, vigencia_fim | global, versionado por vigência |
 | `arquivo_importado` | id, nome, tipo (XML_NFSE, OFX, CSV), hash_sha256, importado_em, resumo (lidos, novos, duplicados, erros) | pertence a empresa |
-| `lancamento` | id, data, valor_centavos, sentido (entrada, saida), descricao, contraparte_nome, contraparte_doc, categoria, origem (arquivo, manual), id_externo, regra_id | pertence a empresa; opcionalmente a um arquivo e a uma regra |
+| `lancamento` | id, data, valor_centavos (sempre positivo), sentido (entrada, saida), descricao, contraparte_nome, contraparte_doc, categoria (vazia = sem classificação), origem (arquivo, manual), id_externo, regra_id (etapa 5) | pertence a empresa; opcionalmente a um arquivo e a uma regra |
+| `mapeamento_csv` | id, assinatura (cabeçalho do arquivo), coluna_data, coluna_descricao, coluna_valor ou coluna_credito e coluna_debito | pertence a empresa; um por formato de CSV |
 | `nota_fiscal` | id, numero, chave_acesso (única por empresa), data_emissao, data_competencia, tomador_nome, tomador_doc, valor_centavos, situacao (emitida, cancelada), lancamento_id (etapa 5) | pertence a empresa; vínculo opcional com um lançamento |
 | `regra_classificacao` | id, campo (contraparte_doc, contraparte_nome, descricao), operador (igual, contem), valor, categoria, ativa | pertence a empresa |
 | `guia_das` | id, competencia (AAAA-MM), vencimento, valor_centavos, situacao, pago_em | pertence a empresa; única por competência |
@@ -131,13 +132,16 @@ A importação nunca duplica dados: reenviar o mesmo arquivo, ou um extrato que 
 | --- | --- | --- | --- |
 | XML de NFS-e (padrão nacional) | Emissor Nacional da NFS-e, em "NFS-e emitidas" | chave de acesso, número, data de emissão (`dhEmi`), competência (`dCompet`), tomador (nome e CPF/CNPJ, opcional), valor do serviço (`vServ`); o cancelamento vem em arquivo próprio (evento `e101101`) | chave de acesso |
 | OFX | Exportação de extrato do banco | data, valor, tipo (crédito ou débito), descrição (MEMO), FITID | conta + FITID |
-| CSV | Exportação de extrato quando o banco não oferece OFX | colunas mapeadas pelo usuário: data, descrição, valor (ou crédito e débito) | hash de data + valor + descrição + posição no dia |
+| CSV | Exportação de extrato quando o banco não oferece OFX | colunas mapeadas pelo usuário: data, descrição, valor (ou crédito e débito) | hash de data + valor + descrição + ordem entre lançamentos idênticos |
 
 - O arquivo inteiro também recebe um hash; o mesmo arquivo enviado de novo é recusado com aviso.
 - Nota cancelada importada depois da emitida atualiza a situação e sai do faturamento.
 - Só entram notas emitidas pelo CNPJ da empresa; nota de outro emitente é recusada com aviso.
 - No painel, a nota conta no mês da competência (`dCompet`), não no da emissão.
-- Ao importar, cada lançamento novo passa pelas regras ativas; o que não casar fica "sem classificação".
+- O mapeamento do CSV é pedido na primeira vez de cada formato, reconhecido pelo cabeçalho do arquivo, e fica guardado. Arquivo sem cabeçalho é reconhecido pelo número de colunas.
+- Lançamento importado mantém data, valor e sentido do banco; só descrição, contraparte e categoria podem ser editadas. O lançamento manual pode mudar por inteiro.
+- Até a etapa 5, os lançamentos não entram no painel: o faturamento vem só das notas, para a nota e o seu recebimento não contarem em dobro.
+- Ao importar, cada lançamento novo passa pelas regras ativas (etapa 5); o que não casar fica "sem classificação".
 - Erros de leitura não interrompem o arquivo: a linha com problema é listada no resumo e as demais entram.
 - Os arquivos são lidos no navegador; só os dados extraídos vão para o servidor, e o arquivo original nunca é enviado.
 

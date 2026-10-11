@@ -11,12 +11,12 @@ import { mascararCnpj } from "@/lib/cnpj";
 import { empresaAtual } from "@/lib/empresa";
 import { cn } from "@/lib/utils";
 
-type Secao = "painel" | "importar";
+type Secao = "painel" | "lancamentos" | "importar";
 
 // Telas que ainda não existem aparecem no menu, sem link, marcadas "em breve".
 const ITENS: { rotulo: string; secao?: Secao; href?: string }[] = [
   { rotulo: "Painel", secao: "painel", href: "/painel" },
-  { rotulo: "Lançamentos" },
+  { rotulo: "Lançamentos", secao: "lancamentos", href: "/lancamentos" },
   { rotulo: "Notas" },
   { rotulo: "DAS" },
   { rotulo: "Regras" },

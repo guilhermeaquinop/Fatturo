@@ -1,12 +1,18 @@
 "use server";
 
-// Server Action da importação de NFS-e — equivale ao método store() de um ImportacaoController.
-// Recebe só os dados que o navegador extraiu do XML (nunca o arquivo), valida de novo com
-// o mesmo esquema Zod e grava tudo numa transação, pela função importar_nfse do banco.
+// Server Actions da importação — equivalem aos métodos de um ImportacaoController.
+// Recebem só os dados que o navegador extraiu do arquivo (nunca o arquivo), validam de novo
+// com o mesmo esquema Zod e gravam tudo numa transação, pelas funções importar_nfse e
+// importar_extrato do banco. Também guardam o mapeamento de colunas dos extratos em CSV.
 import { revalidatePath } from "next/cache";
 import { empresaAtual } from "@/lib/empresa";
 import { createClient } from "@/lib/supabase/server";
 import { arquivoNfseSchema } from "@/lib/validacao/importacao";
+import {
+  extratoSchema,
+  mapeamentoCsvSchema,
+  type MapeamentoCsvDados,
+} from "@/lib/validacao/lancamento";
 
 export type ResultadoImportacao =
   | {
@@ -89,4 +95,116 @@ export async function importarNfse(dados: unknown): Promise<ResultadoImportacao>
     erros: deOutroCnpj + retorno.nao_encontrados,
     mensagens,
   };
+}
+
+/** Importa os lançamentos lidos de um extrato OFX ou CSV. */
+export async function importarExtrato(dados: unknown): Promise<ResultadoImportacao> {
+  const validado = extratoSchema.safeParse(dados);
+  if (!validado.success) return { ok: false, erro: "Não foi possível ler os dados do arquivo." };
+
+  if (!(await empresaAtual())) {
+    return { ok: false, erro: "Configure a empresa antes de importar arquivos." };
+  }
+
+  const { nome, tipo, hash, lancamentos, erros } = validado.data;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("importar_extrato", {
+    p_nome: nome,
+    p_tipo: tipo,
+    p_hash: hash,
+    p_lancamentos: lancamentos.map((item) => ({
+      id_externo: item.idExterno,
+      data: item.data,
+      valor_centavos: item.valorCentavos,
+      sentido: item.sentido,
+      descricao: item.descricao,
+      contraparte_nome: item.contraparteNome,
+    })),
+    p_erros: erros,
+  });
+
+  if (error) {
+    if (error.code === CHAVE_DUPLICADA) {
+      return { ok: false, erro: "Este arquivo já foi importado. Nada foi alterado." };
+    }
+    console.error("Falha ao importar extrato:", error.code ?? error.message);
+    return { ok: false, erro: "Não foi possível importar agora. Tente de novo em instantes." };
+  }
+
+  const retorno = data as { novos: number; duplicados: number };
+  revalidatePath("/lancamentos");
+
+  return {
+    ok: true,
+    novos: retorno.novos,
+    duplicados: retorno.duplicados,
+    cancelados: 0,
+    erros,
+    mensagens: [],
+  };
+}
+
+type MapeamentoSalvo = Omit<MapeamentoCsvDados, "assinatura">;
+
+/** Mapeamento de colunas já guardado para este formato de CSV, ou null na primeira vez. */
+export async function mapeamentoCsvSalvo(assinatura: unknown): Promise<MapeamentoSalvo | null> {
+  if (typeof assinatura !== "string" || assinatura === "" || assinatura.length > 1000) return null;
+
+  const empresa = await empresaAtual();
+  if (!empresa) return null;
+
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("mapeamento_csv")
+    .select("coluna_data, coluna_descricao, coluna_valor, coluna_credito, coluna_debito")
+    .eq("empresa_id", empresa.id)
+    .eq("assinatura", assinatura)
+    .maybeSingle();
+  if (!data) return null;
+
+  return {
+    colunaData: data.coluna_data,
+    colunaDescricao: data.coluna_descricao,
+    colunaValor: data.coluna_valor,
+    colunaCredito: data.coluna_credito,
+    colunaDebito: data.coluna_debito,
+  };
+}
+
+/** Guarda (ou troca) o mapeamento de colunas de um formato de CSV. */
+export async function salvarMapeamentoCsv(dados: unknown): Promise<{ ok: boolean }> {
+  const validado = mapeamentoCsvSchema.safeParse(dados);
+  if (!validado.success) return { ok: false };
+
+  const empresa = await empresaAtual();
+  if (!empresa) return { ok: false };
+
+  const { assinatura } = validado.data;
+  const colunas = {
+    coluna_data: validado.data.colunaData,
+    coluna_descricao: validado.data.colunaDescricao,
+    coluna_valor: validado.data.colunaValor,
+    coluna_credito: validado.data.colunaCredito,
+    coluna_debito: validado.data.colunaDebito,
+  };
+
+  // Atualiza o mapeamento deste formato, se já existir; senão, cria. (Como um updateOrCreate.)
+  const supabase = await createClient();
+  const atualizacao = await supabase
+    .from("mapeamento_csv")
+    .update(colunas)
+    .eq("empresa_id", empresa.id)
+    .eq("assinatura", assinatura)
+    .select("id");
+  let erro = atualizacao.error;
+  if (!erro && atualizacao.data?.length === 0) {
+    const criacao = await supabase
+      .from("mapeamento_csv")
+      .insert({ empresa_id: empresa.id, assinatura, ...colunas });
+    erro = criacao.error;
+  }
+
+  if (erro) console.error("Falha ao salvar o mapeamento do CSV:", erro.code ?? erro.message);
+  return { ok: !erro };
 }

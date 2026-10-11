@@ -1,5 +1,6 @@
-// Página /importar: importação de XML de NFS-e. Equivale à rota GET /importacoes/create.
-// OFX e CSV entram na etapa 4. Quem ainda não configurou a empresa é mandado a /configuracao.
+// Página /importar: importação de XML de NFS-e e de extratos em OFX ou CSV.
+// Equivale à rota GET /importacoes/create. Quem ainda não configurou a empresa é mandado
+// a /configuracao.
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -16,7 +17,8 @@ export default function ImportarPage() {
       <div>
         <h1 className="text-page-title">Importar arquivos</h1>
         <div className="text-ink-muted">
-          Envie os XML das NFS-e emitidas, baixados no Emissor Nacional em “NFS-e emitidas”.
+          Envie os XML das NFS-e emitidas, baixados no Emissor Nacional, e os extratos do banco em
+          OFX ou CSV.
         </div>
       </div>
       <Suspense fallback={<div className="text-ink-muted">Carregando…</div>}>

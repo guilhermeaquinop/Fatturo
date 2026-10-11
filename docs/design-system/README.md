@@ -47,6 +47,21 @@ Não fazer:
 - `accent` como cor de texto ou de linha fina: ele some no branco. Para traços use `accent-strong`.
 - Verdes saturados fora desta lista.
 
+## Marca
+
+Os arquivos da logo ficam em `docs/design-system/logo/`. No app, use o componente `components/logo.tsx`, que desenha a mesma logo com as cores dos tokens.
+
+| Arquivo | O que é | Onde usar |
+| --- | --- | --- |
+| `fatturo-logo.svg` / `-escuro` | Símbolo e nome lado a lado | Cabeçalhos, menu e telas de acesso |
+| `fatturo-logotipo.svg` / `-escuro` | Só o nome | Espaços estreitos onde o símbolo já aparece |
+| `fatturo-simbolo.svg` / `-escuro` | Só o símbolo, sem fundo | Espaços pequenos |
+| `fatturo-icone.svg` / `-verde` | Símbolo num quadrado de cantos arredondados | Favicon (`app/icon.svg`) e ícone de aplicativo |
+
+- Sobre fundo claro, a versão padrão: traço `ink` e destaque `accent-strong`.
+- Sobre fundo `ink`, a versão `-escuro`: traço branco e destaque `accent`.
+- Não mude as cores, não distorça e não aplique sombra.
+
 ## Tipografia
 
 Uma família só: **Montserrat** (Google Fonts, pesos 400, 500, 600 e 700). Hierarquia por tamanho e peso, nunca por cor.
@@ -55,7 +70,8 @@ Uma família só: **Montserrat** (Google Fonts, pesos 400, 500, 600 e 700). Hier
 - `page-title` (26/700) e `section-title` (16/600) para títulos.
 - `metric` (22/600) para valores de indicador.
 - `body` (14/400), `body-strong` (14/600), `label` (13/600), `caption` (12/400) para o resto.
-- `wordmark-lg` (20/700) e `lead` (15/400) só no painel lateral das telas de acesso.
+- `lead` (15/400) só no painel lateral das telas de acesso.
+- `wordmark-lg` (20/700) e `wordmark` (18/700) escrevem o nome do produto em texto, só onde a logo em SVG não puder ser usada (e-mails, por exemplo).
 - Números usam `font-variant-numeric: tabular-nums`, para alinhar em colunas.
 
 ## Espaçamento e layout

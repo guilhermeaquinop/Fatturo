@@ -1,6 +1,7 @@
 // Moldura das telas de uso diário: barra lateral com o menu e área de conteúdo fluida.
 // Equivale ao layouts/app.blade.php do Laravel com a navegação. No celular a barra
 // empilha acima do conteúdo (flex-wrap). Mockup: docs/mockups/painel.html.
+import { Logo } from "@/components/logo";
 import Link from "next/link";
 import { Suspense } from "react";
 import { sair } from "@/app/(acesso)/actions";
@@ -30,7 +31,9 @@ export function AppShell({ ativa, children }: { ativa: Secao; children: React.Re
         aria-label="Navegação principal"
         className="flex flex-[1_1_220px] flex-col gap-7 border-r border-b border-border px-4 py-7"
       >
-        <div className="px-3 text-section-title font-bold">Fatturo</div>
+        <div className="px-3">
+          <Logo />
+        </div>
 
         <div className="flex flex-col gap-1">
           {ITENS.map((item) =>

@@ -1,4 +1,4 @@
-// Leitura da empresa do usuário logado, com o enquadramento em vigor.
+// Leitura da empresa do usuário logado, com o enquadramento em vigor e o histórico dele.
 // Equivale a auth()->user()->empresa com o relacionamento carregado, no Laravel.
 import "server-only";
 import { cache } from "react";
@@ -19,6 +19,8 @@ export type EmpresaAtual = {
     anexo: Anexo | null;
     inicioEm: string;
   };
+  /** Todos os períodos, do mais antigo ao mais recente (ex.: MEI e depois ME). */
+  enquadramentos: { porte: Porte; inicioEm: string; fimEm: string | null }[];
 };
 
 /** Devolve a empresa do usuário, ou null se ele ainda não fez a configuração inicial. */
@@ -54,5 +56,8 @@ export const empresaAtual = cache(async (): Promise<EmpresaAtual | null> => {
       anexo: vigente.anexo,
       inicioEm: vigente.inicio_em,
     },
+    enquadramentos: empresa.enquadramento
+      .map((item) => ({ porte: item.porte, inicioEm: item.inicio_em, fimEm: item.fim_em }))
+      .sort((a, b) => a.inicioEm.localeCompare(b.inicioEm)),
   };
 });

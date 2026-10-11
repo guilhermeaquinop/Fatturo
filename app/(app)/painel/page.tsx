@@ -18,6 +18,7 @@ import { formatarReaisInteiros } from "@/lib/dinheiro";
 import { empresaAtual } from "@/lib/empresa";
 import { notasDoPeriodo } from "@/lib/notas";
 import { parametrosVigentes } from "@/lib/parametros";
+import { enquadramentoEm, mudancaDePorteNoAno } from "@/lib/regras/enquadramento";
 import {
   faturamentoPorMes,
   origemDoFaturamento,
@@ -62,9 +63,14 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
     Number.isInteger(pedido) && pedido >= anoDeAbertura && pedido <= anoAtual ? pedido : anoAtual;
   const anoCorrente = ano === anoAtual;
 
+  // Data de referência do ano exibido: hoje, ou 31 de dezembro nos anos fechados.
+  const referencia = anoCorrente ? hoje : `${ano}-12-31`;
   // Parâmetros legais em vigor no ano exibido.
-  const parametros = await parametrosVigentes(anoCorrente ? hoje : `${ano}-12-31`);
-  const { porte } = empresa.enquadramento;
+  const parametros = await parametrosVigentes(referencia);
+  // Porte daquele ano, pelo histórico: quem foi MEI e virou ME vê cada ano com o seu limite.
+  // No ano da mudança vale o porte novo, contra o faturamento do ano inteiro, com um aviso.
+  const { porte } = enquadramentoEm(empresa.enquadramentos, referencia);
+  const mudanca = mudancaDePorteNoAno(empresa.enquadramentos, ano, referencia);
   const limite = limiteDoAno({
     porte,
     dataAbertura: empresa.dataAbertura,
@@ -193,6 +199,16 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
         <Alert variant="warning">
           <AlertTitle>Limite a confirmar</AlertTitle>
           Os valores legais usados aqui ainda precisam ser conferidos com o contador.
+        </Alert>
+      ) : null}
+
+      {mudanca ? (
+        <Alert variant="info">
+          <AlertTitle>
+            {mudanca.porteAnterior} até {nomeDoMes(mesDe(mudanca.ate))} de {ano}
+          </AlertTitle>
+          A empresa passou de {mudanca.porteAnterior} para {porte} neste ano. O limite mostrado é o
+          da {porte}, contra o faturamento do ano inteiro.
         </Alert>
       ) : null}
 

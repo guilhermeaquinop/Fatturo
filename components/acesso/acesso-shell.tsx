@@ -1,5 +1,6 @@
 // Moldura das telas de acesso: painel ink à esquerda e formulário de até 380px à direita.
 // Equivale ao layouts/guest.blade.php do Laravel. Empilha no celular (flex-wrap).
+import { Logo } from "@/components/logo";
 import * as React from "react";
 
 type AcessoShellProps = {
@@ -12,7 +13,7 @@ function AcessoShell({ painel = <PainelApresentacao />, children }: AcessoShellP
   return (
     <div className="flex min-h-screen flex-wrap bg-surface">
       <aside className="flex flex-[1_1_360px] flex-col justify-between gap-12 bg-ink p-12 text-on-ink">
-        <div className="text-wordmark-lg">Fatturo</div>
+        <Logo tom="escuro" className="h-8 self-start" />
         <div className="max-w-[440px]">{painel}</div>
         <div className="text-caption text-on-ink-muted">Para MEI e ME no Simples Nacional</div>
       </aside>

@@ -1,5 +1,6 @@
 // Página de documento legal ainda sem texto (termos de uso, política de privacidade).
 // Equivale a uma view Blade simples reutilizada por duas rotas.
+import { Logo } from "@/components/logo";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { TextLink } from "@/components/ui/text-link";
 
@@ -8,7 +9,7 @@ export function DocumentoProvisorio({ titulo }: { titulo: string }) {
     <div className="min-h-screen bg-surface-muted">
       <header className="border-b border-border bg-surface">
         <div className="mx-auto flex max-w-content items-center justify-between gap-4 px-8 py-4">
-          <div className="text-wordmark">Fatturo</div>
+          <Logo />
           <TextLink href="/cadastro" className="text-label">
             Criar conta
           </TextLink>

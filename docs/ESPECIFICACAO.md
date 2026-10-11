@@ -95,7 +95,7 @@ Não há cadastro de faturamento anterior na configuração inicial. O históric
 
 **Lançamentos.** Tabela com data, descrição, remetente ou destinatário, valor, categoria e origem (arquivo ou manual). Filtros por mês, categoria e "sem classificação". Classificação em lote, edição, exclusão e botão de lançamento manual, que aceita datas passadas para registrar faturamento anterior ao uso do Fatturo.
 
-**Notas.** Lista das NFS-e importadas com número, data, tomador, valor e situação (vinculada a recebimento ou não). Ação de vincular a um recebimento sugerido ou escolhido.
+**Notas.** Lista das NFS-e importadas com número, competência, emissão, tomador, valor e situação (emitida ou cancelada), com filtro por ano e por situação. Avisa quando faltam números na sequência das notas. Permite marcar uma nota como cancelada, ou desfazer, para quando o XML do cancelamento não está à mão. O vínculo com o recebimento (sugerido ou escolhido) entra junto com as regras de classificação.
 
 **DAS.** Os 12 meses do ano com competência, vencimento, valor e situação (pago, pendente, vencido, a vencer). MEI: valor preenchido pelo parâmetro. ME: campo para informar o valor da guia. Marcar como pago com a data do pagamento.
 
@@ -205,7 +205,7 @@ Cada etapa entrega algo usável; o painel já é útil ao fim da etapa 3.
 2. **Empresa:** configuração inicial com enquadramento e revisão antes de salvar.
 3. **Notas e painel:** importação de XML de NFS-e e painel com acumulado, limite e projeção.
 4. **Extratos:** importação de OFX e CSV, tela de lançamentos e lançamento manual.
-5. **Classificação:** regras, pendências no painel e vínculo entre nota e recebimento.
+5. **Classificação:** tela de notas, regras, pendências no painel e vínculo entre nota e recebimento. A tela de notas foi entregue antes, sem o vínculo; o restante fica para depois das etapas 6 e 7, porque o autor usa primeiro só as notas.
 6. **DAS:** tela do DAS e linha do DAS pago no gráfico.
 7. **Alertas e conta:** e-mails de alerta, Configurações, exportação e exclusão.
 

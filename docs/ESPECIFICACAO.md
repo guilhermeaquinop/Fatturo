@@ -44,6 +44,7 @@ Os valores legais ficam numa tabela de parâmetros, nunca fixos no código, porq
 2. Lançamentos **pessoais** e **transferências entre contas** não entram em nenhum indicador.
 3. O acumulado considera o ano-calendário, pela data de competência do lançamento.
 4. Para ME, o painel também mostra a **receita dos últimos 12 meses** (RBT12), que define a faixa de alíquota do Simples.
+5. O limite de cada ano é o do **porte em vigor naquele ano**, pelo histórico de enquadramento. No ano em que a empresa muda de MEI para ME, o painel mostra o limite da ME contra o faturamento do ano inteiro, com um aviso do mês da mudança.
 
 ### Projeção e alertas
 

@@ -97,7 +97,7 @@ Não há cadastro de faturamento anterior na configuração inicial. O históric
 
 **Notas.** Lista das NFS-e importadas com número, competência, emissão, tomador, valor e situação (emitida ou cancelada), com filtro por ano e por situação. Avisa quando faltam números na sequência das notas. Permite marcar uma nota como cancelada, ou desfazer, para quando o XML do cancelamento não está à mão. O vínculo com o recebimento (sugerido ou escolhido) entra junto com as regras de classificação.
 
-**DAS.** Os 12 meses do ano com competência, vencimento, valor e situação (pago, pendente, vencido, a vencer). MEI: valor preenchido pelo parâmetro. ME: campo para informar o valor da guia. Marcar como pago com a data do pagamento.
+**DAS.** Os meses do ano com competência, receita do mês, vencimento, valor e situação (paga, pendente, vencida, a vencer ou sem valor informado). Cada mês abre um formulário com valor, vencimento e data do pagamento. ME: o valor vem sugerido pela receita do mês (alíquota da tabela de parâmetros), para o usuário conferir com a guia. MEI: o usuário informa o valor da guia; o preenchimento automático pelo parâmetro fica para quando os valores anuais estiverem cadastrados. O vencimento padrão é o dia 20 do mês seguinte, ou a segunda-feira seguinte se cair em fim de semana, e pode ser ajustado.
 
 **Regras.** Lista das regras de classificação com o critério, a categoria e quantos lançamentos já classificou. Editar, desativar e excluir.
 
@@ -120,7 +120,7 @@ Dez entidades. Todo dado de negócio pertence a uma empresa, e o acesso é restr
 | `mapeamento_csv` | id, assinatura (cabeçalho do arquivo), coluna_data, coluna_descricao, coluna_valor ou coluna_credito e coluna_debito | pertence a empresa; um por formato de CSV |
 | `nota_fiscal` | id, numero, chave_acesso (única por empresa), data_emissao, data_competencia, tomador_nome, tomador_doc, valor_centavos, situacao (emitida, cancelada), lancamento_id (etapa 5) | pertence a empresa; vínculo opcional com um lançamento |
 | `regra_classificacao` | id, campo (contraparte_doc, contraparte_nome, descricao), operador (igual, contem), valor, categoria, ativa | pertence a empresa |
-| `guia_das` | id, competencia (AAAA-MM), vencimento, valor_centavos, situacao, pago_em | pertence a empresa; única por competência |
+| `guia_das` | id, competencia (dia 1 do mês), vencimento, valor_centavos, pago_em | pertence a empresa; única por competência. A situação não é guardada: é calculada pelas datas |
 
 Categorias e situações são listas fixas (enum) na v1.
 

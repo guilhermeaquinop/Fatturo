@@ -11,7 +11,7 @@ import { mascararCnpj } from "@/lib/cnpj";
 import { empresaAtual } from "@/lib/empresa";
 import { cn } from "@/lib/utils";
 
-type Secao = "painel" | "lancamentos" | "notas" | "das" | "importar";
+type Secao = "painel" | "lancamentos" | "notas" | "das" | "importar" | "configuracoes";
 
 // Telas que ainda não existem aparecem no menu, sem link, marcadas "em breve".
 const ITENS: { rotulo: string; secao?: Secao; href?: string }[] = [
@@ -70,6 +70,13 @@ export function AppShell({ ativa, children }: { ativa: Secao; children: React.Re
           <Suspense fallback={null}>
             <EmpresaNoMenu />
           </Suspense>
+          <Link
+            href="/configuracoes"
+            aria-current={ativa === "configuracoes" ? "page" : undefined}
+            className={cn(textLinkClassName, "aria-[current=page]:text-ink aria-[current=page]:no-underline")}
+          >
+            Configurações
+          </Link>
           {/* Sair é um formulário que chama a Server Action, como um POST /logout. */}
           <form action={sair}>
             <button type="submit" className={`cursor-pointer ${textLinkClassName}`}>

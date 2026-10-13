@@ -37,8 +37,6 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Painel" };
 
-// Faixa em que o chip do limite vira alerta. As faixas configuráveis chegam na etapa 7.
-const FAIXA_DE_ALERTA = 70;
 // Quantos anos o seletor mostra, contando o atual.
 const ANOS_NO_SELETOR = 6;
 
@@ -160,7 +158,8 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
               Limite ultrapassado em {formatarReaisInteiros(acumulado - limite)}
             </Chip>
           ) : (
-            <Chip variant={percentual >= FAIXA_DE_ALERTA ? "warning" : "default"}>
+            // Vira alerta a partir da primeira faixa escolhida em Configurações.
+            <Chip variant={percentual >= empresa.alertaFaixas[0] ? "warning" : "default"}>
               {Math.floor(percentual)}% do limite utilizado
             </Chip>
           )}

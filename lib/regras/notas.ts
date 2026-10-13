@@ -44,6 +44,65 @@ export function filtroDeSituacao(valor: unknown): FiltroDeSituacao {
   return valor === "emitida" || valor === "cancelada" ? valor : null;
 }
 
+/** Filtros da lista de notas. Null em um campo significa "sem filtro". */
+export type FiltrosDeNotas = {
+  ano: number | null;
+  situacao: FiltroDeSituacao;
+  /** Chave do tomador, como devolvida por chaveDoTomador(). */
+  tomador: string | null;
+  /** Datas "aaaa-mm-dd", inclusive nas duas pontas. */
+  competenciaDe: string | null;
+  competenciaAte: string | null;
+  emissaoDe: string | null;
+  emissaoAte: string | null;
+  valorMinimoCentavos: number | null;
+  valorMaximoCentavos: number | null;
+};
+
+type ParaFiltrar = ParaTotais & {
+  dataCompetencia: string;
+  dataEmissao: string;
+  tomadorNome: string | null;
+  tomadorDoc: string | null;
+};
+
+const SEM_TOMADOR = "sem-tomador";
+
+/** Identifica o tomador de uma nota: o documento, na falta dele o nome, ou "sem-tomador". */
+export function chaveDoTomador(nota: { tomadorNome: string | null; tomadorDoc: string | null }): string {
+  return nota.tomadorDoc ?? nota.tomadorNome ?? SEM_TOMADOR;
+}
+
+/** Tomadores que aparecem nas notas, sem repetir, em ordem alfabética. */
+export function tomadores(
+  notas: { tomadorNome: string | null; tomadorDoc: string | null }[],
+): { chave: string; nome: string }[] {
+  const porChave = new Map<string, string>();
+  for (const nota of notas) {
+    const chave = chaveDoTomador(nota);
+    if (!porChave.has(chave)) porChave.set(chave, nota.tomadorNome ?? "Tomador não identificado");
+  }
+  return [...porChave.entries()]
+    .map(([chave, nome]) => ({ chave, nome }))
+    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+}
+
+/** Aplica todos os filtros de uma vez; a nota precisa passar em cada um que estiver preenchido. */
+export function filtrarNotas<T extends ParaFiltrar>(notas: T[], filtros: FiltrosDeNotas): T[] {
+  return notas.filter(
+    (nota) =>
+      (filtros.ano === null || anoDe(nota.dataCompetencia) === filtros.ano) &&
+      (filtros.situacao === null || nota.situacao === filtros.situacao) &&
+      (filtros.tomador === null || chaveDoTomador(nota) === filtros.tomador) &&
+      (filtros.competenciaDe === null || nota.dataCompetencia >= filtros.competenciaDe) &&
+      (filtros.competenciaAte === null || nota.dataCompetencia <= filtros.competenciaAte) &&
+      (filtros.emissaoDe === null || nota.dataEmissao >= filtros.emissaoDe) &&
+      (filtros.emissaoAte === null || nota.dataEmissao <= filtros.emissaoAte) &&
+      (filtros.valorMinimoCentavos === null || nota.valorCentavos >= filtros.valorMinimoCentavos) &&
+      (filtros.valorMaximoCentavos === null || nota.valorCentavos <= filtros.valorMaximoCentavos),
+  );
+}
+
 export type TotaisDasNotas = {
   emitidas: number;
   canceladas: number;

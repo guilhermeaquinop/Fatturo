@@ -5,6 +5,8 @@ export const ROTA_LOGIN = "/login";
 // Destino depois do login. Sem empresa configurada, o painel manda para /configuracao.
 export const ROTA_INICIAL = "/painel";
 export const ROTA_CONFIGURACAO = "/configuracao";
+// Tela de quem inativou a conta: só dá para reativar ou sair.
+export const ROTA_CONTA_INATIVA = "/conta-inativa";
 
 // Só para quem NÃO está logado (middleware 'guest'): logado é mandado ao app.
 const ROTAS_DE_VISITANTE = ["/login", "/cadastro", "/recuperar-senha"];

@@ -95,7 +95,7 @@ Não há cadastro de faturamento anterior na configuração inicial. O históric
 
 **Lançamentos.** Tabela com data, descrição, remetente ou destinatário, valor, categoria e origem (arquivo ou manual). Filtros por mês, categoria e "sem classificação". Classificação em lote, edição, exclusão e botão de lançamento manual, que aceita datas passadas para registrar faturamento anterior ao uso do Fatturo.
 
-**Notas.** Lista das NFS-e importadas com número, competência, emissão, tomador, valor e situação (emitida ou cancelada), com filtro por ano e por situação. Avisa quando faltam números na sequência das notas. Permite marcar uma nota como cancelada, ou desfazer, para quando o XML do cancelamento não está à mão. O vínculo com o recebimento (sugerido ou escolhido) entra junto com as regras de classificação.
+**Notas.** Lista das NFS-e importadas com número, competência, emissão, tomador, valor e situação (emitida ou cancelada), com filtros por ano, situação, tomador, intervalo de competência, intervalo de emissão e faixa de valor. A lista rola dentro do próprio quadro, com o cabeçalho fixo. Avisa quando faltam números na sequência das notas. Permite marcar uma nota como cancelada, ou desfazer, para quando o XML do cancelamento não está à mão. O vínculo com o recebimento (sugerido ou escolhido) entra junto com as regras de classificação.
 
 **DAS.** Os meses do ano com competência, receita do mês, vencimento, valor e situação (paga, pendente, vencida, a vencer ou sem valor informado). Cada mês abre um formulário com valor, vencimento e data do pagamento. ME: o valor vem sugerido pela receita do mês (alíquota da tabela de parâmetros), para o usuário conferir com a guia. MEI: o usuário informa o valor da guia; o preenchimento automático pelo parâmetro fica para quando os valores anuais estiverem cadastrados. O vencimento padrão é o dia 20 do mês seguinte, ou a segunda-feira seguinte se cair em fim de semana, e pode ser ajustado.
 
@@ -103,7 +103,7 @@ Não há cadastro de faturamento anterior na configuração inicial. O históric
 
 ### Conta
 
-**Configurações.** Dados da empresa e enquadramento (mudar de MEI para ME guarda a data da mudança), faixas de alerta, e-mail de alertas, troca de senha, exportar todos os dados em CSV e excluir a conta.
+**Configurações.** Perfil (nome e um de dois avatares desenhados; não há envio de foto). Dados da empresa (nome e atividade; CNPJ e data de abertura não mudam) e enquadramento: registrar a mudança de porte ou anexo a partir de uma data, corrigir o anexo atual e desfazer a última mudança. Faixas de alerta, e-mail de alertas, troca de senha (pede a senha atual) e exportação dos dados em CSV, um arquivo por tipo de dado. Inativar a conta: os dados ficam guardados, o app fica bloqueado e nenhum alerta é enviado, até o usuário reativar depois de entrar. Excluir a conta: apaga tudo de forma definitiva, pedindo a senha e a palavra EXCLUIR.
 
 ## Modelo de dados
 
@@ -111,8 +111,8 @@ Dez entidades. Todo dado de negócio pertence a uma empresa, e o acesso é restr
 
 | Entidade | Campos principais | Relações |
 | --- | --- | --- |
-| `usuario` | id (o mesmo de auth.users), nome, criado_em; e-mail e senha ficam no Supabase Auth | 1 usuário → 1 empresa |
-| `empresa` | id, cnpj, nome, data_abertura, atividade (comercio, servico, ambos), alertas (faixas, e-mail; entram na etapa 7) | pertence a usuário |
+| `usuario` | id (o mesmo de auth.users), nome, avatar (1 ou 2), inativa_em, criado_em; e-mail e senha ficam no Supabase Auth | 1 usuário → 1 empresa |
+| `empresa` | id, cnpj, nome, data_abertura, atividade (comercio, servico, ambos), alerta_faixas (três percentuais em ordem crescente), alerta_email | pertence a usuário |
 | `enquadramento` | id, porte (MEI, ME), regime (SIMPLES), anexo (I a V ou nao_sei; só ME), inicio_em, fim_em | vários por empresa; guarda o histórico de MEI para ME |
 | `parametro` | chave (ex.: limite_anual_mei), valor, vigencia_inicio, vigencia_fim | global, versionado por vigência |
 | `arquivo_importado` | id, nome, tipo (XML_NFSE, OFX, CSV), hash_sha256, importado_em, resumo (lidos, novos, duplicados, erros) | pertence a empresa |

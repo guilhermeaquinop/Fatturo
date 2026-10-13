@@ -7,14 +7,14 @@ export const SENHA_MINIMA = 10;
 // O bcrypt, usado pelo Supabase Auth, considera no máximo 72 bytes.
 const SENHA_MAXIMA = 72;
 
-const email = z
+export const email = z
   .string()
   .trim()
   .min(1, "Informe seu e-mail.")
   .max(254, "E-mail muito longo.")
   .pipe(z.email("E-mail inválido. Confira o endereço."));
 
-const novaSenha = z
+export const novaSenha = z
   .string()
   .min(SENHA_MINIMA, `A senha precisa ter pelo menos ${SENHA_MINIMA} caracteres.`)
   .max(SENHA_MAXIMA, `A senha pode ter no máximo ${SENHA_MAXIMA} caracteres.`);

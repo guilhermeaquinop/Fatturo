@@ -19,7 +19,7 @@ export const metadata: Metadata = { title: "Guia do DAS" };
 export default function GuiaDasPage({ params }: PageProps<"/das/[competencia]">) {
   return (
     <AppShell ativa="das">
-      <div className="flex w-full max-w-[560px] flex-col gap-5">
+      <div className="mx-auto flex w-full max-w-[560px] flex-col gap-5">
         <Suspense fallback={<div className="text-ink-muted">Carregando…</div>}>
           <Guia params={params} />
         </Suspense>

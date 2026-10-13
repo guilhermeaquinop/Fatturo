@@ -17,7 +17,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export default function EditarLancamentoPage({ params }: PageProps<"/lancamentos/[id]">) {
   return (
     <AppShell ativa="lancamentos">
-      <div className="flex w-full max-w-[640px] flex-col gap-5">
+      <div className="mx-auto flex w-full max-w-[640px] flex-col gap-5">
         <h1 className="text-page-title">Editar lançamento</h1>
         <Suspense fallback={<div className="text-ink-muted">Carregando…</div>}>
           <Formulario params={params} />

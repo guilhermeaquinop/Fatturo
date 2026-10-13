@@ -62,6 +62,12 @@ Os arquivos da logo ficam em `docs/design-system/logo/`. No app, use o component
 - Sobre fundo `ink`, a versão `-escuro`: traço branco e destaque `accent`.
 - Não mude as cores, não distorça e não aplique sombra.
 
+## Menu lateral
+
+Em telas largas (a partir de 1024 px) a barra lateral fica parada, com a altura da janela, e só o conteúdo rola; em telas estreitas ela empilha acima do conteúdo. Cada item leva um ícone de traço de 18 px em `components/ui/icons.tsx`, na cor do texto. No rodapé ficam o avatar, o nome de quem está logado, a empresa, Configurações e Sair.
+
+O avatar é um de dois desenhos em `components/avatar.tsx`: claro (fundo `surface-tint-strong`) e escuro (fundo `ink`), só com cores dos tokens.
+
 ## Tipografia
 
 Uma família só: **Montserrat** (Google Fonts, pesos 400, 500, 600 e 700). Hierarquia por tamanho e peso, nunca por cor.

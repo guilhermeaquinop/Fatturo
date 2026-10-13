@@ -17,5 +17,14 @@ export function LoginAviso() {
     );
   }
 
+  if (aviso === "conta-excluida") {
+    return (
+      <Alert variant="success">
+        <AlertTitle>Conta excluída</AlertTitle>
+        Seus dados foram apagados do Fatturo.
+      </Alert>
+    );
+  }
+
   return null;
 }

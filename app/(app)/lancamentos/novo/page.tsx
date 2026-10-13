@@ -14,7 +14,7 @@ export const metadata: Metadata = { title: "Novo lançamento" };
 export default function NovoLancamentoPage() {
   return (
     <AppShell ativa="lancamentos">
-      <div className="flex w-full max-w-[640px] flex-col gap-5">
+      <div className="mx-auto flex w-full max-w-[640px] flex-col gap-5">
         <div>
           <h1 className="text-page-title">Novo lançamento</h1>
           <div className="text-ink-muted">

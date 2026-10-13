@@ -17,6 +17,7 @@ import {
   exclusaoDaContaSchema,
   inativacaoDaContaSchema,
   mudancaDeEnquadramentoSchema,
+  perfilSchema,
   trocaDeSenhaSchema,
 } from "@/lib/validacao/configuracoes";
 
@@ -45,6 +46,29 @@ async function senhaConfere(senha: string): Promise<boolean> {
 
   const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
   return !error;
+}
+
+/** Salva o nome e o avatar de quem está logado. */
+export async function salvarPerfil(dados: unknown): Promise<Resultado> {
+  const validado = perfilSchema.safeParse(dados);
+  if (!validado.success) return ERRO_DE_CAMPOS;
+
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getClaims();
+  if (!data?.claims) redirect(ROTA_LOGIN);
+
+  const { error } = await supabase
+    .from("usuario")
+    .update({ nome: validado.data.nome, avatar: Number(validado.data.avatar) })
+    .eq("id", data.claims.sub);
+  if (error) {
+    console.error("Falha ao salvar o perfil:", error.code ?? error.message);
+    return ERRO_GERAL;
+  }
+
+  // O nome e o avatar aparecem no menu de todas as telas.
+  revalidatePath("/", "layout");
+  return { ok: true };
 }
 
 export async function salvarDadosDaEmpresa(dados: unknown): Promise<Resultado> {

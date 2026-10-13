@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { AppShell } from "@/components/app/app-shell";
+import { opcaoDeAvatar } from "@/components/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardTitle } from "@/components/ui/card";
 import { textLinkClassName } from "@/components/ui/text-link";
@@ -13,6 +14,7 @@ import { formatarDataBr } from "@/lib/datas";
 import { empresaAtual, type EnquadramentoDaEmpresa } from "@/lib/empresa";
 import { ROTA_CONFIGURACAO, ROTA_LOGIN } from "@/lib/rotas";
 import { createClient } from "@/lib/supabase/server";
+import { usuarioAtual } from "@/lib/usuario";
 import { ROTULO_ANEXO, ROTULO_PORTE, ROTULO_REGIME } from "@/lib/validacao/empresa";
 import {
   AlertasForm,
@@ -20,6 +22,7 @@ import {
   EnquadramentoForm,
   ExcluirContaForm,
   InativarContaForm,
+  PerfilForm,
   SenhaForm,
 } from "./configuracoes-forms";
 import { EXPORTACOES } from "./exportar/tabelas";
@@ -29,14 +32,17 @@ export const metadata: Metadata = { title: "Configurações" };
 export default function ConfiguracoesPage() {
   return (
     <AppShell ativa="configuracoes">
-      <div>
-        <h1 className="text-page-title">Configurações</h1>
-        <div className="text-ink-muted">Sua empresa, os alertas e a sua conta.</div>
+      {/* Coluna estreita no centro da área de conteúdo: título e cartões alinhados. */}
+      <div className="mx-auto flex w-full max-w-[720px] flex-col gap-5">
+        <div>
+          <h1 className="text-page-title">Configurações</h1>
+          <div className="text-ink-muted">Sua empresa, os alertas e a sua conta.</div>
+        </div>
+        {/* Tudo aqui depende do usuário logado, lido na requisição. */}
+        <Suspense fallback={<div className="text-ink-muted">Carregando as configurações…</div>}>
+          <Configuracoes />
+        </Suspense>
       </div>
-      {/* Tudo aqui depende do usuário logado, lido na requisição. */}
-      <Suspense fallback={<div className="text-ink-muted">Carregando as configurações…</div>}>
-        <Configuracoes />
-      </Suspense>
     </AppShell>
   );
 }
@@ -51,7 +57,7 @@ function Secao({
   children: React.ReactNode;
 }) {
   return (
-    <Card aria-label={titulo} className="w-full max-w-[720px]">
+    <Card aria-label={titulo}>
       <div>
         <CardTitle>{titulo}</CardTitle>
         <div className="text-ink-muted">{descricao}</div>
@@ -75,12 +81,20 @@ async function Configuracoes() {
   const emailDeLogin = sessao?.claims?.email;
   if (typeof emailDeLogin !== "string") redirect(ROTA_LOGIN);
 
+  const usuario = await usuarioAtual();
   const atual = empresa.enquadramento;
   // Do período mais recente para o mais antigo.
   const historico = [...empresa.enquadramentos].reverse();
 
   return (
     <>
+      <Secao titulo="Perfil" descricao="Seu nome e o avatar que aparecem no menu.">
+        <PerfilForm
+          nome={usuario.nome}
+          avatar={opcaoDeAvatar(usuario.avatar)}
+        />
+      </Secao>
+
       <Secao titulo="Empresa" descricao="O nome aparece no menu e nos e-mails de alerta.">
         <dl className="flex flex-wrap gap-x-12 gap-y-3">
           <div>

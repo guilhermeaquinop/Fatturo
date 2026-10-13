@@ -5,6 +5,13 @@ import { hojeIso, parseDataBr } from "@/lib/datas";
 import { email, novaSenha } from "@/lib/validacao/acesso";
 import { ANEXOS, ATIVIDADES, PORTES } from "@/lib/validacao/empresa";
 
+/** Perfil de quem usa a conta: nome e um dos dois avatares. */
+export const perfilSchema = z.object({
+  nome: z.string().trim().min(1, "Informe seu nome.").max(120, "Use no máximo 120 caracteres."),
+  // O select e o botão de escolha guardam texto: "1" ou "2".
+  avatar: z.enum(["1", "2"], "Escolha um avatar."),
+});
+
 /** Dados da empresa que podem mudar. CNPJ e data de abertura são fixos. */
 export const dadosDaEmpresaSchema = z.object({
   nome: z
@@ -94,6 +101,7 @@ export const inativacaoDaContaSchema = z.object({
   senha: z.string().min(1, "Informe sua senha."),
 });
 
+export type PerfilDados = z.infer<typeof perfilSchema>;
 export type DadosDaEmpresa = z.infer<typeof dadosDaEmpresaSchema>;
 export type MudancaDeEnquadramento = z.infer<typeof mudancaDeEnquadramentoSchema>;
 export type AnexoDados = z.infer<typeof anexoSchema>;

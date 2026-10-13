@@ -7,10 +7,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm, useWatch, type FieldValues, type UseFormSetError } from "react-hook-form";
+import { AVATARES, Avatar, ROTULO_AVATAR, type OpcaoDeAvatar } from "@/components/avatar";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { SelectField } from "@/components/ui/select";
-import { TextField } from "@/components/ui/text-field";
+import { FieldError, TextField } from "@/components/ui/text-field";
 import { mascararData } from "@/lib/datas";
 import { useResetAoOcultar } from "@/lib/hooks/use-reset-ao-ocultar";
 import {
@@ -21,6 +22,7 @@ import {
   exclusaoDaContaSchema,
   inativacaoDaContaSchema,
   mudancaDeEnquadramentoSchema,
+  perfilSchema,
   trocaDeSenhaSchema,
   type AlertasDados,
   type AnexoDados,
@@ -28,6 +30,7 @@ import {
   type ExclusaoDaContaDados,
   type InativacaoDaContaDados,
   type MudancaDeEnquadramento,
+  type PerfilDados,
   type TrocaDeSenhaDados,
 } from "@/lib/validacao/configuracoes";
 import {
@@ -49,6 +52,7 @@ import {
   registrarMudancaDeEnquadramento,
   salvarAlertas,
   salvarDadosDaEmpresa,
+  salvarPerfil,
   trocarSenha,
   type Resultado,
 } from "./actions";
@@ -69,6 +73,79 @@ function Retorno({ erro, sucesso }: { erro?: string; sucesso: string | null }) {
   if (erro) return <Alert variant="error">{erro}</Alert>;
   if (sucesso) return <Alert variant="success">{sucesso}</Alert>;
   return null;
+}
+
+// --- Perfil ---
+
+export function PerfilForm({ nome, avatar }: { nome: string; avatar: OpcaoDeAvatar }) {
+  const [sucesso, setSucesso] = useState<string | null>(null);
+  const {
+    register,
+    control,
+    handleSubmit,
+    setError,
+    setValue,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<PerfilDados>({
+    resolver: zodResolver(perfilSchema),
+    defaultValues: { nome, avatar: String(avatar) as PerfilDados["avatar"] },
+  });
+  const escolhido = useWatch({ control, name: "avatar" });
+  useResetAoOcultar(() => {
+    reset();
+    setSucesso(null);
+  });
+
+  const onSubmit = handleSubmit(async (dados) => {
+    setSucesso(null);
+    if (await enviar(() => salvarPerfil(dados), setError)) {
+      reset(dados);
+      setSucesso("Perfil salvo.");
+    }
+  });
+
+  return (
+    <form onSubmit={onSubmit} noValidate className={FORM}>
+      <TextField
+        label="Seu nome"
+        type="text"
+        autoComplete="name"
+        error={errors.nome?.message}
+        {...register("nome")}
+      />
+      <fieldset className="flex flex-col gap-2">
+        <legend className="mb-2 text-label">Avatar</legend>
+        <div className="flex flex-wrap gap-2.5">
+          {AVATARES.map((opcao) => {
+            const marcado = escolhido === String(opcao);
+            return (
+              // Botão de escolha, como um radio: o marcado ganha fundo e borda de destaque.
+              <button
+                key={opcao}
+                type="button"
+                aria-pressed={marcado}
+                onClick={() =>
+                  setValue("avatar", String(opcao) as PerfilDados["avatar"], { shouldDirty: true })
+                }
+                className="flex min-h-[72px] flex-[1_1_180px] cursor-pointer items-center gap-3 rounded-lg border border-border bg-surface px-4 py-3 text-left text-body font-semibold text-ink aria-pressed:border-2 aria-pressed:border-accent-strong aria-pressed:bg-surface-tint"
+              >
+                <Avatar opcao={opcao} className="size-12" />
+                {ROTULO_AVATAR[opcao]}
+              </button>
+            );
+          })}
+        </div>
+        {errors.avatar?.message ? <FieldError>{errors.avatar.message}</FieldError> : null}
+      </fieldset>
+      <Retorno erro={errors.root?.message} sucesso={sucesso} />
+      <div>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Salvando…" : "Salvar"}
+        </Button>
+      </div>
+    </form>
+  );
 }
 
 // --- Empresa ---

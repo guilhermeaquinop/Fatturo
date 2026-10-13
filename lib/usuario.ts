@@ -9,6 +9,8 @@ import { createClient } from "@/lib/supabase/server";
 export type UsuarioAtual = {
   id: string;
   nome: string;
+  /** Número do avatar escolhido (components/avatar.tsx). */
+  avatar: number;
 };
 
 // cache() evita repetir a consulta quando vários componentes pedem o usuário na mesma requisição.
@@ -21,7 +23,7 @@ export const usuarioAtual = cache(async (): Promise<UsuarioAtual> => {
   // O RLS só deixa ler a própria linha; o filtro por id deixa a intenção explícita.
   const { data: usuario, error } = await supabase
     .from("usuario")
-    .select("id, nome")
+    .select("id, nome, avatar")
     .eq("id", sessao.claims.sub)
     .maybeSingle();
 

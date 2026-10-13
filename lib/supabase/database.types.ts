@@ -173,14 +173,14 @@ isOneToOne: false
                   ]
                 },"usuario": {
                   Row: {
-                    "criado_em": string,"id": string,"inativa_em": string | null,"nome": string
+                    "avatar": number,"criado_em": string,"id": string,"inativa_em": string | null,"nome": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "criado_em"?: string,"id": string,"inativa_em"?: string | null,"nome": string
+                    "avatar"?: number,"criado_em"?: string,"id": string,"inativa_em"?: string | null,"nome": string
                   }
                   Update: {
-                    "criado_em"?: string,"id"?: string,"inativa_em"?: string | null,"nome"?: string
+                    "avatar"?: number,"criado_em"?: string,"id"?: string,"inativa_em"?: string | null,"nome"?: string
                   }
                   Relationships: [
                     

@@ -1,23 +1,27 @@
 // Página /painel: faturamento do ano contra o limite, projeção, gráfico e origem do faturamento.
 // Equivale à rota GET /dashboard com um Controller que busca os dados e uma view Blade.
 // Os números vêm das NFS-e importadas, pela data de competência. Mockup: docs/mockups/painel.html.
-// Pendências (etapa 5) e DAS (etapa 6) ainda aparecem como "em breve".
+// As pendências (etapa 5) ainda aparecem como "em breve".
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { AppShell } from "@/components/app/app-shell";
+import { DasStrip, resumoEmTexto } from "@/components/das/das-strip";
 import { GraficoAcumulado } from "@/components/painel/grafico-acumulado";
 import { LimitBar } from "@/components/painel/limit-bar";
 import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { Metric } from "@/components/ui/metric";
-import { anoDe, hojeIso, mesDe, nomeCurtoDoMes, nomeDoMes } from "@/lib/datas";
-import { formatarReaisInteiros } from "@/lib/dinheiro";
+import { dasDoAno } from "@/lib/das";
+import { anoDe, formatarDataBr, hojeIso, mesDe, nomeCurtoDoMes, nomeDoMes } from "@/lib/datas";
+import { formatarReais, formatarReaisInteiros } from "@/lib/dinheiro";
 import { empresaAtual } from "@/lib/empresa";
 import { notasDoPeriodo } from "@/lib/notas";
 import { parametrosVigentes } from "@/lib/parametros";
+import { dasPagoAcumulado, diasEntre, resumoDoDas } from "@/lib/regras/das";
 import { enquadramentoEm, mudancaDePorteNoAno } from "@/lib/regras/enquadramento";
 import {
   faturamentoPorMes,
@@ -101,10 +105,17 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
     hoje,
     projecaoCentavos: anoCorrente ? projecao.valorCentavos : null,
   });
+  // DAS do ano exibido: a faixa de meses do cartão e a linha do DAS pago no gráfico.
+  const das = await dasDoAno(empresa, ano, notas);
+  const resumoDas = resumoDoDas(das.meses);
+  const dasPago = dasPagoAcumulado(das.meses, anoCorrente ? mesDe(hoje) : 12);
+  const diasParaVencer = resumoDas.proxima ? diasEntre(hoje, resumoDas.proxima.vencimento) : null;
+
   const pontos = serie.acumulado.map((valor, indice) => ({
     mes: nomeCurtoDoMes(indice + 1),
     acumulado: valor,
     projecao: serie.projecao[indice],
+    das: dasPago[indice],
   }));
 
   const anos = Array.from(
@@ -228,6 +239,10 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
                 <span className="h-[3px] w-[18px] rounded-pill bg-accent-strong" />
                 <span>Faturamento</span>
               </div>
+              <div className="flex items-center gap-2">
+                <span className="h-[3px] w-[18px] rounded-pill bg-brand-deep" />
+                <span>DAS pago</span>
+              </div>
               {anoCorrente ? (
                 <div className="flex items-center gap-2">
                   <span className="w-[18px] border-t-[3px] border-dotted border-accent-strong" />
@@ -284,7 +299,42 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
         </Card>
         <Card aria-label="DAS" className="flex-[2_1_260px] gap-4">
           <CardTitle>DAS</CardTitle>
-          <div className="text-ink-muted">Em breve. O calendário das guias do ano aparece aqui.</div>
+          {resumoDas.proxima && diasParaVencer !== null ? (
+            <div>
+              <div className="text-ink-muted">
+                {diasParaVencer < 0
+                  ? `Guia vencida há ${-diasParaVencer} ${diasParaVencer === -1 ? "dia" : "dias"}`
+                  : diasParaVencer === 0
+                    ? "Próximo vencimento, hoje"
+                    : `Próximo vencimento, em ${diasParaVencer} ${diasParaVencer === 1 ? "dia" : "dias"}`}
+              </div>
+              <div className="text-metric">
+                {formatarDataBr(resumoDas.proxima.vencimento).slice(0, 5)}
+                {resumoDas.proxima.valorCentavos !== null
+                  ? ` · ${formatarReais(resumoDas.proxima.valorCentavos)}`
+                  : resumoDas.proxima.sugestaoCentavos !== null
+                    ? ` · cerca de ${formatarReais(resumoDas.proxima.sugestaoCentavos)}`
+                    : ""}
+              </div>
+            </div>
+          ) : (
+            <div className="text-ink-muted">Nenhuma guia em aberto em {ano}.</div>
+          )}
+          <DasStrip meses={das.meses} />
+          <div className="text-caption text-ink-muted">
+            {resumoEmTexto(das.meses)} · {formatarReais(resumoDas.pagoCentavos)} pagos em {ano}
+          </div>
+          <div>
+            <Button asChild variant="tint">
+              <Link
+                href={resumoDas.proxima ? `/das/${resumoDas.proxima.competencia}` : `/das?ano=${ano}`}
+              >
+                {resumoDas.proxima
+                  ? `Informar o pagamento de ${nomeDoMes(resumoDas.proxima.mes)}`
+                  : "Ver o DAS"}
+              </Link>
+            </Button>
+          </div>
         </Card>
       </div>
 

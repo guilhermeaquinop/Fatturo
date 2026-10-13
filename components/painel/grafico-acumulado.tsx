@@ -3,7 +3,7 @@
 // Gráfico do faturamento acumulado no ano contra o limite (README do design system, "Gráficos").
 // Equivale a um componente Blade com um gráfico em JavaScript (Chart.js, por exemplo).
 // Linha do faturamento em accent-strong com área surface-tint, projeção pontilhada na
-// mesma cor e limite em linha tracejada ink. A linha do DAS pago entra na etapa 6.
+// mesma cor, limite em linha tracejada ink e DAS pago acumulado em brand-deep.
 import {
   Area,
   ComposedChart,
@@ -23,6 +23,8 @@ export type PontoDoGrafico = {
   acumulado: number | null;
   /** Acumulado projetado, em centavos; null fora do trecho projetado. */
   projecao: number | null;
+  /** DAS pago acumulado até o mês, em centavos; null nos meses que ainda não chegaram. */
+  das: number | null;
 };
 
 type GraficoAcumuladoProps = {
@@ -57,7 +59,7 @@ export function GraficoAcumulado({ pontos, limiteCentavos, indiceAtual }: Grafic
             cursor={{ stroke: "var(--border)" }}
             formatter={(valor, nome) => [
               formatarReaisInteiros(Number(valor)),
-              nome === "projecao" ? "Projeção" : "Faturamento",
+              nome === "projecao" ? "Projeção" : nome === "das" ? "DAS pago" : "Faturamento",
             ]}
             contentStyle={{
               border: "1px solid var(--border)",
@@ -108,6 +110,17 @@ export function GraficoAcumulado({ pontos, limiteCentavos, indiceAtual }: Grafic
                 <g key={index} />
               )
             }
+          />
+          <Line
+            type="linear"
+            dataKey="das"
+            stroke="var(--brand-deep)"
+            strokeWidth={3}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            dot={false}
+            activeDot={{ r: 4, fill: "var(--surface)", stroke: "var(--brand-deep)", strokeWidth: 3 }}
+            isAnimationActive={false}
           />
           <Line
             type="linear"

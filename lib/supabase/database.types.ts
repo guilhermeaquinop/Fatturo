@@ -27,14 +27,14 @@ isOneToOne: false
                   ]
                 },"empresa": {
                   Row: {
-                    "atividade": Database["public"]['Enums']["atividade"],"cnpj": string,"criado_em": string,"data_abertura": string,"id": string,"nome": string,"usuario_id": string
+                    "alerta_email": string | null,"alerta_faixas": (number)[],"atividade": Database["public"]['Enums']["atividade"],"cnpj": string,"criado_em": string,"data_abertura": string,"id": string,"nome": string,"usuario_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "atividade": Database["public"]['Enums']["atividade"],"cnpj": string,"criado_em"?: string,"data_abertura": string,"id"?: string,"nome": string,"usuario_id": string
+                    "alerta_email"?: string | null,"alerta_faixas"?: (number)[],"atividade": Database["public"]['Enums']["atividade"],"cnpj": string,"criado_em"?: string,"data_abertura": string,"id"?: string,"nome": string,"usuario_id": string
                   }
                   Update: {
-                    "atividade"?: Database["public"]['Enums']["atividade"],"cnpj"?: string,"criado_em"?: string,"data_abertura"?: string,"id"?: string,"nome"?: string,"usuario_id"?: string
+                    "alerta_email"?: string | null,"alerta_faixas"?: (number)[],"atividade"?: Database["public"]['Enums']["atividade"],"cnpj"?: string,"criado_em"?: string,"data_abertura"?: string,"id"?: string,"nome"?: string,"usuario_id"?: string
                   }
                   Relationships: [
                     {
@@ -173,14 +173,14 @@ isOneToOne: false
                   ]
                 },"usuario": {
                   Row: {
-                    "criado_em": string,"id": string,"nome": string
+                    "criado_em": string,"id": string,"inativa_em": string | null,"nome": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "criado_em"?: string,"id": string,"nome": string
+                    "criado_em"?: string,"id": string,"inativa_em"?: string | null,"nome": string
                   }
                   Update: {
-                    "criado_em"?: string,"id"?: string,"nome"?: string
+                    "criado_em"?: string,"id"?: string,"inativa_em"?: string | null,"nome"?: string
                   }
                   Relationships: [
                     
@@ -194,11 +194,23 @@ isOneToOne: false
             "configurar_empresa":
 { Args: { "p_anexo"?: Database["public"]['Enums']["anexo_simples"],"p_atividade": Database["public"]['Enums']["atividade"],"p_cnpj": string,"p_data_abertura": string,"p_nome": string,"p_porte": Database["public"]['Enums']["porte"],"p_regime": Database["public"]['Enums']["regime"] }; Returns: string
                            },
+"corrigir_anexo":
+{ Args: { "p_anexo": Database["public"]['Enums']["anexo_simples"] }; Returns: undefined
+                           },
+"desfazer_mudanca_de_enquadramento":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
+"excluir_minha_conta":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
 "importar_extrato":
 { Args: { "p_erros"?: number,"p_hash": string,"p_lancamentos": Json,"p_nome": string,"p_tipo": Database["public"]['Enums']["tipo_arquivo"] }; Returns: Json
                            },
 "importar_nfse":
 { Args: { "p_cancelamentos": Json,"p_erros"?: number,"p_hash": string,"p_nome": string,"p_notas": Json }; Returns: Json
+                           },
+"mudar_enquadramento":
+{ Args: { "p_anexo"?: Database["public"]['Enums']["anexo_simples"],"p_inicio_em": string,"p_porte": Database["public"]['Enums']["porte"] }; Returns: string
                            }
           }
           Enums: {

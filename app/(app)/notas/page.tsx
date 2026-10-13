@@ -113,7 +113,8 @@ async function Notas({ searchParams }: Pick<PageProps<"/notas">, "searchParams">
   return (
     <>
       {faltando.length > 0 ? (
-        <Alert variant="warning">
+        // Informação, não alerta: número que falta costuma ser nota cancelada, que não se importa.
+        <Alert variant="info">
           <AlertTitle>
             {faltando.length === 1
               ? "Falta 1 nota na sequência"
@@ -122,8 +123,8 @@ async function Notas({ searchParams }: Pick<PageProps<"/notas">, "searchParams">
           {faltando.length <= FALTANDO_EXIBIDOS
             ? `${faltando.length === 1 ? "A nota de número" : "As notas de número"} ${listarNumeros(faltando)} não ${faltando.length === 1 ? "foi importada" : "foram importadas"}. `
             : `Há números sem nota entre a ${faltando[0]} e a ${faltando[faltando.length - 1]}. `}
-          Se foram canceladas, não há o que fazer. Se foram emitidas, baixe os XML no Emissor
-          Nacional e importe, para o faturamento ficar completo.
+          Nota cancelada não precisa ser importada. Se alguma delas foi emitida e está válida,
+          baixe o XML no Emissor Nacional e importe, para o faturamento ficar completo.
         </Alert>
       ) : null}
 

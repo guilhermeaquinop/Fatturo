@@ -65,6 +65,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"guia_das": {
+                  Row: {
+                    "competencia": string,"criado_em": string,"empresa_id": string,"id": string,"pago_em": string | null,"valor_centavos": number | null,"vencimento": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "competencia": string,"criado_em"?: string,"empresa_id": string,"id"?: string,"pago_em"?: string | null,"valor_centavos"?: number | null,"vencimento": string
+                  }
+                  Update: {
+                    "competencia"?: string,"criado_em"?: string,"empresa_id"?: string,"id"?: string,"pago_em"?: string | null,"valor_centavos"?: number | null,"vencimento"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "guia_das_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresa"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"lancamento": {
                   Row: {
                     "arquivo_id": string | null,"categoria": Database["public"]['Enums']["categoria_lancamento"] | null,"contraparte_doc": string | null,"contraparte_nome": string | null,"criado_em": string,"data": string,"descricao": string,"empresa_id": string,"id": string,"id_externo": string | null,"origem": Database["public"]['Enums']["origem_lancamento"],"sentido": Database["public"]['Enums']["sentido_lancamento"],"valor_centavos": number

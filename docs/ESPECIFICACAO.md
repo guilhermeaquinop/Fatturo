@@ -103,7 +103,7 @@ Não há cadastro de faturamento anterior na configuração inicial. O históric
 
 ### Conta
 
-**Configurações.** Dados da empresa e enquadramento (mudar de MEI para ME guarda a data da mudança), faixas de alerta, e-mail de alertas, troca de senha, exportar todos os dados em CSV e excluir a conta.
+**Configurações.** Dados da empresa (nome e atividade; CNPJ e data de abertura não mudam) e enquadramento: registrar a mudança de porte ou anexo a partir de uma data, corrigir o anexo atual e desfazer a última mudança. Faixas de alerta, e-mail de alertas, troca de senha (pede a senha atual) e exportação dos dados em CSV, um arquivo por tipo de dado. Inativar a conta: os dados ficam guardados, o app fica bloqueado e nenhum alerta é enviado, até o usuário reativar depois de entrar. Excluir a conta: apaga tudo de forma definitiva, pedindo a senha e a palavra EXCLUIR.
 
 ## Modelo de dados
 
@@ -111,8 +111,8 @@ Dez entidades. Todo dado de negócio pertence a uma empresa, e o acesso é restr
 
 | Entidade | Campos principais | Relações |
 | --- | --- | --- |
-| `usuario` | id (o mesmo de auth.users), nome, criado_em; e-mail e senha ficam no Supabase Auth | 1 usuário → 1 empresa |
-| `empresa` | id, cnpj, nome, data_abertura, atividade (comercio, servico, ambos), alertas (faixas, e-mail; entram na etapa 7) | pertence a usuário |
+| `usuario` | id (o mesmo de auth.users), nome, inativa_em, criado_em; e-mail e senha ficam no Supabase Auth | 1 usuário → 1 empresa |
+| `empresa` | id, cnpj, nome, data_abertura, atividade (comercio, servico, ambos), alerta_faixas (três percentuais em ordem crescente), alerta_email | pertence a usuário |
 | `enquadramento` | id, porte (MEI, ME), regime (SIMPLES), anexo (I a V ou nao_sei; só ME), inicio_em, fim_em | vários por empresa; guarda o histórico de MEI para ME |
 | `parametro` | chave (ex.: limite_anual_mei), valor, vigencia_inicio, vigencia_fim | global, versionado por vigência |
 | `arquivo_importado` | id, nome, tipo (XML_NFSE, OFX, CSV), hash_sha256, importado_em, resumo (lidos, novos, duplicados, erros) | pertence a empresa |

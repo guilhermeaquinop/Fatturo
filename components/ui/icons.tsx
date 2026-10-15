@@ -145,7 +145,62 @@ function SairIcon(props: IconProps) {
   )
 }
 
+// --- Ícones da moldura do celular e do "ocultar valores". ---
+
+/** Olho aberto: os valores estão visíveis. */
+function OlhoIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M1.9 9S4.5 4.1 9 4.1 16.1 9 16.1 9 13.5 13.9 9 13.9 1.9 9 1.9 9Z" />
+      <circle cx="9" cy="9" r="2.25" />
+    </IconBase>
+  )
+}
+
+/** Olho riscado: os valores estão ocultos. */
+function OlhoRiscadoIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M7.4 4.4A7.2 7.2 0 0 1 9 4.1c4.5 0 7.1 4.9 7.1 4.9a12.8 12.8 0 0 1-2 2.6M5 5.3A12.5 12.5 0 0 0 1.9 9S4.5 13.9 9 13.9a6.8 6.8 0 0 0 3.5-.9M7.4 7.4a2.25 2.25 0 0 0 3.2 3.2M3 3l12 12" />
+    </IconBase>
+  )
+}
+
+/** Mais: três pontos, para a folha com as outras páginas. */
+function MaisIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <circle cx="4.1" cy="9" r="1.05" fill="currentColor" stroke="none" />
+      <circle cx="9" cy="9" r="1.05" fill="currentColor" stroke="none" />
+      <circle cx="13.9" cy="9" r="1.05" fill="currentColor" stroke="none" />
+    </IconBase>
+  )
+}
+
+/** Voltar: seta para a esquerda. */
+function VoltarIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M14.6 9H3.4M7.9 4.5 3.4 9l4.5 4.5" />
+    </IconBase>
+  )
+}
+
+/** Fechar: um x. */
+function FecharIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M4.5 4.5l9 9M13.5 4.5l-9 9" />
+    </IconBase>
+  )
+}
+
 export {
+  OlhoIcon,
+  OlhoRiscadoIcon,
+  MaisIcon,
+  VoltarIcon,
+  FecharIcon,
   WarningIcon,
   InfoIcon,
   ErrorIcon,

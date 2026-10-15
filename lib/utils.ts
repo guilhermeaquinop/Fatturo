@@ -11,6 +11,7 @@ export const cn = createCn({
         {
           text: [
             "display",
+            "display-sm",
             "hero",
             "page-title",
             "metric",

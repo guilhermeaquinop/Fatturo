@@ -2,6 +2,7 @@
 // Mockups: docs/mockups/painel.html (desktop) e docs/mockups/mobile/ (celular).
 //
 // A partir de 1024 px (lg): barra lateral parada, com a altura da janela, e só o conteúdo rola.
+// O "Ocultar valores" fica ali como item do menu, junto de Configurações e Sair.
 // Abaixo disso: barra superior fina (logo e olho, ou voltar nas telas internas) e barra
 // inferior com Painel, Notas, Importar, DAS e Mais. O "Mais" abre uma folha com o perfil,
 // Lançamentos, Regras, Configurações e Sair.
@@ -96,9 +97,8 @@ function BarraLateral({ ativa }: { ativa: Secao }) {
       aria-label="Navegação principal"
       className="sticky top-0 hidden h-screen w-sidebar flex-none flex-col gap-7 self-start overflow-y-auto border-r border-border px-4 py-7 lg:flex"
     >
-      <div className="flex items-center justify-between gap-2 pl-3">
+      <div className="px-3">
         <Logo />
-        <OcultarValores />
       </div>
 
       <div className="flex flex-col gap-1">
@@ -135,6 +135,7 @@ function BarraLateral({ ativa }: { ativa: Secao }) {
         <Suspense fallback={null}>
           <PerfilNoMenu />
         </Suspense>
+        <OcultarValores variante="item" className={cn(ITEM, "w-full cursor-pointer")} />
         <Link
           href="/configuracoes"
           aria-current={ativa === "configuracoes" ? "page" : undefined}

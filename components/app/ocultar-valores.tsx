@@ -7,8 +7,29 @@ import { OlhoIcon, OlhoRiscadoIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 import { definirValoresOcultos, useValoresOcultos } from "@/lib/use-valores-ocultos";
 
-export function OcultarValores({ className }: { className?: string }) {
+type OcultarValoresProps = {
+  /**
+   * "icone": só o olho, com 44 px (barra superior do celular).
+   * "item": olho e texto, como um item do menu da barra lateral.
+   */
+  variante?: "icone" | "item";
+  className?: string;
+};
+
+export function OcultarValores({ variante = "icone", className }: OcultarValoresProps) {
   const ocultos = useValoresOcultos();
+  const Icone = ocultos ? OlhoRiscadoIcon : OlhoIcon;
+  const alternar = () => definirValoresOcultos(!ocultos);
+
+  if (variante === "item") {
+    // O texto diz o que o clique vai fazer, então não leva aria-pressed.
+    return (
+      <button type="button" onClick={alternar} className={className}>
+        <Icone className="flex-none" />
+        {ocultos ? "Mostrar valores" : "Ocultar valores"}
+      </button>
+    );
+  }
 
   return (
     <button
@@ -16,13 +37,13 @@ export function OcultarValores({ className }: { className?: string }) {
       aria-pressed={ocultos}
       aria-label="Ocultar valores"
       title={ocultos ? "Mostrar valores" : "Ocultar valores"}
-      onClick={() => definirValoresOcultos(!ocultos)}
+      onClick={alternar}
       className={cn(
         "inline-flex size-control-sm flex-none cursor-pointer items-center justify-center rounded-pill text-ink hover:bg-surface-tint",
         className,
       )}
     >
-      {ocultos ? <OlhoRiscadoIcon width={22} height={22} /> : <OlhoIcon width={22} height={22} />}
+      <Icone width={22} height={22} />
     </button>
   );
 }

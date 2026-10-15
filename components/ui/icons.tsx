@@ -186,6 +186,24 @@ function VoltarIcon(props: IconProps) {
   )
 }
 
+/** Seta para a direita: a linha abre outra tela. */
+function SetaDireitaIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="m7 4.5 4.5 4.5L7 13.5" />
+    </IconBase>
+  )
+}
+
+/** Filtros: três linhas que encurtam. */
+function FiltrosIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M3 4.9h12M5.3 9h7.4M7.5 13.1h3" />
+    </IconBase>
+  )
+}
+
 /** Fechar: um x. */
 function FecharIcon(props: IconProps) {
   return (
@@ -201,6 +219,8 @@ export {
   MaisIcon,
   VoltarIcon,
   FecharIcon,
+  FiltrosIcon,
+  SetaDireitaIcon,
   WarningIcon,
   InfoIcon,
   ErrorIcon,

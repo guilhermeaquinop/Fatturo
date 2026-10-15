@@ -236,6 +236,21 @@ Folha que sobe de baixo (`components/ui/sheet.tsx`, com o Dialog do radix-ui).
 - Rodapé opcional com ações lado a lado, fora da rolagem.
 - Até 560 px de largura, centralizada em telas maiores.
 
+## Status da guia
+
+Situação curta de uma guia do DAS (`components/das/situacao-da-guia.tsx`), na tabela e na lista do celular. Difere pela forma, como a DasStrip:
+
+- Paga: fundo `surface-tint-strong`. Pendente: contorno de 1,5px `ink`. A vencer e sem valor: contorno tracejado `border-dashed`, texto `ink-muted`.
+- Vencida: família de erro (`error-surface`, `error-ink`) com o ícone de erro.
+
+## Pílulas
+
+Pílulas de escolha que são links, como ano e situação (`components/app/pilulas.tsx`; `SeletorDeAno` para os anos). No celular dividem a largura por igual, numa linha só; a partir de 1024 px voltam ao tamanho do texto.
+
+## Alert com "Saiba mais"
+
+Explicações longas de um aviso podem ficar atrás de "Saiba mais" (`AlertSaibaMais` em `components/ui/alert.tsx`): um `<details>` que some ao abrir e deixa o texto no lugar. A primeira frase, a que diz o que fazer, fica sempre à vista.
+
 ## Valor
 
 Valor em reais que respeita o ocultar valores (`components/valor.tsx`). Use em todo valor da empresa mostrado na tela; formulários usam o campo normal.

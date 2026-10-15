@@ -14,6 +14,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useSyncExternalStore } from "react";
 import { formatarReaisInteiros } from "@/lib/dinheiro";
 import { useValoresOcultos } from "@/lib/use-valores-ocultos";
 
@@ -37,10 +38,26 @@ type GraficoAcumuladoProps = {
 
 const ROTULO = { fontSize: 12, fill: "var(--ink-muted)" };
 const OCULTO = "R$ •••••";
+// No celular cabem só alguns meses no eixo, de três em três, e dezembro no fim.
+const MESES_NO_CELULAR = ["jan", "abr", "jul", "out", "dez"];
+const CELULAR = "(max-width: 639px)";
+
+function useCelular(): boolean {
+  return useSyncExternalStore(
+    (avisar) => {
+      const consulta = window.matchMedia(CELULAR);
+      consulta.addEventListener("change", avisar);
+      return () => consulta.removeEventListener("change", avisar);
+    },
+    () => window.matchMedia(CELULAR).matches,
+    () => false,
+  );
+}
 
 export function GraficoAcumulado({ pontos, limiteCentavos, indiceAtual }: GraficoAcumuladoProps) {
   // Com "ocultar valores", as linhas continuam; só os valores do rótulo e da dica somem.
   const ocultos = useValoresOcultos();
+  const celular = useCelular();
   const reais = (centavos: number) => (ocultos ? OCULTO : formatarReaisInteiros(centavos));
   const maior = Math.max(
     limiteCentavos,
@@ -54,6 +71,7 @@ export function GraficoAcumulado({ pontos, limiteCentavos, indiceAtual }: Grafic
           <XAxis
             dataKey="mes"
             interval={0}
+            ticks={celular ? MESES_NO_CELULAR : undefined}
             tickLine={false}
             axisLine={{ stroke: "var(--border)" }}
             tick={ROTULO}

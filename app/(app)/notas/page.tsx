@@ -17,9 +17,10 @@ import { Metric } from "@/components/ui/metric";
 import { SelectField } from "@/components/ui/select";
 import { TextField } from "@/components/ui/text-field";
 import { textLinkClassName } from "@/components/ui/text-link";
+import { Valor } from "@/components/valor";
 import { mascararCnpj } from "@/lib/cnpj";
 import { anoDe, dataIsoValida, formatarDataBr, hojeIso } from "@/lib/datas";
-import { centavosDeTexto, formatarReais } from "@/lib/dinheiro";
+import { centavosDeTexto } from "@/lib/dinheiro";
 import { empresaAtual } from "@/lib/empresa";
 import { todasAsNotas } from "@/lib/notas";
 import {
@@ -215,7 +216,7 @@ async function Notas({ searchParams }: Pick<PageProps<"/notas">, "searchParams">
         <div className="flex flex-wrap gap-x-12 gap-y-5">
           <Metric
             label={ano === null ? "Emitido em todos os anos" : `Emitido em ${ano}`}
-            value={formatarReais(resumo.valorEmitidoCentavos)}
+            value={<Valor centavos={resumo.valorEmitidoCentavos} />}
             hint="Pela data de competência, como no painel."
           />
           <Metric label="Notas emitidas" value={String(resumo.emitidas)} />
@@ -332,7 +333,7 @@ async function Notas({ searchParams }: Pick<PageProps<"/notas">, "searchParams">
             ) : null}
             <div className="text-ink-muted" aria-live="polite">
               {exibidas.length} {exibidas.length === 1 ? "nota" : "notas"} ·{" "}
-              {formatarReais(totalExibido.valorEmitidoCentavos)} emitidos
+              <Valor centavos={totalExibido.valorEmitidoCentavos} /> emitidos
             </div>
           </div>
         </Form>
@@ -405,7 +406,7 @@ async function Notas({ searchParams }: Pick<PageProps<"/notas">, "searchParams">
                       <td
                         className={`${CELULA} text-right font-semibold whitespace-nowrap tabular-nums ${cancelada ? "text-ink-muted line-through" : ""}`}
                       >
-                        {formatarReais(nota.valorCentavos)}
+                        <Valor centavos={nota.valorCentavos} />
                       </td>
                       <td className={`${CELULA} text-right whitespace-nowrap`}>
                         {/* Formulário que chama a Server Action, como um PATCH /notas/{id}. */}

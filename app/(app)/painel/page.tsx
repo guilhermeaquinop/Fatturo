@@ -15,9 +15,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { Metric } from "@/components/ui/metric";
+import { Valor } from "@/components/valor";
 import { dasDoAno } from "@/lib/das";
 import { anoDe, formatarDataBr, hojeIso, mesDe, nomeCurtoDoMes, nomeDoMes } from "@/lib/datas";
-import { formatarReais, formatarReaisInteiros } from "@/lib/dinheiro";
 import { empresaAtual } from "@/lib/empresa";
 import { notasDoPeriodo } from "@/lib/notas";
 import { parametrosVigentes } from "@/lib/parametros";
@@ -145,9 +145,11 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="font-medium text-ink-muted">Faturamento em {ano}</h1>
-            <div className="text-display">{formatarReaisInteiros(acumulado)}</div>
+            <div className="text-display-sm sm:text-display">
+              <Valor centavos={acumulado} formato="inteiro" />
+            </div>
             <div className="text-ink-muted">
-              de {formatarReaisInteiros(limite)} do limite anual
+              de <Valor centavos={limite} formato="inteiro" /> do limite anual
               {meses < 12
                 ? `, proporcional a ${meses} ${meses === 1 ? "mês" : "meses"} de atividade`
                 : ""}
@@ -155,7 +157,7 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
           </div>
           {percentual >= 100 ? (
             <Chip variant="error">
-              Limite ultrapassado em {formatarReaisInteiros(acumulado - limite)}
+              Limite ultrapassado em <Valor centavos={acumulado - limite} formato="inteiro" />
             </Chip>
           ) : (
             // Vira alerta a partir da primeira faixa escolhida em Configurações.
@@ -172,7 +174,7 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
         />
 
         <div className="flex flex-wrap gap-x-12 gap-y-5">
-          <Metric label="Disponível" value={formatarReaisInteiros(Math.max(limite - acumulado, 0))} />
+          <Metric label="Disponível" value={<Valor centavos={Math.max(limite - acumulado, 0)} formato="inteiro" />} />
           {anoCorrente ? (
             <>
               <Metric
@@ -180,7 +182,7 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
                 value={
                   projecao.valorCentavos === null
                     ? "Sem base"
-                    : formatarReaisInteiros(projecao.valorCentavos)
+                    : <Valor centavos={projecao.valorCentavos} formato="inteiro" />
                 }
                 hint={
                   projecao.valorCentavos === null
@@ -190,13 +192,13 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
               />
               <Metric
                 label={`Receita em ${nomeDoMes(mesDe(hoje))}`}
-                value={formatarReaisInteiros(porMes[mesDe(hoje) - 1])}
+                value={<Valor centavos={porMes[mesDe(hoje) - 1]} formato="inteiro" />}
               />
               {/* A receita de 12 meses define a faixa de alíquota do Simples (só ME). */}
               {porte === "ME" ? (
                 <Metric
                   label="Receita em 12 meses"
-                  value={formatarReaisInteiros(receitaUltimos12Meses(notas, hoje))}
+                  value={<Valor centavos={receitaUltimos12Meses(notas, hoje)} formato="inteiro" />}
                   hint={`Até ${nomeDoMes(mesDe(hoje) === 1 ? 12 : mesDe(hoje) - 1)}.`}
                 />
               ) : null}
@@ -258,7 +260,7 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
             <div
               className="min-w-[480px]"
               role="img"
-              aria-label={`Faturamento acumulado em ${ano}: ${formatarReaisInteiros(acumulado)} de ${formatarReaisInteiros(limite)} do limite.`}
+              aria-label={`Faturamento acumulado em ${ano}: ${Math.floor(percentual)}% do limite.`}
             >
               <GraficoAcumulado
                 pontos={pontos}
@@ -309,11 +311,17 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
               </div>
               <div className="text-metric">
                 {formatarDataBr(resumoDas.proxima.vencimento).slice(0, 5)}
-                {resumoDas.proxima.valorCentavos !== null
-                  ? ` · ${formatarReais(resumoDas.proxima.valorCentavos)}`
-                  : resumoDas.proxima.sugestaoCentavos !== null
-                    ? ` · cerca de ${formatarReais(resumoDas.proxima.sugestaoCentavos)}`
-                    : ""}
+                {resumoDas.proxima.valorCentavos !== null ? (
+                  <>
+                    {" · "}
+                    <Valor centavos={resumoDas.proxima.valorCentavos} />
+                  </>
+                ) : resumoDas.proxima.sugestaoCentavos !== null ? (
+                  <>
+                    {" · cerca de "}
+                    <Valor centavos={resumoDas.proxima.sugestaoCentavos} />
+                  </>
+                ) : null}
               </div>
             </div>
           ) : (
@@ -321,7 +329,7 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
           )}
           <DasStrip meses={das.meses} />
           <div className="text-caption text-ink-muted">
-            {resumoEmTexto(das.meses)} · {formatarReais(resumoDas.pagoCentavos)} pagos em {ano}
+            {resumoEmTexto(das.meses)} · <Valor centavos={resumoDas.pagoCentavos} /> pagos em {ano}
           </div>
           <div>
             <Button asChild variant="tint">

@@ -13,9 +13,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Metric } from "@/components/ui/metric";
 import { textLinkClassName } from "@/components/ui/text-link";
+import { Valor } from "@/components/valor";
 import { dasDoAno } from "@/lib/das";
 import { anoDe, formatarDataBr, hojeIso, nomeDoMes } from "@/lib/datas";
-import { formatarReais, formatarReaisInteiros } from "@/lib/dinheiro";
 import { empresaAtual } from "@/lib/empresa";
 import { diasEntre, resumoDoDas, type MesDoDas, type SituacaoDaGuia } from "@/lib/regras/das";
 import { ROTA_CONFIGURACAO } from "@/lib/rotas";
@@ -133,20 +133,31 @@ async function Das({ searchParams }: Pick<PageProps<"/das">, "searchParams">) {
         <div className="flex flex-wrap gap-x-12 gap-y-5">
           <Metric
             label={`Pago em ${ano}`}
-            value={formatarReais(resumo.pagoCentavos)}
+            value={<Valor centavos={resumo.pagoCentavos} />}
             hint={`${resumo.pagas} ${resumo.pagas === 1 ? "guia paga" : "guias pagas"}`}
           />
           {resumo.proxima ? (
             <Metric
               label={resumo.proxima.situacao === "vencida" ? "Guia vencida" : "Próximo vencimento"}
               value={prazo(resumo.proxima.vencimento, hoje)}
-              hint={`${nomeDoMes(resumo.proxima.mes)}${
-                resumo.proxima.valorCentavos !== null
-                  ? ` · ${formatarReais(resumo.proxima.valorCentavos)}`
-                  : resumo.proxima.sugestaoCentavos !== null
-                    ? ` · cerca de ${formatarReais(resumo.proxima.sugestaoCentavos)}`
-                    : " · valor não informado"
-              }`}
+              hint={
+                <>
+                  {nomeDoMes(resumo.proxima.mes)}
+                  {resumo.proxima.valorCentavos !== null ? (
+                    <>
+                      {" · "}
+                      <Valor centavos={resumo.proxima.valorCentavos} />
+                    </>
+                  ) : resumo.proxima.sugestaoCentavos !== null ? (
+                    <>
+                      {" · cerca de "}
+                      <Valor centavos={resumo.proxima.sugestaoCentavos} />
+                    </>
+                  ) : (
+                    " · valor não informado"
+                  )}
+                </>
+              }
             />
           ) : (
             <Metric label="Próximo vencimento" value="Nada em aberto" />
@@ -204,17 +215,17 @@ async function Das({ searchParams }: Pick<PageProps<"/das">, "searchParams">) {
                     <div className="text-caption text-ink-muted">{mes.porte}</div>
                   </td>
                   <td className={`${CELULA} text-right whitespace-nowrap tabular-nums`}>
-                    {formatarReais(mes.receitaCentavos)}
+                    <Valor centavos={mes.receitaCentavos} />
                   </td>
                   <td className={`${CELULA} whitespace-nowrap tabular-nums`}>
                     {formatarDataBr(mes.vencimento)}
                   </td>
                   <td className={`${CELULA} text-right whitespace-nowrap tabular-nums`}>
                     {mes.valorCentavos !== null ? (
-                      <span className="font-semibold">{formatarReais(mes.valorCentavos)}</span>
+                      <span className="font-semibold"><Valor centavos={mes.valorCentavos} /></span>
                     ) : mes.sugestaoCentavos !== null ? (
                       <span className="text-ink-muted">
-                        cerca de {formatarReais(mes.sugestaoCentavos)}
+                        cerca de <Valor centavos={mes.sugestaoCentavos} />
                       </span>
                     ) : (
                       <span className="text-ink-muted">Não informado</span>
@@ -249,11 +260,11 @@ async function Das({ searchParams }: Pick<PageProps<"/das">, "searchParams">) {
               <div>
                 Nos meses de ME, “cerca de” é uma sugestão: {percentual}% da receita do mês, a
                 alíquota da 1ª faixa do Anexo III. Ela vale enquanto a receita de 12 meses ficar até{" "}
-                {formatarReaisInteiros(tetoDaSugestaoCentavos)}. O valor certo é o da guia.
+                <Valor centavos={tetoDaSugestaoCentavos} formato="inteiro" />. O valor certo é o da guia.
               </div>
             ) : (
               <div>
-                A receita de 12 meses passou de {formatarReaisInteiros(tetoDaSugestaoCentavos)}, e a
+                A receita de 12 meses passou de <Valor centavos={tetoDaSugestaoCentavos} formato="inteiro" />, e a
                 alíquota de {percentual}% deixou de valer. Informe o valor que está na guia.
               </div>
             )

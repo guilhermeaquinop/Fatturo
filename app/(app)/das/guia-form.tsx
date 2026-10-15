@@ -66,7 +66,7 @@ export function GuiaForm(props: GuiaFormProps) {
     <form
       onSubmit={onSubmit}
       noValidate
-      className="flex flex-col gap-[18px] rounded-xl border border-border bg-surface p-7"
+      className="flex flex-col gap-[18px] rounded-xl border border-border bg-surface p-5 sm:p-7"
     >
       <TextField
         label="Valor da guia (R$)"
@@ -107,7 +107,8 @@ export function GuiaForm(props: GuiaFormProps) {
         labelAside={
           <button
             type="button"
-            className="cursor-pointer text-label font-semibold text-link underline hover:text-brand-deep"
+            // A área de toque tem 44 px de altura, mesmo com o texto pequeno.
+            className="-my-3 inline-flex min-h-control-sm cursor-pointer items-center text-label font-semibold text-link underline hover:text-brand-deep"
             onClick={() => setValue("pagoEm", formatarDataBr(hoje), { shouldValidate: true })}
           >
             Paguei hoje
@@ -122,7 +123,8 @@ export function GuiaForm(props: GuiaFormProps) {
 
       {errors.root?.message ? <Alert variant="error">{errors.root.message}</Alert> : null}
 
-      <div className="flex flex-wrap items-center gap-3">
+      {/* No celular, Salvar e Cancelar empilham na largura toda. */}
+      <div className="flex flex-col gap-3 *:w-full sm:flex-row sm:flex-wrap sm:items-center sm:*:w-auto">
         <Button type="submit" size="lg" disabled={isSubmitting}>
           {isSubmitting ? "Salvando…" : "Salvar"}
         </Button>

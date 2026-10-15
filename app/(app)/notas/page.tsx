@@ -9,12 +9,15 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { AppShell } from "@/components/app/app-shell";
-import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Pilulas } from "@/components/app/pilulas";
+import { Alert, AlertSaibaMais, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { FiltrosIcon } from "@/components/ui/icons";
 import { Metric } from "@/components/ui/metric";
 import { SelectField } from "@/components/ui/select";
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { TextField } from "@/components/ui/text-field";
 import { textLinkClassName } from "@/components/ui/text-link";
 import { Valor } from "@/components/valor";
@@ -22,7 +25,7 @@ import { mascararCnpj } from "@/lib/cnpj";
 import { anoDe, dataIsoValida, formatarDataBr, hojeIso } from "@/lib/datas";
 import { centavosDeTexto } from "@/lib/dinheiro";
 import { empresaAtual } from "@/lib/empresa";
-import { todasAsNotas } from "@/lib/notas";
+import { todasAsNotas, type Nota } from "@/lib/notas";
 import {
   anosComNota,
   filtrarNotas,
@@ -39,8 +42,6 @@ import { alterarSituacaoDaNota } from "./actions";
 
 export const metadata: Metadata = { title: "Notas" };
 
-const FILTRO =
-  "flex min-h-control-sm items-center rounded-pill px-4 font-medium text-ink-muted aria-[current=page]:bg-surface-tint aria-[current=page]:font-semibold aria-[current=page]:text-ink";
 const CELULA = "border-b border-divider px-3 py-3.5 align-top";
 // sticky: o cabeçalho fica parado no topo enquanto a lista rola por baixo dele.
 const CABECALHO =
@@ -58,7 +59,8 @@ export default function NotasPage({ searchParams }: PageProps<"/notas">) {
           <h1 className="text-page-title">Notas</h1>
           <div className="text-ink-muted">As NFS-e emitidas pela empresa, importadas dos XML.</div>
         </div>
-        <Button asChild>
+        {/* No celular o Importar da barra inferior faz o mesmo. */}
+        <Button asChild className="max-lg:hidden">
           <Link href="/importar">Importar notas</Link>
         </Button>
       </div>
@@ -172,6 +174,108 @@ async function Notas({ searchParams }: Pick<PageProps<"/notas">, "searchParams">
     { rotulo: "Emitidas", valor: "emitida" },
     { rotulo: "Canceladas", valor: "cancelada" },
   ];
+  const opcoesDeAno = [
+    ...anos.map((opcao) => ({
+      rotulo: String(opcao),
+      href: endereco(opcao, situacao, campos),
+      atual: opcao === ano,
+    })),
+    ...(anos.length > 1
+      ? [{ rotulo: "Todos", href: endereco(null, situacao, campos), atual: ano === null }]
+      : []),
+  ];
+  const opcoesDeSituacao = situacoes.map((item) => ({
+    rotulo: item.rotulo,
+    href: endereco(ano, item.valor, campos),
+    atual: item.valor === situacao,
+  }));
+  const semFiltros = endereco(
+    ano,
+    situacao,
+    Object.fromEntries(CAMPOS.map((campo) => [campo, ""])) as Campos,
+  );
+  // Quantos campos de filtro estão preenchidos, para o botão "Filtros · 2" do celular.
+  const filtrosAtivos = CAMPOS.filter((campo) => campos[campo] !== "").length;
+
+  // Os campos do filtro, iguais no desktop e na folha do celular. Como aparecem duas vezes
+  // na página, cada versão leva um prefixo nos ids, para cada rótulo apontar para o seu campo.
+  const camposDoFiltro = (prefixo: string) => (
+    <>
+      <div className="col-span-2 min-w-0 lg:col-auto">
+        <SelectField
+          id={`${prefixo}-tomador`}
+          label="Tomador"
+          name="tomador" defaultValue={filtros.tomador ?? ""}>
+          <option value="">Todos</option>
+          {listaDeTomadores.map((item) => (
+            <option key={item.chave} value={item.chave}>
+              {item.nome}
+            </option>
+          ))}
+        </SelectField>
+      </div>
+      <div className="min-w-0">
+        <TextField
+          label="Competência de"
+          type="date"
+          id={`${prefixo}-competenciaDe`}
+          name="competenciaDe"
+          defaultValue={filtros.competenciaDe ?? ""}
+        />
+      </div>
+      <div className="min-w-0">
+        <TextField
+          label="Competência até"
+          type="date"
+          id={`${prefixo}-competenciaAte`}
+          name="competenciaAte"
+          defaultValue={filtros.competenciaAte ?? ""}
+        />
+      </div>
+      <div className="min-w-0">
+        <TextField
+          label="Emissão de"
+          type="date"
+          id={`${prefixo}-emissaoDe`}
+          name="emissaoDe"
+          defaultValue={filtros.emissaoDe ?? ""}
+        />
+      </div>
+      <div className="min-w-0">
+        <TextField
+          label="Emissão até"
+          type="date"
+          id={`${prefixo}-emissaoAte`}
+          name="emissaoAte"
+          defaultValue={filtros.emissaoAte ?? ""}
+        />
+      </div>
+      <div className="min-w-0">
+        <TextField
+          label="Valor de (R$)"
+          type="text"
+          inputMode="decimal"
+          placeholder="0,00"
+          autoComplete="off"
+          id={`${prefixo}-valorDe`}
+          name="valorDe"
+          defaultValue={campos.valorDe}
+        />
+      </div>
+      <div className="min-w-0">
+        <TextField
+          label="Valor até (R$)"
+          type="text"
+          inputMode="decimal"
+          placeholder="0,00"
+          autoComplete="off"
+          id={`${prefixo}-valorAte`}
+          name="valorAte"
+          defaultValue={campos.valorAte}
+        />
+      </div>
+    </>
+  );
 
   return (
     <>
@@ -186,35 +290,18 @@ async function Notas({ searchParams }: Pick<PageProps<"/notas">, "searchParams">
           {faltando.length <= FALTANDO_EXIBIDOS
             ? `${faltando.length === 1 ? "A nota de número" : "As notas de número"} ${listarNumeros(faltando)} não ${faltando.length === 1 ? "foi importada" : "foram importadas"}. `
             : `Há números sem nota entre a ${faltando[0]} e a ${faltando[faltando.length - 1]}. `}
-          Nota cancelada não precisa ser importada. Se alguma delas foi emitida e está válida,
-          baixe o XML no Emissor Nacional e importe, para o faturamento ficar completo.
+          <AlertSaibaMais>
+            Nota cancelada não precisa ser importada. Se alguma delas foi emitida e está válida,
+            baixe o XML no Emissor Nacional e importe, para o faturamento ficar completo.
+          </AlertSaibaMais>
         </Alert>
       ) : null}
 
       <Card hero aria-label={`Resumo de ${periodo}`}>
-        <nav aria-label="Ano" className="flex flex-wrap gap-2">
-          {anos.map((opcao) => (
-            <Link
-              key={opcao}
-              href={endereco(opcao, situacao, campos)}
-              aria-current={opcao === ano ? "page" : undefined}
-              className={FILTRO}
-            >
-              {opcao}
-            </Link>
-          ))}
-          {anos.length > 1 ? (
-            <Link
-              href={endereco(null, situacao, campos)}
-              aria-current={ano === null ? "page" : undefined}
-              className={FILTRO}
-            >
-              Todos
-            </Link>
-          ) : null}
-        </nav>
-        <div className="flex flex-wrap gap-x-12 gap-y-5">
+        <Pilulas rotulo="Ano" opcoes={opcoesDeAno} />
+        <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:flex sm:flex-wrap sm:gap-x-12">
           <Metric
+            className="max-sm:col-span-2"
             label={ano === null ? "Emitido em todos os anos" : `Emitido em ${ano}`}
             value={<Valor centavos={resumo.valorEmitidoCentavos} />}
             hint="Pela data de competência, como no painel."
@@ -228,19 +315,9 @@ async function Notas({ searchParams }: Pick<PageProps<"/notas">, "searchParams">
         </div>
       </Card>
 
-      <Card aria-label="Lista de notas">
-        <nav aria-label="Situação" className="flex flex-wrap gap-2">
-          {situacoes.map((item) => (
-            <Link
-              key={item.rotulo}
-              href={endereco(ano, item.valor, campos)}
-              aria-current={item.valor === situacao ? "page" : undefined}
-              className={FILTRO}
-            >
-              {item.rotulo}
-            </Link>
-          ))}
-        </nav>
+      {/* Desktop: filtros à vista e a tabela com rolagem própria. */}
+      <Card aria-label="Lista de notas" className="max-lg:hidden">
+        <Pilulas rotulo="Situação" opcoes={opcoesDeSituacao} />
 
         {/* <Form> do Next: um <form method="GET"> que põe os campos na URL sem recarregar a
             página. Os campos escondidos mantêm o ano e a situação já escolhidos. */}
@@ -254,80 +331,14 @@ async function Notas({ searchParams }: Pick<PageProps<"/notas">, "searchParams">
           {situacao ? <input type="hidden" name="situacao" value={situacao} /> : null}
           {/* Grade: os campos dividem a largura por igual e quebram de linha juntos. */}
           <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-x-[18px] gap-y-4">
-            <div className="min-w-0">
-              <SelectField label="Tomador" name="tomador" defaultValue={filtros.tomador ?? ""}>
-                <option value="">Todos</option>
-                {listaDeTomadores.map((item) => (
-                  <option key={item.chave} value={item.chave}>
-                    {item.nome}
-                  </option>
-                ))}
-              </SelectField>
-            </div>
-            <div className="min-w-0">
-              <TextField
-                label="Competência de"
-                type="date"
-                name="competenciaDe"
-                defaultValue={filtros.competenciaDe ?? ""}
-              />
-            </div>
-            <div className="min-w-0">
-              <TextField
-                label="Competência até"
-                type="date"
-                name="competenciaAte"
-                defaultValue={filtros.competenciaAte ?? ""}
-              />
-            </div>
-            <div className="min-w-0">
-              <TextField
-                label="Emissão de"
-                type="date"
-                name="emissaoDe"
-                defaultValue={filtros.emissaoDe ?? ""}
-              />
-            </div>
-            <div className="min-w-0">
-              <TextField
-                label="Emissão até"
-                type="date"
-                name="emissaoAte"
-                defaultValue={filtros.emissaoAte ?? ""}
-              />
-            </div>
-            <div className="min-w-0">
-              <TextField
-                label="Valor de (R$)"
-                type="text"
-                inputMode="decimal"
-                placeholder="0,00"
-                autoComplete="off"
-                name="valorDe"
-                defaultValue={campos.valorDe}
-              />
-            </div>
-            <div className="min-w-0">
-              <TextField
-                label="Valor até (R$)"
-                type="text"
-                inputMode="decimal"
-                placeholder="0,00"
-                autoComplete="off"
-                name="valorAte"
-                defaultValue={campos.valorAte}
-              />
-            </div>
+            {camposDoFiltro("filtro-desktop")}
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <Button type="submit" variant="secondary">
               Filtrar
             </Button>
             {temFiltro ? (
-              <Link
-                href={endereco(ano, situacao, Object.fromEntries(CAMPOS.map((campo) => [campo, ""])) as Campos)}
-                className={`text-label ${textLinkClassName}`}
-              >
+              <Link href={semFiltros} className={`text-label ${textLinkClassName}`}>
                 Limpar filtros
               </Link>
             ) : null}
@@ -436,6 +447,117 @@ async function Notas({ searchParams }: Pick<PageProps<"/notas">, "searchParams">
           <div className="text-ink-muted">Nenhuma nota com estes filtros em {periodo}.</div>
         )}
       </Card>
+
+      {/* Celular: situação em pílulas, filtros numa folha e a lista; cada nota abre os detalhes. */}
+      <section aria-label="Lista de notas" className="flex flex-col gap-3 lg:hidden">
+        <Pilulas rotulo="Situação" opcoes={opcoesDeSituacao} />
+        <div className="flex items-center justify-between gap-2 pl-1">
+          <div className="text-caption text-ink-muted" aria-live="polite">
+            {exibidas.length} {exibidas.length === 1 ? "nota" : "notas"} ·{" "}
+            <Valor centavos={totalExibido.valorEmitidoCentavos} /> emitidos
+          </div>
+          {/* A key fecha a folha quando os filtros da URL mudam. */}
+          <Sheet key={JSON.stringify(campos)}>
+            <SheetTrigger asChild>
+              <Button variant="secondary" className="flex-none px-4">
+                <FiltrosIcon className="flex-none" />
+                {filtrosAtivos > 0 ? `Filtros · ${filtrosAtivos}` : "Filtros"}
+              </Button>
+            </SheetTrigger>
+            <SheetContent
+              titulo="Filtrar notas"
+              rodape={
+                <>
+                  <Button asChild variant="secondary">
+                    <Link href={semFiltros}>Limpar</Link>
+                  </Button>
+                  <SheetClose asChild>
+                    <Button type="submit" form="filtros-das-notas">
+                      Filtrar
+                    </Button>
+                  </SheetClose>
+                </>
+              }
+            >
+              <Form id="filtros-das-notas" action="/notas" className="grid grid-cols-2 gap-x-3 gap-y-4">
+                <input type="hidden" name="ano" value={ano === null ? TODOS_OS_ANOS : ano} />
+                {situacao ? <input type="hidden" name="situacao" value={situacao} /> : null}
+                {camposDoFiltro("filtro-celular")}
+              </Form>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        {exibidas.length > 0 ? (
+          <div className="overflow-hidden rounded-xl border border-border bg-surface">
+            {exibidas.map((nota) => (
+              <NotaNoCelular key={nota.id} nota={nota} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-ink-muted">Nenhuma nota com estes filtros em {periodo}.</div>
+        )}
+      </section>
     </>
+  );
+}
+
+/** Uma nota na lista do celular: o toque abre uma folha com os detalhes e a ação. */
+function NotaNoCelular({ nota }: { nota: Nota }) {
+  const cancelada = nota.situacao === "cancelada";
+  const competencia = formatarDataBr(nota.dataCompetencia);
+
+  return (
+    <Sheet>
+      <SheetTrigger className="grid min-h-16 w-full cursor-pointer grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-0.5 border-b border-divider px-5 py-3 text-left last:border-b-0 hover:bg-surface-muted">
+        <span className="min-w-0 font-semibold break-words">
+          {nota.tomadorNome ?? "Tomador não identificado"}
+        </span>
+        {/* O valor da cancelada aparece riscado, além da etiqueta: não é só cor. */}
+        <span
+          className={`text-right font-semibold whitespace-nowrap ${cancelada ? "text-ink-muted line-through" : ""}`}
+        >
+          <Valor centavos={nota.valorCentavos} />
+        </span>
+        <span className="min-w-0 text-caption text-ink-muted">
+          Nº {nota.numero} · competência {competencia.slice(3)} · emitida em{" "}
+          {formatarDataBr(nota.dataEmissao).slice(0, 5)}
+        </span>
+        <span className="justify-self-end">
+          {cancelada ? <Badge variant="pendente">Cancelada</Badge> : <Badge>Emitida</Badge>}
+        </span>
+      </SheetTrigger>
+      <SheetContent titulo={`Nota nº ${nota.numero}`}>
+        <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2">
+          <dt className="text-ink-muted">Tomador</dt>
+          <dd className="text-right font-semibold break-words">
+            {nota.tomadorNome ?? "Não identificado"}
+            {nota.tomadorDoc ? (
+              <div className="text-caption font-normal text-ink-muted">
+                {mascararDocumento(nota.tomadorDoc)}
+              </div>
+            ) : null}
+          </dd>
+          <dt className="text-ink-muted">Competência</dt>
+          <dd className="text-right font-semibold">{competencia}</dd>
+          <dt className="text-ink-muted">Emissão</dt>
+          <dd className="text-right font-semibold">{formatarDataBr(nota.dataEmissao)}</dd>
+          <dt className="text-ink-muted">Valor</dt>
+          <dd className={`text-right font-semibold ${cancelada ? "line-through" : ""}`}>
+            <Valor centavos={nota.valorCentavos} />
+          </dd>
+          <dt className="text-ink-muted">Situação</dt>
+          <dd className="text-right">
+            {cancelada ? <Badge variant="pendente">Cancelada</Badge> : <Badge>Emitida</Badge>}
+          </dd>
+        </dl>
+        {/* Formulário que chama a Server Action, como um PATCH /notas/{id}. */}
+        <form action={alterarSituacaoDaNota.bind(null, nota.id, cancelada ? "emitida" : "cancelada")}>
+          <Button type="submit" variant="secondary" className="w-full">
+            {cancelada ? "Desfazer cancelamento" : "Marcar como cancelada"}
+          </Button>
+        </form>
+      </SheetContent>
+    </Sheet>
   );
 }

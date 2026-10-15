@@ -61,4 +61,19 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"span">) {
   )
 }
 
-export { Alert, AlertTitle }
+/**
+ * Parte da explicação que fica recolhida atrás de "Saiba mais", para o aviso ocupar menos
+ * espaço no celular. Ao abrir, o link some e o texto aparece no lugar.
+ */
+function AlertSaibaMais({ children }: { children: React.ReactNode }) {
+  return (
+    <details className="group">
+      <summary className="inline-flex min-h-control-sm cursor-pointer list-none items-center font-semibold underline group-open:hidden [&::-webkit-details-marker]:hidden">
+        Saiba mais
+      </summary>
+      {children}
+    </details>
+  )
+}
+
+export { Alert, AlertSaibaMais, AlertTitle }

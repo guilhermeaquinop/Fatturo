@@ -19,14 +19,16 @@ function Select({ className, ...props }: React.ComponentProps<"select">) {
   )
 }
 
-type SelectFieldProps = Omit<React.ComponentProps<"select">, "id"> & {
+type SelectFieldProps = React.ComponentProps<"select"> & {
   label: string
   hint?: string
   error?: string
 }
 
-function SelectField({ label, hint, error, children, ...props }: SelectFieldProps) {
-  const id = React.useId()
+function SelectField({ id: idFixo, label, hint, error, children, ...props }: SelectFieldProps) {
+  // Como no TextField: id fixo só quando o mesmo campo aparece duas vezes na página.
+  const idGerado = React.useId()
+  const id = idFixo ?? idGerado
   const descriptionId = error ? `${id}-erro` : hint ? `${id}-dica` : undefined
 
   return (

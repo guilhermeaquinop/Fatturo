@@ -5,7 +5,7 @@ import { ErrorIcon } from "@/components/ui/icons"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-type TextFieldProps = Omit<React.ComponentProps<"input">, "id"> & {
+type TextFieldProps = React.ComponentProps<"input"> & {
   label: string
   hint?: string
   error?: string
@@ -13,10 +13,12 @@ type TextFieldProps = Omit<React.ComponentProps<"input">, "id"> & {
   labelAside?: React.ReactNode
 }
 
-function TextField({ label, hint, error, labelAside, ...props }: TextFieldProps) {
+function TextField({ id: idFixo, label, hint, error, labelAside, ...props }: TextFieldProps) {
   // useId gera um id único: o Next mantém páginas visitadas ocultas no documento,
-  // e ids fixos como "email" se repetiriam entre o login e o cadastro.
-  const id = React.useId()
+  // e ids fixos como "email" se repetiriam entre o login e o cadastro. Um id fixo só
+  // é passado quando o mesmo campo aparece duas vezes na página (desktop e celular).
+  const idGerado = React.useId()
+  const id = idFixo ?? idGerado
   const descriptionId = error ? `${id}-erro` : hint ? `${id}-dica` : undefined
 
   return (

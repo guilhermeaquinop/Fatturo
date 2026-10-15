@@ -7,6 +7,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { AppShell } from "@/components/app/app-shell";
+import { SeletorDeAno } from "@/components/app/pilulas";
 import { DasStrip, resumoEmTexto } from "@/components/das/das-strip";
 import { GraficoAcumulado } from "@/components/painel/grafico-acumulado";
 import { LimitBar } from "@/components/painel/limit-bar";
@@ -15,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { Metric } from "@/components/ui/metric";
+import { TextLink } from "@/components/ui/text-link";
 import { Valor } from "@/components/valor";
 import { dasDoAno } from "@/lib/das";
 import { anoDe, formatarDataBr, hojeIso, mesDe, nomeCurtoDoMes, nomeDoMes } from "@/lib/datas";
@@ -33,7 +35,6 @@ import {
 } from "@/lib/regras/faturamento";
 import { limiteDoAno, mesesDeAtividade } from "@/lib/regras/limite";
 import { ROTA_CONFIGURACAO } from "@/lib/rotas";
-import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Painel" };
 
@@ -124,21 +125,12 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
   return (
     <>
       {anos.length > 1 ? (
-        <nav aria-label="Ano" className="flex flex-wrap justify-end gap-2">
-          {anos.map((opcao) => (
-            <Link
-              key={opcao}
-              href={opcao === anoAtual ? "/painel" : `/painel?ano=${opcao}`}
-              aria-current={opcao === ano ? "page" : undefined}
-              className={cn(
-                "flex min-h-control-sm items-center rounded-pill px-4 font-medium text-ink-muted",
-                "aria-[current=page]:bg-surface-tint aria-[current=page]:font-semibold aria-[current=page]:text-ink",
-              )}
-            >
-              {opcao}
-            </Link>
-          ))}
-        </nav>
+        <SeletorDeAno
+          anos={anos}
+          ano={ano}
+          href={(opcao) => (opcao === anoAtual ? "/painel" : `/painel?ano=${opcao}`)}
+          className="lg:justify-end"
+        />
       ) : null}
 
       <Card hero aria-label={`Limite anual de ${ano}`}>
@@ -173,16 +165,22 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
           rotuloAtual={anoCorrente ? "hoje" : "dezembro"}
         />
 
-        <div className="flex flex-wrap gap-x-12 gap-y-5">
-          <Metric label="Disponível" value={<Valor centavos={Math.max(limite - acumulado, 0)} formato="inteiro" />} />
+        {/* No celular, as métricas ficam numa grade de duas colunas. */}
+        <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:flex sm:flex-wrap sm:gap-x-12">
+          <Metric
+            label="Disponível"
+            value={<Valor centavos={Math.max(limite - acumulado, 0)} formato="inteiro" />}
+          />
           {anoCorrente ? (
             <>
               <Metric
                 label="Projeção até dezembro"
                 value={
-                  projecao.valorCentavos === null
-                    ? "Sem base"
-                    : <Valor centavos={projecao.valorCentavos} formato="inteiro" />
+                  projecao.valorCentavos === null ? (
+                    "Sem base"
+                  ) : (
+                    <Valor centavos={projecao.valorCentavos} formato="inteiro" />
+                  )
                 }
                 hint={
                   projecao.valorCentavos === null
@@ -231,8 +229,15 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
         </Alert>
       ) : null}
 
-      <div className="flex flex-wrap gap-5">
-        <Card aria-label="Faturamento acumulado e limite" className="flex-[3_1_440px]">
+      {/*
+        No celular as linhas de cartões se desfazem (contents) e a ordem muda: o DAS sobe para
+        logo depois dos avisos, porque é onde há o que fazer, e Pendências some enquanto é "em breve".
+      */}
+      <div className="flex flex-wrap gap-5 max-lg:contents">
+        <Card
+          aria-label="Faturamento acumulado e limite"
+          className="flex-[3_1_440px] max-lg:order-1"
+        >
           <div className="flex flex-wrap items-center justify-between gap-2.5">
             <CardTitle>Acumulado no ano e limite</CardTitle>
             <div className="flex flex-wrap gap-x-5 gap-y-2 text-caption text-ink-muted">
@@ -256,22 +261,29 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
               </div>
             </div>
           </div>
-          <div className="overflow-x-auto">
-            <div
-              className="min-w-[480px]"
-              role="img"
-              aria-label={`Faturamento acumulado em ${ano}: ${Math.floor(percentual)}% do limite.`}
-            >
-              <GraficoAcumulado
-                pontos={pontos}
-                limiteCentavos={limite}
-                indiceAtual={serie.indiceAtual}
-              />
-            </div>
+          <div
+            role="img"
+            aria-label={`Faturamento acumulado em ${ano}: ${Math.floor(percentual)}% do limite.`}
+          >
+            <GraficoAcumulado
+              pontos={pontos}
+              limiteCentavos={limite}
+              indiceAtual={serie.indiceAtual}
+            />
+          </div>
+          {/* No celular não há dica ao passar o mouse: os totais vêm escritos embaixo. */}
+          <div className="-mt-3 text-caption text-ink-muted lg:hidden">
+            {anoCorrente && projecao.valorCentavos !== null ? (
+              <>
+                Projeção: <Valor centavos={projecao.valorCentavos} formato="inteiro" /> em dezembro
+                {" · "}
+              </>
+            ) : null}
+            DAS pago no ano: <Valor centavos={resumoDas.pagoCentavos} />
           </div>
         </Card>
 
-        <Card aria-label="Origem do faturamento" className="flex-[2_1_260px]">
+        <Card aria-label="Origem do faturamento" className="flex-[2_1_260px] max-lg:order-1">
           <CardTitle>Origem do faturamento</CardTitle>
           {origem.length > 0 ? (
             <ul className="flex flex-col">
@@ -291,24 +303,32 @@ async function Painel({ searchParams }: Pick<PageProps<"/painel">, "searchParams
         </Card>
       </div>
 
-      <div className="flex flex-wrap gap-5">
-        <Card aria-label="Pendências" className="flex-[3_1_440px] gap-4">
+      <div className="flex flex-wrap gap-5 max-lg:contents">
+        <Card aria-label="Pendências" className="flex-[3_1_440px] gap-4 max-lg:hidden">
           <CardTitle>Pendências</CardTitle>
           <div className="text-ink-muted">
             Em breve. Os lançamentos sem classificação e as notas sem recebimento aparecem aqui.
           </div>
         </Card>
         <Card aria-label="DAS" className="flex-[2_1_260px] gap-4">
-          <CardTitle>DAS</CardTitle>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <CardTitle>DAS</CardTitle>
+            <TextLink href={ano === anoAtual ? "/das" : `/das?ano=${ano}`}>Ver guias</TextLink>
+          </div>
           {resumoDas.proxima && diasParaVencer !== null ? (
-            <div>
-              <div className="text-ink-muted">
-                {diasParaVencer < 0
-                  ? `Guia vencida há ${-diasParaVencer} ${diasParaVencer === -1 ? "dia" : "dias"}`
-                  : diasParaVencer === 0
+            <div className="flex flex-col gap-2">
+              {/* Guia vencida é erro (README, "Estados"): chip com ícone, não só a frase. */}
+              {diasParaVencer < 0 ? (
+                <Chip variant="error" className="self-start px-3 py-1.5 text-label">
+                  Guia vencida há {-diasParaVencer} {diasParaVencer === -1 ? "dia" : "dias"}
+                </Chip>
+              ) : (
+                <div className="text-ink-muted">
+                  {diasParaVencer === 0
                     ? "Próximo vencimento, hoje"
                     : `Próximo vencimento, em ${diasParaVencer} ${diasParaVencer === 1 ? "dia" : "dias"}`}
-              </div>
+                </div>
+              )}
               <div className="text-metric">
                 {formatarDataBr(resumoDas.proxima.vencimento).slice(0, 5)}
                 {resumoDas.proxima.valorCentavos !== null ? (

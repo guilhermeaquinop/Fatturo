@@ -14,7 +14,8 @@ function Card({ hero = false, className, ...props }: CardProps) {
       data-slot="card"
       className={cn(
         "flex min-w-0 flex-col gap-6 rounded-xl border border-border bg-surface",
-        hero ? "p-7" : "p-6",
+        // No celular o padding encolhe para sobrar largura para o conteúdo.
+        hero ? "p-5 sm:p-7" : "p-5 sm:p-6",
         className
       )}
       {...props}

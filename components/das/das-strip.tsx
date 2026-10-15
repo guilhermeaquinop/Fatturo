@@ -28,12 +28,13 @@ export function DasStrip({ meses }: { meses: MesDoDas[] }) {
   const descricao = meses.map((mes) => `${nomeDoMes(mes.mes)} ${ROTULO[mes.situacao]}`).join(", ");
 
   return (
-    <div role="img" aria-label={`Situação do DAS por mês: ${descricao}`} className="flex flex-wrap gap-1.5">
+    <div role="img" aria-label={`Situação do DAS por mês: ${descricao}`} className="flex gap-1 sm:gap-1.5">
       {meses.map((mes) => (
         <div
           key={mes.competencia}
           className={cn(
-            "flex h-7 flex-[1_1_22px] items-center justify-center rounded-sm text-caption font-semibold text-ink",
+            // Os 12 meses cabem numa linha: as células encolhem por igual.
+            "flex h-7 min-w-0 flex-1 items-center justify-center rounded-sm text-caption font-semibold text-ink",
             ESTILO[mes.situacao],
           )}
         >

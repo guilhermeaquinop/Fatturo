@@ -45,6 +45,20 @@ TopBar, TabBar, Sheet (Dialog do radix-ui), Pills, Status (variantes de Badge), 
 - O ponto de troca do celular para o tablet é o `sm` do Tailwind (640 px), não 600 px.
 - No desktop, o olho não fica ao lado da logo: é um item do menu, com o texto "Ocultar valores" (ou "Mostrar valores"), acima de Configurações. Decisão do autor.
 
+## Como ficou na implementação (fase 2: Painel e DAS)
+
+- No painel, as linhas de cartões se desfazem no celular (`display: contents`) para o DAS subir para depois dos avisos; Pendências fica escondido no celular.
+- Na lista do DAS há um quarto grupo, **Sem valor informado**, para os meses vencidos sem registro (situação que o mockup não mostrava).
+- Na métrica da próxima guia, o celular mostra só a data no valor; o prazo ("há 24 dias") desce para a linha de baixo.
+- A tabela do DAS continua no desktop; a lista aparece abaixo de 1024 px.
+
+## Como ficou na implementação (Notas)
+
+- Notas entrou junto com Painel e DAS, a pedido do autor.
+- Os campos de filtro são os mesmos no desktop e na folha do celular; cada versão leva um prefixo nos ids, para cada rótulo apontar para o seu campo.
+- A folha de filtros fecha ao filtrar; "Limpar" leva à lista sem filtros.
+- O aviso de números faltando guarda a explicação atrás de "Saiba mais" também no desktop.
+
 ## Sugestões aceitas pelo autor
 
 - Login mais curto no celular: o painel escuro fica só com a logo e o título.

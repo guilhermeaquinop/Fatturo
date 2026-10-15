@@ -220,6 +220,29 @@ Marcação de referência:
 </div>
 ```
 
+## TopBar e TabBar
+
+As duas barras do celular (abaixo de 1024 px), em `components/app/app-shell.tsx`.
+
+- TopBar: `topbar-height`, fundo `surface`, borda de baixo `border`, fixa no topo. Logo à esquerda e o botão de ocultar valores à direita; nas telas internas, voltar (44 px), título em `body-strong` e o olho.
+- TabBar: `tabbar-height` mais a área segura, fixa embaixo, cinco colunas iguais. Ícone de 24 px num indicador em pílula de 56×32 e rótulo em `caption`. Ativo: indicador `surface-tint` e rótulo `ink` em 600. Importar: indicador sempre `accent`.
+
+## Sheet
+
+Folha que sobe de baixo (`components/ui/sheet.tsx`, com o Dialog do radix-ui).
+
+- Cantos `radius-xl` só no topo, alça de 36×4 em `border-dashed`, título em `section-title` e botão de fechar de 44 px.
+- Fundo atrás em `scrim`. Fecha pelo X, pelo toque no fundo e pelo Esc. Altura máxima de 88% da tela, com rolagem própria.
+- Rodapé opcional com ações lado a lado, fora da rolagem.
+- Até 560 px de largura, centralizada em telas maiores.
+
+## Valor
+
+Valor em reais que respeita o ocultar valores (`components/valor.tsx`). Use em todo valor da empresa mostrado na tela; formulários usam o campo normal.
+
+- `formato="inteiro"` tira os centavos, como nos números grandes do painel.
+- Não quebra a linha (`white-space: nowrap`).
+
 ## DasStrip
 
 Os 12 meses do DAS do ano numa faixa, um quadrado por mês.

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Fatturo no celular</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+/* Página única, só tema claro de propósito: segue o design system do Fatturo, que tem um tema.
+   Layout: coluna de leitura de até 1120 px; cada tela é um aparelho de 390 px ao lado da nota do que mudou. */
+:root{
+  --surface:#ffffff; --surface-muted:#f7f8f8; --surface-tint:#eff8e6; --surface-tint-strong:#cff0ae;
+  --ink:#16302b; --ink-muted:#5f6b6a; --accent:#8fdd55; --accent-strong:#3fa535; --link:#2f7a28;
+  --border:#e8ebea; --divider:#eef0ef; --info-surface:#e6f2f3; --info-ink:#1d4f5c;
+  --font:Montserrat,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface-muted);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.6;font-variant-numeric:tabular-nums}
+.wrap{max-width:1120px;margin:0 auto;padding-block:48px 96px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1{font-size:34px;line-height:1.2;font-weight:700;letter-spacing:-.01em}
+h2{font-size:26px;line-height:1.3;font-weight:700}
+h3{font-size:18px;line-height:1.35;font-weight:700}
+p{margin:0;max-width:68ch}
+a{color:var(--link);font-weight:600}
+ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;max-width:68ch}
+code{font-size:13px;background:var(--surface-tint);padding:1px 6px;border-radius:6px}
+.lead{font-size:17px;color:var(--ink-muted)}
+.muted{color:var(--ink-muted)}
+.small{font-size:13px}
+.head{display:flex;flex-direction:column;gap:16px}
+.head img{height:30px;width:auto;align-self:flex-start}
+.sec{display:flex;flex-direction:column;gap:24px}
+.sec__head{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:13px;font-weight:600;color:var(--ink-muted)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:20px}
+.screen{display:grid;grid-template-columns:390px minmax(0,1fr);gap:32px;align-items:start}
+.screen + .screen{padding-top:40px;border-top:1px solid var(--border)}
+.frames{display:flex;flex-wrap:wrap;gap:16px}
+.frame{display:flex;flex-direction:column;gap:8px;width:390px;max-width:100%}
+.frame iframe{display:block;width:100%;height:780px;border:1px solid var(--border);border-radius:16px;background:var(--surface)}
+.frame figcaption{font-size:13px;color:var(--ink-muted);display:flex;justify-content:space-between;gap:8px}
+.notes{display:flex;flex-direction:column;gap:16px;min-width:0}
+.tag{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;background:var(--surface-tint-strong);font-size:12px;font-weight:600;align-self:flex-start}
+.nav-diagram{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:1px solid var(--border);border-radius:16px;background:var(--surface);overflow:hidden}
+.nav-diagram div{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 4px;font-size:12px;font-weight:600;text-align:center;border-right:1px solid var(--divider)}
+.nav-diagram div:last-child{border-right:0}
+.nav-diagram span{display:block;width:44px;height:26px;border-radius:999px;background:var(--surface-tint)}
+.nav-diagram .imp span{background:var(--accent)}
+.nav-diagram small{font-weight:400;color:var(--ink-muted);font-size:11px;line-height:1.3}
+.files{display:flex;flex-wrap:wrap;gap:8px}
+.files a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid var(--border);border-radius:999px;background:var(--surface);text-decoration:none;color:var(--ink)}
+.files a:focus-visible,a:focus-visible{outline:2px solid var(--accent-strong);outline-offset:2px}
+@media (max-width:860px){
+  .screen{grid-template-columns:minmax(0,1fr)}
+  h1{font-size:28px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="head">
+  <img src="fatturo-logo.svg" alt="Fatturo">
+  <h1>Fatturo no celular</h1>
+  <p class="lead">Proposta de navegação e das telas logadas a 390 px, com o botão de ocultar valores. Os aparelhos abaixo são as páginas reais: dá para tocar no olho, abrir o “Mais”, os filtros e as seções. As decisões e o que mudou na implementação estão no README.md desta pasta.</p>
+  <div class="files" aria-label="Abrir uma tela sozinha">
+    <a href="painel.html">Painel</a><a href="das.html">DAS</a><a href="das-guia.html">Guia do DAS</a><a href="notas.html">Notas</a><a href="importar.html">Importar</a><a href="lancamentos.html">Lançamentos</a><a href="configuracoes.html">Configurações</a>
+  </div>
+</header>
+
+<section class="sec" id="navegacao">
+  <div class="sec__head"><span class="eyebrow">Prioridade 1</span><h2>Navegação</h2>
+    <p>Barra superior fina e barra inferior com cinco posições. O menu deixa de empilhar acima do conteúdo: no celular a primeira coisa na tela passa a ser o painel.</p></div>
+  <div class="nav-diagram" role="img" aria-label="Barra inferior: Painel, Notas, Importar em destaque no centro, DAS e Mais">
+    <div><span></span>Painel<small>a tela principal</small></div>
+    <div><span></span>Notas<small>lista e filtros</small></div>
+    <div class="imp"><span></span>Importar<small>em accent, no centro</small></div>
+    <div><span></span>DAS<small>guias do ano</small></div>
+    <div><span></span>Mais<small>abre uma folha</small></div>
+  </div>
+  <div class="frames">
+    <figure class="frame" style="margin:0"><iframe src="painel.html" title="Painel com a navegação mobile" loading="lazy"></iframe><figcaption><span>Moldura no painel</span><a href="painel.html">abrir</a></figcaption></figure>
+    <figure class="frame" style="margin:0"><iframe src="painel.html#mais" title="Folha Mais aberta" loading="lazy"></iframe><figcaption><span>Folha “Mais”</span><a href="painel.html#mais">abrir</a></figcaption></figure>
+  </div>
+</section>
+
+<section class="sec" id="ocultar">
+  <div class="sec__head"><span class="eyebrow">Prioridade 1</span><h2>Ocultar valores</h2>
+    <p>Um botão de olho, sempre à mão, que troca os valores em reais por <code>R$ •••••</code>. Toque no olho de qualquer aparelho desta página: os outros acompanham, como acontece entre abas do app.</p></div>
+  <div class="frames">
+    <figure class="frame" style="margin:0"><iframe src="painel.html#ocultos" title="Painel com valores ocultos" loading="lazy"></iframe><figcaption><span>Painel com valores ocultos</span><a href="painel.html#ocultos">abrir</a></figcaption></figure>
+  </div>
+</section>
+
+<section class="sec" id="telas">
+  <div class="sec__head"><span class="eyebrow">Prioridades 2 a 7</span><h2>Telas</h2>
+    <p>Na ordem do uso real. Entre 600 e 1023 px o conteúdo fica centralizado em até 720 px, com cartões de padding <code>space-6</code> e métricas em quatro colunas.</p></div>
+  <div class="frames">
+    <figure class="frame" style="margin:0"><iframe src="das.html" title="DAS" loading="lazy"></iframe><figcaption><span>DAS</span><a href="das.html">abrir</a></figcaption></figure>
+    <figure class="frame" style="margin:0"><iframe src="das-guia.html" title="Guia do DAS" loading="lazy"></iframe><figcaption><span>Guia do DAS</span><a href="das-guia.html">abrir</a></figcaption></figure>
+    <figure class="frame" style="margin:0"><iframe src="notas.html" title="Notas" loading="lazy"></iframe><figcaption><span>Notas</span><a href="notas.html">abrir</a></figcaption></figure>
+    <figure class="frame" style="margin:0"><iframe src="notas.html#filtros" title="Filtros das notas" loading="lazy"></iframe><figcaption><span>Folha de filtros</span><a href="notas.html#filtros">abrir</a></figcaption></figure>
+    <figure class="frame" style="margin:0"><iframe src="importar.html" title="Importar" loading="lazy"></iframe><figcaption><span>Importar, depois da leitura</span><a href="importar.html">abrir</a></figcaption></figure>
+    <figure class="frame" style="margin:0"><iframe src="lancamentos.html" title="Lançamentos" loading="lazy"></iframe><figcaption><span>Lançamentos</span><a href="lancamentos.html">abrir</a></figcaption></figure>
+    <figure class="frame" style="margin:0"><iframe src="lancamentos.html#selecao" title="Lançamentos com seleção" loading="lazy"></iframe><figcaption><span>Com dois selecionados</span><a href="lancamentos.html#selecao">abrir</a></figcaption></figure>
+    <figure class="frame" style="margin:0"><iframe src="configuracoes.html" title="Configurações" loading="lazy"></iframe><figcaption><span>Configurações</span><a href="configuracoes.html">abrir</a></figcaption></figure>
+  </div>
+</section>
+
+<footer class="muted small">
+  <p>Dados fictícios da conta de teste (Studio Aurora, Marina Costa). Estados diretos: <code>painel.html#ocultos</code>, <code>painel.html#mais</code>, <code>notas.html#filtros</code>, <code>lancamentos.html#selecao</code>.</p>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Configurações · Fatturo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="fatturo-mobile.css">
+</head>
+<body>
+<div class="ft-app">
+
+<aside class="ft-sidebar" aria-label="Menu">
+  <div class="ft-sidebar__brand"><img src="fatturo-logo.svg" alt="Fatturo"><button type="button" class="ft-iconbtn" data-toggle-valores aria-pressed="false" aria-label="Ocultar valores" title="Ocultar valores"><svg class="ico ico-on" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ico ico-off" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.9 5.8A9.6 9.6 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17 17 0 0 1-2.6 3.4M6.6 7.1A16.6 16.6 0 0 0 2.5 12S6 18.5 12 18.5a9 9 0 0 0 4.6-1.2M9.9 9.9a3 3 0 0 0 4.2 4.2M4 4l16 16"/></svg></button></div>
+  <nav class="ft-nav" aria-label="Navegação principal">
+    <a class="ft-nav__item" href="painel.html"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg><span>Painel</span></a>
+    <a class="ft-nav__item" href="lancamentos.html"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 20V4M4.5 7.5 8 4l3.5 3.5M16 4v16M12.5 16.5 16 20l3.5-3.5"/></svg><span>Lançamentos</span></a>
+    <a class="ft-nav__item" href="notas.html"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8l4.5 4.5v12a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5Z"/><path d="M14 3.5V8h4.5M9 12.5h6M9 16h6"/></svg><span>Notas</span></a>
+    <a class="ft-nav__item" href="das.html"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>DAS</span></a>
+    <span class="ft-nav__item"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg><span>Regras</span><span class="ft-end">em breve</span></span>
+  </nav>
+  <a class="ft-btn ft-btn--primary" href="importar.html"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M4.5 14.5V19a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-4.5"/></svg>Importar arquivos</a>
+  <div class="ft-sidebar__foot">
+    <div class="ft-sidebar__who"><b><svg class="ft-avatar" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="var(--surface-tint-strong)"/><circle cx="20" cy="16" r="7" fill="var(--ink)"/><path d="M15.5 13.5a5 5 0 0 1 9 0" stroke="var(--surface)" stroke-width="2" fill="none"/><path d="M6 40c1.5-8 7.5-12.5 14-12.5S32.5 32 34 40Z" fill="var(--ink)"/></svg>Marina Costa</b><span>Studio Aurora Serviços de Tecnologia Ltda<br>11.222.333/0001-81</span></div>
+    <nav class="ft-nav" aria-label="Conta">
+      <a class="ft-nav__item" href="configuracoes.html" aria-current="page"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/><circle cx="12" cy="12" r="6.5"/></svg><span>Configurações</span></a>
+      <a class="ft-nav__item" href="#sair"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4.5H5.5a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1H10M14.5 8l4 4-4 4M18.5 12H9"/></svg><span>Sair</span></a>
+    </nav>
+  </div>
+</aside>
+<div style="min-width:0">
+<header class="ft-topbar"><a class="ft-topbar__logo" href="painel.html"><img src="fatturo-logo.svg" alt="Fatturo" width="105" height="22"></a><span class="ft-topbar__spacer"></span><button type="button" class="ft-iconbtn" data-toggle-valores aria-pressed="false" aria-label="Ocultar valores" title="Ocultar valores"><svg class="ico ico-on" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ico ico-off" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.9 5.8A9.6 9.6 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17 17 0 0 1-2.6 3.4M6.6 7.1A16.6 16.6 0 0 0 2.5 12S6 18.5 12 18.5a9 9 0 0 0 4.6-1.2M9.9 9.9a3 3 0 0 0 4.2 4.2M4 4l16 16"/></svg></button></header>
+<main class="ft-main"><div class="ft-content">
+
+<div class="ft-pagehead"><h1>Configurações</h1><p>Sua empresa, os alertas e a sua conta.</p></div>
+<h2 class="ft-group-title">Você e a empresa</h2>
+<details class="ft-acc" name="cfg" id="perfil" open><summary><span><span class="ft-acc__title" style="display:block">Perfil</span><span class="ft-acc__state">Marina Costa · avatar claro</span></span><svg class="ico ft-acc__chev" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg></summary><div class="ft-acc__body"><p class="ft-acc__desc">Seu nome e o avatar que aparecem no menu.</p>
+<div class="ft-field"><label class="ft-label" for="c-nome">Seu nome</label><input class="ft-input" id="c-nome" value="Marina Costa"></div>
+<div class="ft-field"><span class="ft-label" id="c-av">Avatar</span><div class="ft-options" role="group" aria-labelledby="c-av">
+  <button type="button" class="ft-option" aria-pressed="true"><svg class="ft-avatar" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="var(--surface-tint-strong)"/><circle cx="20" cy="16" r="7" fill="var(--ink)"/><path d="M15.5 13.5a5 5 0 0 1 9 0" stroke="var(--surface)" stroke-width="2" fill="none"/><path d="M6 40c1.5-8 7.5-12.5 14-12.5S32.5 32 34 40Z" fill="var(--ink)"/></svg><span class="ft-option__title">Claro</span></button>
+  <button type="button" class="ft-option" aria-pressed="false"><svg class="ft-avatar" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="var(--ink)"/><circle cx="20" cy="16" r="7" fill="var(--surface-tint-strong)"/><path d="M6 40c1.5-8 7.5-12.5 14-12.5S32.5 32 34 40Z" fill="var(--accent)"/></svg><span class="ft-option__title">Escuro</span></button></div></div>
+<button type="button" class="ft-btn ft-btn--primary" style="align-self:flex-start">Salvar</button></div></details>
+<details class="ft-acc" name="cfg" id="empresa"><summary><span><span class="ft-acc__title" style="display:block">Empresa</span><span class="ft-acc__state">Studio Aurora Serviços de Tecnologia Ltda</span></span><svg class="ico ft-acc__chev" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg></summary><div class="ft-acc__body"><p class="ft-acc__desc">O nome aparece no menu e nos e-mails de alerta.</p>
+<dl class="ft-fields ft-fields--2" style="margin:0"><div><dt class="ft-caption">CNPJ</dt><dd style="margin:0;font-weight:600">11.222.333/0001-81</dd></div>
+<div><dt class="ft-caption">Data de abertura</dt><dd style="margin:0;font-weight:600">05/03/2023</dd></div></dl>
+<div class="ft-field"><label class="ft-label" for="c-emp">Nome da empresa</label><input class="ft-input" id="c-emp" value="Studio Aurora Serviços de Tecnologia Ltda"></div>
+<div class="ft-field"><label class="ft-label" for="c-atv">Atividade</label><select class="ft-input" id="c-atv"><option>Prestação de serviços</option></select></div>
+<button type="button" class="ft-btn ft-btn--primary" style="align-self:flex-start">Salvar</button></div></details>
+<details class="ft-acc" name="cfg" id="enquadramento"><summary><span><span class="ft-acc__title" style="display:block">Enquadramento</span><span class="ft-acc__state">ME · Anexo III, desde 01/07/2026</span></span><svg class="ico ft-acc__chev" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg></summary><div class="ft-acc__body"><p class="ft-acc__desc">O porte define o limite de faturamento do painel e o tipo de DAS de cada mês.</p>
+<div class="ft-list" style="margin:0">
+  <div class="ft-listrow"><div style="min-width:0"><div class="ft-listrow__title">ME · Simples Nacional · Anexo III · Serviços</div><div class="ft-listrow__meta">Desde 01/07/2026</div></div><span class="ft-badge">Em vigor</span></div>
+  <div class="ft-listrow"><div><div class="ft-listrow__title">MEI · Simples Nacional</div><div class="ft-listrow__meta">05/03/2023 a 30/06/2026</div></div></div>
+</div>
+<hr class="ft-sep">
+<div class="ft-stack" style="gap:var(--space-3)"><div><div class="ft-strong">Corrigir o anexo atual</div><div class="ft-caption">Para trocar o “Não sei” pelo anexo certo, sem registrar uma mudança de data.</div></div>
+<div class="ft-field"><label class="ft-label" for="c-anx">Anexo do Simples</label><select class="ft-input" id="c-anx"><option>Anexo III · Serviços</option></select></div>
+<button type="button" class="ft-btn ft-btn--secondary" style="align-self:flex-start">Corrigir anexo</button></div>
+<hr class="ft-sep">
+<div class="ft-stack" style="gap:var(--space-3)"><div><div class="ft-strong">Registrar uma mudança</div><div class="ft-caption">Quando a empresa muda de porte ou de anexo a partir de uma data, como ao deixar de ser MEI. O período atual é encerrado na véspera e o histórico fica guardado.</div></div>
+<div class="ft-fields ft-fields--2"><div class="ft-field"><label class="ft-label" for="c-por">Novo porte</label><select class="ft-input" id="c-por"><option>MEI</option><option>ME</option></select></div>
+<div class="ft-field"><label class="ft-label" for="c-apd">A partir de</label><input class="ft-input" id="c-apd" inputmode="numeric" placeholder="dd/mm/aaaa"></div></div>
+<button type="button" class="ft-btn ft-btn--primary" style="align-self:flex-start">Registrar mudança</button></div>
+<hr class="ft-sep">
+<button type="button" class="ft-btn ft-btn--secondary" style="align-self:flex-start">Desfazer a última mudança</button></div></details>
+<details class="ft-acc" name="cfg" id="alertas"><summary><span><span class="ft-acc__title" style="display:block">Alertas</span><span class="ft-acc__state">Avisos em 70%, 90% e 100% do limite</span></span><svg class="ico ft-acc__chev" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg></summary><div class="ft-acc__body"><p class="ft-acc__desc">Os percentuais do limite de faturamento em que você quer ser avisado. A primeira faixa também muda a cor do indicador no painel.</p>
+<div class="ft-fields ft-fields--3">
+  <div class="ft-field"><label class="ft-label" for="c-a1">1ª faixa (%)</label><input class="ft-input" id="c-a1" inputmode="numeric" value="70"></div>
+  <div class="ft-field"><label class="ft-label" for="c-a2">2ª faixa (%)</label><input class="ft-input" id="c-a2" inputmode="numeric" value="90"></div>
+  <div class="ft-field"><label class="ft-label" for="c-a3">3ª faixa (%)</label><input class="ft-input" id="c-a3" inputmode="numeric" value="100"></div></div>
+<div class="ft-field"><label class="ft-label" for="c-em">E-mail dos alertas</label><input class="ft-input" id="c-em" type="email" placeholder="marina@studioaurora.com.br"><span class="ft-hint">Em branco, os alertas vão para marina@studioaurora.com.br.</span></div>
+<button type="button" class="ft-btn ft-btn--primary" style="align-self:flex-start">Salvar</button></div></details>
+<h2 class="ft-group-title">Conta</h2>
+<details class="ft-acc" name="cfg" id="senha"><summary><span><span class="ft-acc__title" style="display:block">Senha</span><span class="ft-acc__state">Trocar a senha encerra as outras sessões</span></span><svg class="ico ft-acc__chev" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg></summary><div class="ft-acc__body">
+<div class="ft-field"><label class="ft-label" for="c-s0">Senha atual</label><input class="ft-input" id="c-s0" type="password" autocomplete="current-password"></div>
+<div class="ft-field"><label class="ft-label" for="c-s1">Nova senha</label><input class="ft-input" id="c-s1" type="password" autocomplete="new-password"><span class="ft-hint">Pelo menos 10 caracteres.</span></div>
+<div class="ft-field"><label class="ft-label" for="c-s2">Confirmar nova senha</label><input class="ft-input" id="c-s2" type="password" autocomplete="new-password"></div>
+<button type="button" class="ft-btn ft-btn--primary" style="align-self:flex-start">Trocar senha</button></div></details>
+<details class="ft-acc" name="cfg" id="dados"><summary><span><span class="ft-acc__title" style="display:block">Seus dados</span><span class="ft-acc__state">Baixar tudo em CSV</span></span><svg class="ico ft-acc__chev" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg></summary><div class="ft-acc__body"><p class="ft-acc__desc">Baixe tudo o que o Fatturo guarda sobre a sua empresa, em arquivos CSV que abrem no Excel.</p><div class="ft-list" style="margin:0"><div class="ft-listrow" style="flex-wrap:nowrap"><div style="min-width:0"><div class="ft-listrow__title">Empresa e enquadramento</div><div class="ft-listrow__meta">Os dados da empresa e o histórico de porte e anexo.</div></div><a class="ft-link" href="#csv" style="flex:none;display:inline-flex;align-items:center;min-height:44px">Baixar CSV</a></div><div class="ft-listrow" style="flex-wrap:nowrap"><div style="min-width:0"><div class="ft-listrow__title">Notas fiscais</div><div class="ft-listrow__meta">Todas as NFS-e importadas, com tomador, valor e situação.</div></div><a class="ft-link" href="#csv" style="flex:none;display:inline-flex;align-items:center;min-height:44px">Baixar CSV</a></div><div class="ft-listrow" style="flex-wrap:nowrap"><div style="min-width:0"><div class="ft-listrow__title">Guias do DAS</div><div class="ft-listrow__meta">Competência, vencimento, valor e data de pagamento de cada guia.</div></div><a class="ft-link" href="#csv" style="flex:none;display:inline-flex;align-items:center;min-height:44px">Baixar CSV</a></div><div class="ft-listrow" style="flex-wrap:nowrap"><div style="min-width:0"><div class="ft-listrow__title">Lançamentos</div><div class="ft-listrow__meta">Entradas e saídas importadas dos extratos ou digitadas.</div></div><a class="ft-link" href="#csv" style="flex:none;display:inline-flex;align-items:center;min-height:44px">Baixar CSV</a></div></div></div></details>
+<details class="ft-acc" name="cfg" id="inativar"><summary><span><span class="ft-acc__title" style="display:block">Inativar a conta</span><span class="ft-acc__state">Pausa a conta sem apagar nada</span></span><svg class="ico ft-acc__chev" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg></summary><div class="ft-acc__body"><p class="ft-acc__desc">O Fatturo fica bloqueado e nenhum alerta é enviado. Você reativa quando quiser, entrando com o seu e-mail e a sua senha.</p><button type="button" class="ft-btn ft-btn--secondary" style="align-self:flex-start">Inativar conta</button></div></details>
+<details class="ft-acc" name="cfg" id="excluir"><summary><span><span class="ft-acc__title" style="display:block">Excluir a conta</span><span class="ft-acc__state">Apaga a conta e todos os dados</span></span><svg class="ico ft-acc__chev" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg></summary><div class="ft-acc__body"><p class="ft-acc__desc">Apaga a conta e todos os dados de forma definitiva. Se estiver em dúvida, prefira inativar.</p><button type="button" class="ft-btn ft-btn--secondary" style="align-self:flex-start">Excluir conta</button></div></details>
+
+</div></main>
+</div>
+</div>
+<nav class="ft-tabbar" aria-label="Navegação principal"><a class="ft-tab" href="painel.html"><span class="ft-tab__ind"><svg class="ico " width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span>Painel</a><a class="ft-tab" href="notas.html"><span class="ft-tab__ind"><svg class="ico " width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8l4.5 4.5v12a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5Z"/><path d="M14 3.5V8h4.5M9 12.5h6M9 16h6"/></svg></span>Notas</a><a class="ft-tab ft-tab--import" href="importar.html"><span class="ft-tab__ind"><svg class="ico " width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M4.5 14.5V19a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-4.5"/></svg></span>Importar</a><a class="ft-tab" href="das.html"><span class="ft-tab__ind"><svg class="ico " width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span>DAS</a><button type="button" class="ft-tab" data-sheet="mais" aria-haspopup="dialog" aria-current="page" style="border:0;background:none;cursor:pointer"><span class="ft-tab__ind"><svg class="ico " width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="18.5" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg></span>Mais</button></nav>
+
+
+<dialog class="ft-sheet" id="mais" aria-labelledby="mais-t">
+  <div class="ft-sheet__grip" aria-hidden="true"></div>
+  <div class="ft-sheet__head"><h2 id="mais-t">Mais</h2><button type="button" class="ft-iconbtn" data-close aria-label="Fechar"><svg class="ico " width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="ft-sheet__body">
+    <div class="ft-profile"><svg class="ft-avatar" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="var(--surface-tint-strong)"/><circle cx="20" cy="16" r="7" fill="var(--ink)"/><path d="M15.5 13.5a5 5 0 0 1 9 0" stroke="var(--surface)" stroke-width="2" fill="none"/><path d="M6 40c1.5-8 7.5-12.5 14-12.5S32.5 32 34 40Z" fill="var(--ink)"/></svg><div style="min-width:0"><div class="ft-profile__name">Marina Costa</div><div class="ft-caption">Studio Aurora Serviços de Tecnologia Ltda</div><div class="ft-caption">11.222.333/0001-81</div></div></div>
+    <nav class="ft-menu" aria-label="Outras páginas">
+      <a class="ft-nav__item" href="lancamentos.html"><svg class="ico " width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 20V4M4.5 7.5 8 4l3.5 3.5M16 4v16M12.5 16.5 16 20l3.5-3.5"/></svg><span>Lançamentos</span><span class="ft-badge ft-end">3</span></a>
+      <span class="ft-nav__item" aria-disabled="true"><svg class="ico " width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg><span>Regras</span><span class="ft-end ft-caption">em breve</span></span>
+      <a class="ft-nav__item" href="configuracoes.html" aria-current="page"><svg class="ico " width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/><circle cx="12" cy="12" r="6.5"/></svg><span>Configurações</span></a>
+      <hr>
+      <a class="ft-nav__item" href="#sair"><svg class="ico " width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4.5H5.5a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1H10M14.5 8l4 4-4 4M18.5 12H9"/></svg><span>Sair</span></a>
+    </nav>
+  </div>
+</dialog>
+
+<script src="fatturo-mobile.js"></script>
+</body>
+</html>

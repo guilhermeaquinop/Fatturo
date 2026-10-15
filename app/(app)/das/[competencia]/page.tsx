@@ -6,9 +6,9 @@ import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 import { AppShell } from "@/components/app/app-shell";
 import { Metric } from "@/components/ui/metric";
+import { Valor } from "@/components/valor";
 import { dasDoAno } from "@/lib/das";
 import { anoDe, hojeIso, nomeDoMes } from "@/lib/datas";
-import { formatarReais } from "@/lib/dinheiro";
 import { empresaAtual } from "@/lib/empresa";
 import { mesValido } from "@/lib/regras/lancamentos";
 import { ROTA_CONFIGURACAO } from "@/lib/rotas";
@@ -18,7 +18,7 @@ export const metadata: Metadata = { title: "Guia do DAS" };
 
 export default function GuiaDasPage({ params }: PageProps<"/das/[competencia]">) {
   return (
-    <AppShell ativa="das">
+    <AppShell ativa="das" voltar={{ href: "/das", titulo: "DAS" }}>
       <div className="mx-auto flex w-full max-w-[560px] flex-col gap-5">
         <Suspense fallback={<div className="text-ink-muted">Carregando…</div>}>
           <Guia params={params} />
@@ -58,13 +58,13 @@ async function Guia({ params }: Pick<PageProps<"/das/[competencia]">, "params">)
       <div className="flex flex-wrap gap-x-12 gap-y-5 rounded-xl border border-border bg-surface p-6">
         <Metric
           label="Receita do mês"
-          value={formatarReais(mes.receitaCentavos)}
+          value={<Valor centavos={mes.receitaCentavos} />}
           hint="Soma das notas emitidas, pela competência."
         />
         {mes.sugestaoCentavos !== null ? (
           <Metric
             label="Valor sugerido"
-            value={formatarReais(mes.sugestaoCentavos)}
+            value={<Valor centavos={mes.sugestaoCentavos} />}
             hint="Pela alíquota da 1ª faixa do Anexo III."
           />
         ) : null}

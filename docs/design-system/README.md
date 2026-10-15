@@ -62,9 +62,21 @@ Os arquivos da logo ficam em `docs/design-system/logo/`. No app, use o component
 - Sobre fundo `ink`, a versão `-escuro`: traço branco e destaque `accent`.
 - Não mude as cores, não distorça e não aplique sombra.
 
-## Menu lateral
+## Navegação
 
-Em telas largas (a partir de 1024 px) a barra lateral fica parada, com a altura da janela, e só o conteúdo rola; em telas estreitas ela empilha acima do conteúdo. Cada item leva um ícone de traço de 18 px em `components/ui/icons.tsx`, na cor do texto. No rodapé ficam o avatar, o nome de quem está logado, a empresa, Configurações e Sair.
+A partir de 1024 px, a barra lateral fica parada, com a altura da janela, e só o conteúdo rola. O ocultar valores é um item do menu, com o olho e o texto "Ocultar valores" (ou "Mostrar valores"), logo acima de Configurações. Cada item leva um ícone de traço de 18 px em `components/ui/icons.tsx`, na cor do texto. No rodapé ficam o avatar, o nome de quem está logado, a empresa, Configurações e Sair.
+
+Abaixo de 1024 px, a barra lateral some e entram duas barras fixas (mockups em `docs/mockups/mobile/`):
+
+- **Barra superior** (`topbar-height`): logo e o botão de ocultar valores. Nas telas internas (guia do DAS, novo e editar lançamento), voltar, o nome da seção e o olho.
+- **Barra inferior** (`tabbar-height` mais a área segura do aparelho): Painel, Notas, **Importar** no centro, DAS e Mais. O item ativo tem o indicador em `surface-tint`; Importar fica sempre em `accent` e conta como um dos dois usos de `accent` da tela.
+- **Mais** abre uma folha de baixo com o perfil, Lançamentos (com a contagem de sem classificação), Regras, Configurações e Sair. Ele fica marcado em Lançamentos e Configurações.
+
+### Ocultar valores
+
+O botão de olho troca todo valor em reais por `R$ •••••`, inclusive dentro de frases e nos rótulos do gráfico. Percentuais, a barra de limite, quantidades e datas continuam à vista; campos em edição também. O ícone mostra o estado (olho aberto: valores visíveis; riscado: ocultos). Só com o ícone (celular), o botão usa `aria-pressed`; como item do menu (desktop), o texto diz o que o clique faz.
+
+A escolha fica no aparelho. No código, cada valor passa pelo componente `<Valor>`; o CSS esconde o texto real quando o `<html>` tem `data-valores="ocultos"`, aplicado por um script no `<head>` antes de a página aparecer.
 
 O avatar é um de dois desenhos em `components/avatar.tsx`: claro (fundo `surface-tint-strong`) e escuro (fundo `ink`), só com cores dos tokens.
 
@@ -72,7 +84,7 @@ O avatar é um de dois desenhos em `components/avatar.tsx`: claro (fundo `surfac
 
 Uma família só: **Montserrat** (Google Fonts, pesos 400, 500, 600 e 700). Hierarquia por tamanho e peso, nunca por cor.
 
-- `display` (52/700): um número por tela, o principal.
+- `display` (52/700): um número por tela, o principal. Abaixo de 640 px, `display-sm` (40/700), para não quebrar a linha.
 - `page-title` (26/700) e `section-title` (16/600) para títulos.
 - `metric` (22/600) para valores de indicador.
 - `body` (14/400), `body-strong` (14/600), `label` (13/600), `caption` (12/400) para o resto.
@@ -85,8 +97,9 @@ Uma família só: **Montserrat** (Google Fonts, pesos 400, 500, 600 e 700). Hier
 - Base de 4px. Cartões têm padding `space-6`; o cartão de destaque, `space-7`.
 - Entre cartões, `space-5`. A área principal tem padding `space-8`.
 - O painel é uma barra lateral (`sidebar-width`) e uma área de conteúdo fluida. Cartões ficam em linhas `flex-wrap` com proporção 3:2 (gráfico largo + cartão estreito).
-- No celular, a barra lateral empilha acima do conteúdo e as linhas de cartões viram uma coluna. Margem lateral mínima de `space-4`.
-- Telas de acesso: painel `ink` à esquerda, formulário de até 380px à direita. Empilham no celular.
+- Abaixo de 1024 px, o conteúdo ocupa no máximo `content-max-narrow`, centralizado, com margem lateral de `space-4` e as linhas de cartões numa coluna. Veja "Navegação".
+- Telas de acesso: painel `ink` à esquerda, formulário de até 380px à direita. No celular empilham, e o painel encolhe para a logo e o título.
+- Folhas que sobem de baixo (filtros, detalhes, o Mais) têm cantos `radius-xl` no topo, alça, título e botão de fechar; o fundo atrás é `scrim`.
 
 ## Formas
 

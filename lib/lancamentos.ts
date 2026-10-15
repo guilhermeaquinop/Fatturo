@@ -82,6 +82,18 @@ export async function lancamentoPorId(id: string): Promise<Lancamento | null> {
   return data ? deLinha(data) : null;
 }
 
+/** Quantos lançamentos da empresa ainda estão sem categoria, em todos os meses. */
+export async function contarSemClassificacao(empresaId: string): Promise<number> {
+  const supabase = await createClient();
+  const { count, error } = await supabase
+    .from("lancamento")
+    .select("id", { count: "exact", head: true })
+    .eq("empresa_id", empresaId)
+    .is("categoria", null);
+  if (error) throw new Error(`Não foi possível contar os lançamentos: ${error.message}`);
+  return count ?? 0;
+}
+
 /** Data do lançamento mais recente da empresa, ou null se não há nenhum. */
 export async function dataDoUltimoLancamento(empresaId: string): Promise<string | null> {
   const supabase = await createClient();

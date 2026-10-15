@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Painel · Fatturo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="fatturo-mobile.css">
+</head>
+<body>
+<div class="ft-app">
+
+<aside class="ft-sidebar" aria-label="Menu">
+  <div class="ft-sidebar__brand"><img src="fatturo-logo.svg" alt="Fatturo"><button type="button" class="ft-iconbtn" data-toggle-valores aria-pressed="false" aria-label="Ocultar valores" title="Ocultar valores"><svg class="ico ico-on" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ico ico-off" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.9 5.8A9.6 9.6 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17 17 0 0 1-2.6 3.4M6.6 7.1A16.6 16.6 0 0 0 2.5 12S6 18.5 12 18.5a9 9 0 0 0 4.6-1.2M9.9 9.9a3 3 0 0 0 4.2 4.2M4 4l16 16"/></svg></button></div>
+  <nav class="ft-nav" aria-label="Navegação principal">
+    <a class="ft-nav__item" href="painel.html" aria-current="page"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg><span>Painel</span></a>
+    <a class="ft-nav__item" href="lancamentos.html"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 20V4M4.5 7.5 8 4l3.5 3.5M16 4v16M12.5 16.5 16 20l3.5-3.5"/></svg><span>Lançamentos</span></a>
+    <a class="ft-nav__item" href="notas.html"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8l4.5 4.5v12a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5Z"/><path d="M14 3.5V8h4.5M9 12.5h6M9 16h6"/></svg><span>Notas</span></a>
+    <a class="ft-nav__item" href="das.html"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>DAS</span></a>
+    <span class="ft-nav__item"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg><span>Regras</span><span class="ft-end">em breve</span></span>
+  </nav>
+  <a class="ft-btn ft-btn--primary" href="importar.html"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M4.5 14.5V19a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-4.5"/></svg>Importar arquivos</a>
+  <div class="ft-sidebar__foot">
+    <div class="ft-sidebar__who"><b><svg class="ft-avatar" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="var(--surface-tint-strong)"/><circle cx="20" cy="16" r="7" fill="var(--ink)"/><path d="M15.5 13.5a5 5 0 0 1 9 0" stroke="var(--surface)" stroke-width="2" fill="none"/><path d="M6 40c1.5-8 7.5-12.5 14-12.5S32.5 32 34 40Z" fill="var(--ink)"/></svg>Marina Costa</b><span>Studio Aurora Serviços de Tecnologia Ltda<br>11.222.333/0001-81</span></div>
+    <nav class="ft-nav" aria-label="Conta">
+      <a class="ft-nav__item" href="configuracoes.html"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/><circle cx="12" cy="12" r="6.5"/></svg><span>Configurações</span></a>
+      <a class="ft-nav__item" href="#sair"><svg class="ico " width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4.5H5.5a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1H10M14.5 8l4 4-4 4M18.5 12H9"/></svg><span>Sair</span></a>
+    </nav>
+  </div>
+</aside>
+<div style="min-width:0">
+<header class="ft-topbar"><a class="ft-topbar__logo" href="painel.html"><img src="fatturo-logo.svg" alt="Fatturo" width="105" height="22"></a><span class="ft-topbar__spacer"></span><button type="button" class="ft-iconbtn" data-toggle-valores aria-pressed="false" aria-label="Ocultar valores" title="Ocultar valores"><svg class="ico ico-on" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ico ico-off" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.9 5.8A9.6 9.6 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17 17 0 0 1-2.6 3.4M6.6 7.1A16.6 16.6 0 0 0 2.5 12S6 18.5 12 18.5a9 9 0 0 0 4.6-1.2M9.9 9.9a3 3 0 0 0 4.2 4.2M4 4l16 16"/></svg></button></header>
+<main class="ft-main"><div class="ft-content">
+
+<h1 class="ft-sr">Painel</h1>
+<div class="ft-pills ft-pills--fill" role="group" aria-label="Ano"><button type="button" class="ft-pill" aria-pressed="false">2023</button><button type="button" class="ft-pill" aria-pressed="false">2024</button><button type="button" class="ft-pill" aria-pressed="false">2025</button><button type="button" class="ft-pill" aria-pressed="true">2026</button></div>
+
+<section class="ft-card ft-card--hero" aria-labelledby="fat-t">
+  <div style="display:flex;flex-direction:column;gap:var(--space-1)">
+    <h2 id="fat-t" class="ft-muted" style="font-size:14px;font-weight:500">Faturamento em 2026</h2>
+    <div class="ft-display"><span class="ft-money">R$ 247.775</span></div>
+    <div class="ft-muted">de <span class="ft-money">R$ 360.000</span> do limite anual</div>
+  </div>
+  <span class="ft-chip">68% do limite utilizado</span>
+  <div class="ft-limit">
+    <div class="ft-limit__track"><div class="ft-limit__projection" style="width:91.8%"></div><div class="ft-limit__fill" style="width:68.8%"></div></div>
+    <div class="ft-limit__mark" style="left:68.8%;transform:translateX(-100%);font-weight:600">hoje</div>
+    <div class="ft-limit__mark" style="left:auto;right:0;transform:none;color:var(--ink-muted)">projeção dez.</div>
+  </div>
+  <div class="ft-metrics">
+    <div><div class="ft-metric__label ft-muted">Disponível</div><div class="ft-metric__value"><span class="ft-money">R$ 112.225</span></div></div>
+    <div><div class="ft-metric__label ft-muted">Projeção até dezembro</div><div class="ft-metric__value"><span class="ft-money">R$ 330.367</span></div></div>
+    <div><div class="ft-metric__label ft-muted">Receita em outubro</div><div class="ft-metric__value"><span class="ft-money">R$ 0</span></div></div>
+    <div><div class="ft-metric__label ft-muted">Receita em 12 meses</div><div class="ft-metric__value"><span class="ft-money">R$ 264.071</span></div><div class="ft-caption">Até setembro.</div></div>
+  </div>
+</section>
+
+<div class="ft-alert ft-alert--warning" role="status"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 2.5 16.5 15h-15L9 2.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 7.5v3.5M9 13v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div><span class="ft-alert__title">Limite a confirmar</span>Os valores legais usados aqui ainda precisam ser conferidos com o contador.</div></div>
+<div class="ft-alert ft-alert--info" role="status"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M9 8.2V12.5M9 5.6v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div><span class="ft-alert__title">MEI até junho de 2026</span>A empresa passou de MEI para ME neste ano. O limite mostrado é o da ME, contra o faturamento do ano inteiro.</div></div>
+
+<section class="ft-card" aria-labelledby="das-t">
+  <div class="ft-card__head"><h2 class="ft-card__title" id="das-t">DAS</h2><a class="ft-link" href="das.html">Ver guias</a></div>
+  <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+    <span class="ft-chip ft-chip--error" style="padding:6px 12px;font-size:13px"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M6.5 6.5l5 5M11.5 6.5l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Guia vencida há 23 dias</span>
+    <div class="ft-metric__value">21/09 · <span class="ft-money">R$ 1.691,25</span></div>
+  </div>
+  <div class="ft-stack" style="gap:var(--space-2)">
+    <div class="ft-das" role="img" aria-label="Janeiro a julho pagos, agosto vencido, setembro pendente, outubro a dezembro a vencer"><div class="ft-das__cell ft-das__cell--paid">J</div><div class="ft-das__cell ft-das__cell--paid">F</div><div class="ft-das__cell ft-das__cell--paid">M</div><div class="ft-das__cell ft-das__cell--paid">A</div><div class="ft-das__cell ft-das__cell--paid">M</div><div class="ft-das__cell ft-das__cell--paid">J</div><div class="ft-das__cell ft-das__cell--paid">J</div><div class="ft-das__cell ft-das__cell--pending">A</div><div class="ft-das__cell ft-das__cell--pending">S</div><div class="ft-das__cell ft-das__cell--future">O</div><div class="ft-das__cell ft-das__cell--future">N</div><div class="ft-das__cell ft-das__cell--future">D</div></div>
+    <div class="ft-caption">7 pagos · agosto vencido · setembro pendente · <span class="ft-money">R$ 2.116,80</span> pagos em 2026</div>
+  </div>
+  <a class="ft-btn ft-btn--tint" href="das-guia.html">Informar o pagamento de agosto</a>
+</section>
+
+
+<section class="ft-card" aria-labelledby="graf-t">
+  <div class="ft-chart">
+    <h2 class="ft-card__title" id="graf-t">Acumulado no ano e limite</h2>
+    <div class="ft-legend" aria-hidden="true">
+      <span><i></i>Faturamento</span><span><i style="border-color:var(--brand-deep)"></i>DAS pago</span>
+      <span><i style="border-top-style:dotted"></i>Projeção</span><span><i style="border-top:1px dashed var(--ink)"></i>Limite</span>
+    </div>
+    <div class="ft-chart__plot" role="img" aria-label="Faturamento acumulado de R$ 247.775 até setembro, projeção de R$ 330.367 em dezembro, limite de R$ 360.000. DAS pago no ano: R$ 2.116,80.">
+      <svg viewBox="0 0 1100 184" preserveAspectRatio="none" aria-hidden="true">
+        <polygon points="50,184 50,172.0 150,158.6 250,146.1 350,132.9 450,121.1 550,108.0 650,95.8 750,82.8 850,70.0 950,70.0 950,184" fill="var(--surface-tint)"/>
+        <line x1="0" y1="18.4" x2="1100" y2="18.4" stroke="var(--ink)" stroke-width="1" stroke-dasharray="6 6" vector-effect="non-scaling-stroke"/>
+        <polyline points="950,70.0 1050,51.0 1150,32.0" fill="none" stroke="var(--accent-strong)" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+        <polyline points="50,172.0 150,158.6 250,146.1 350,132.9 450,121.1 550,108.0 650,95.8 750,82.8 850,70.0 950,70.0" fill="none" stroke="var(--accent-strong)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+        <polyline points="50,184.0 150,183.9 250,183.9 350,183.8 450,183.8 550,183.8 650,183.0 750,183.0 850,183.0 950,183.0" fill="none" stroke="var(--brand-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <div class="ft-chart__lbl" style="left:0;top:10.0%;transform:translateY(-100%);padding-bottom:3px;font-weight:600">Limite <span class="ft-money">R$ 360.000</span></div>
+      <div style="position:absolute;left:86.36%;top:38.0%;width:12px;height:12px;border-radius:999px;background:var(--surface);border:3px solid var(--accent-strong);transform:translate(-50%,-50%)"></div>
+      <div class="ft-chart__lbl" style="left:86.36%;top:38.0%;transform:translate(-100%,-100%);padding:0 10px 8px 0;font-weight:600"><span class="ft-money">R$ 247.775</span></div>
+    </div>
+    <div class="ft-chart__axis" aria-hidden="true"><span style="left:4.55%">jan</span><span style="left:31.82%">abr</span><span style="left:59.09%">jul</span><span style="left:86.36%;font-weight:700;color:var(--ink)">out</span><span style="left:auto;right:0;transform:none">dez</span></div>
+    <p class="ft-caption">Projeção: <span class="ft-money">R$ 330.367</span> em dezembro · DAS pago no ano: <span class="ft-money">R$ 2.116,80</span></p>
+  </div>
+</section>
+
+<section class="ft-card" aria-labelledby="orig-t">
+  <h2 class="ft-card__title" id="orig-t">Origem do faturamento</h2>
+  <div class="ft-list" style="margin:calc(-1 * var(--space-3)) 0">
+    <div class="ft-listrow"><span>Ana Ribeiro</span><span class="ft-strong">23%</span></div>
+    <div class="ft-listrow"><span>Construtora Horizonte S.A.</span><span class="ft-strong">23%</span></div>
+    <div class="ft-listrow"><span>Clínica Bem Viver Ltda</span><span class="ft-strong">22%</span></div>
+    <div class="ft-listrow"><span>Escola Saber Mais</span><span class="ft-strong">17%</span></div>
+    <div class="ft-listrow"><span>Outros</span><span class="ft-strong">16%</span></div>
+  </div>
+</section>
+
+<section class="ft-card" aria-labelledby="pend-t">
+  <h2 class="ft-card__title" id="pend-t">Pendências</h2>
+  <p class="ft-muted" style="margin-top:calc(-1 * var(--space-3))">Em breve. Os lançamentos sem classificação e as notas sem recebimento aparecem aqui.</p>
+</section>
+
+</div></main>
+</div>
+</div>
+<nav class="ft-tabbar" aria-label="Navegação principal"><a class="ft-tab" href="painel.html" aria-current="page"><span class="ft-tab__ind"><svg class="ico " width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span>Painel</a><a class="ft-tab" href="notas.html"><span class="ft-tab__ind"><svg class="ico " width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8l4.5 4.5v12a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5Z"/><path d="M14 3.5V8h4.5M9 12.5h6M9 16h6"/></svg></span>Notas</a><a class="ft-tab ft-tab--import" href="importar.html"><span class="ft-tab__ind"><svg class="ico " width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M4.5 14.5V19a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-4.5"/></svg></span>Importar</a><a class="ft-tab" href="das.html"><span class="ft-tab__ind"><svg class="ico " width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span>DAS</a><button type="button" class="ft-tab" data-sheet="mais" aria-haspopup="dialog" style="border:0;background:none;cursor:pointer"><span class="ft-tab__ind"><svg class="ico " width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="18.5" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg></span>Mais</button></nav>
+
+
+<dialog class="ft-sheet" id="mais" aria-labelledby="mais-t">
+  <div class="ft-sheet__grip" aria-hidden="true"></div>
+  <div class="ft-sheet__head"><h2 id="mais-t">Mais</h2><button type="button" class="ft-iconbtn" data-close aria-label="Fechar"><svg class="ico " width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="ft-sheet__body">
+    <div class="ft-profile"><svg class="ft-avatar" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="var(--surface-tint-strong)"/><circle cx="20" cy="16" r="7" fill="var(--ink)"/><path d="M15.5 13.5a5 5 0 0 1 9 0" stroke="var(--surface)" stroke-width="2" fill="none"/><path d="M6 40c1.5-8 7.5-12.5 14-12.5S32.5 32 34 40Z" fill="var(--ink)"/></svg><div style="min-width:0"><div class="ft-profile__name">Marina Costa</div><div class="ft-caption">Studio Aurora Serviços de Tecnologia Ltda</div><div class="ft-caption">11.222.333/0001-81</div></div></div>
+    <nav class="ft-menu" aria-label="Outras páginas">
+      <a class="ft-nav__item" href="lancamentos.html"><svg class="ico " width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 20V4M4.5 7.5 8 4l3.5 3.5M16 4v16M12.5 16.5 16 20l3.5-3.5"/></svg><span>Lançamentos</span><span class="ft-badge ft-end">3</span></a>
+      <span class="ft-nav__item" aria-disabled="true"><svg class="ico " width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg><span>Regras</span><span class="ft-end ft-caption">em breve</span></span>
+      <a class="ft-nav__item" href="configuracoes.html"><svg class="ico " width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/><circle cx="12" cy="12" r="6.5"/></svg><span>Configurações</span></a>
+      <hr>
+      <a class="ft-nav__item" href="#sair"><svg class="ico " width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4.5H5.5a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1H10M14.5 8l4 4-4 4M18.5 12H9"/></svg><span>Sair</span></a>
+    </nav>
+  </div>
+</dialog>
+
+<script src="fatturo-mobile.js"></script>
+</body>
+</html>

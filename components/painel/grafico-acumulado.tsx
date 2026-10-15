@@ -15,6 +15,7 @@ import {
   YAxis,
 } from "recharts";
 import { formatarReaisInteiros } from "@/lib/dinheiro";
+import { useValoresOcultos } from "@/lib/use-valores-ocultos";
 
 export type PontoDoGrafico = {
   /** Nome curto do mês: "jan". */
@@ -35,8 +36,12 @@ type GraficoAcumuladoProps = {
 };
 
 const ROTULO = { fontSize: 12, fill: "var(--ink-muted)" };
+const OCULTO = "R$ •••••";
 
 export function GraficoAcumulado({ pontos, limiteCentavos, indiceAtual }: GraficoAcumuladoProps) {
+  // Com "ocultar valores", as linhas continuam; só os valores do rótulo e da dica somem.
+  const ocultos = useValoresOcultos();
+  const reais = (centavos: number) => (ocultos ? OCULTO : formatarReaisInteiros(centavos));
   const maior = Math.max(
     limiteCentavos,
     ...pontos.map((ponto) => Math.max(ponto.acumulado ?? 0, ponto.projecao ?? 0)),
@@ -58,7 +63,7 @@ export function GraficoAcumulado({ pontos, limiteCentavos, indiceAtual }: Grafic
           <Tooltip
             cursor={{ stroke: "var(--border)" }}
             formatter={(valor, nome) => [
-              formatarReaisInteiros(Number(valor)),
+              reais(Number(valor)),
               nome === "projecao" ? "Projeção" : nome === "das" ? "DAS pago" : "Faturamento",
             ]}
             contentStyle={{
@@ -76,7 +81,7 @@ export function GraficoAcumulado({ pontos, limiteCentavos, indiceAtual }: Grafic
             strokeWidth={1}
             strokeDasharray="6 6"
             label={{
-              value: `Limite ${formatarReaisInteiros(limiteCentavos)}`,
+              value: `Limite ${reais(limiteCentavos)}`,
               position: "insideBottomLeft",
               fontSize: 12,
               fontWeight: 600,

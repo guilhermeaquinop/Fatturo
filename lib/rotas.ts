@@ -11,8 +11,9 @@ export const ROTA_CONTA_INATIVA = "/conta-inativa";
 // Só para quem NÃO está logado (middleware 'guest'): logado é mandado ao app.
 const ROTAS_DE_VISITANTE = ["/login", "/cadastro", "/recuperar-senha"];
 
-// Abertas para todos, logados ou não.
-const ROTAS_ABERTAS = ["/auth/confirm", "/termos", "/privacidade"];
+// Abertas para todos, logados ou não. O manifest é lido pelo celular ao instalar o app,
+// antes de qualquer login.
+const ROTAS_ABERTAS = ["/auth/confirm", "/termos", "/privacidade", "/manifest.webmanifest"];
 
 function pertence(pathname: string, rotas: string[]) {
   return rotas.some((rota) => pathname === rota || pathname.startsWith(`${rota}/`));

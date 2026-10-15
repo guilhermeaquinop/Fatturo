@@ -34,11 +34,18 @@
   --error-surface: #fbeae6;
   --error-ink: #8a2a1e;
   --error-solid: #c2412d;
+  /* Fundo atrás das folhas que sobem de baixo: ink a 45%. */
+  --scrim: rgba(22, 48, 43, 0.45);
 
   --control-sm: 44px;
   --control-lg: 48px;
   --sidebar-width: 220px;
   --content-max: 1120px;
+  /* Moldura do celular (abaixo de 1024 px): barra superior e barra inferior. */
+  --topbar-height: 56px;
+  --tabbar-height: 64px;
+  /* Largura do conteúdo entre 640 e 1023 px. */
+  --content-max-narrow: 720px;
 }
 
 /*
@@ -74,6 +81,7 @@
   --color-error-surface: var(--error-surface);
   --color-error-ink: var(--error-ink);
   --color-error-solid: var(--error-solid);
+  --color-scrim: var(--scrim);
 
   --radius-*: initial;
   --radius-sm: 6px;
@@ -91,6 +99,11 @@
   --text-display--line-height: 1.15;
   --text-display--font-weight: 700;
   --text-display--letter-spacing: -0.02em;
+  /* O número principal do painel no celular, onde o display de 52px quebra a linha. */
+  --text-display-sm: 40px;
+  --text-display-sm--line-height: 1.15;
+  --text-display-sm--font-weight: 700;
+  --text-display-sm--letter-spacing: -0.02em;
   --text-hero: 34px;
   --text-hero--line-height: 1.2;
   --text-hero--font-weight: 700;
@@ -123,7 +136,10 @@
   --spacing-control-sm: var(--control-sm);
   --spacing-control-lg: var(--control-lg);
   --spacing-sidebar: var(--sidebar-width);
+  --spacing-topbar: var(--topbar-height);
+  --spacing-tabbar: var(--tabbar-height);
   --container-content: var(--content-max);
+  --container-content-narrow: var(--content-max-narrow);
   --container-form: 380px;
 }
 
@@ -146,4 +162,17 @@
     outline: 2px solid var(--accent-strong);
     outline-offset: 2px;
   }
+}
+
+/*
+ * Ocultar valores: com <html data-valores="ocultos">, cada valor em reais (components/valor.tsx)
+ * esconde o texto real e mostra "R$ •••••" no lugar. Por ser só CSS, vale também nas páginas
+ * renderizadas no servidor e não pisca ao carregar (o atributo é aplicado no <head>).
+ */
+[data-valores="ocultos"] [data-valor] > [data-valor-real] {
+  display: none;
+}
+
+[data-valores="ocultos"] [data-valor]::after {
+  content: "R$ •••••";
 }

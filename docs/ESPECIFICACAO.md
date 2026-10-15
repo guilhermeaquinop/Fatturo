@@ -89,6 +89,8 @@ Não há cadastro de faturamento anterior na configuração inicial. O históric
 
 ### Uso diário
 
+**Navegação.** No computador, barra lateral com o menu. No celular (abaixo de 1024 px), barra superior com a logo e barra inferior com Painel, Notas, Importar, DAS e Mais; o Mais abre o perfil, Lançamentos, Regras, Configurações e Sair. Em todas as telas, um botão de olho esconde os valores em reais (`R$ •••••`) e a escolha fica guardada no aparelho. O Fatturo pode ser adicionado à tela inicial do celular e abre como app, sem a barra do navegador. Mockups do celular: `docs/mockups/mobile/`.
+
 **Painel.** Conforme o mockup `painel.html`: faturamento acumulado contra o limite com projeção, indicadores do mês e do ano, gráfico de linha do acumulado e do DAS pago, origem do faturamento, pendências e DAS. Para ME, inclui a receita dos últimos 12 meses. Seletor de ano.
 
 **Importar arquivos.** Área de arrastar e soltar que aceita vários arquivos de uma vez (XML, OFX, CSV). Para cada arquivo mostra: tipo detectado, quantidade lida, novos, duplicados ignorados e erros. CSV pede o mapeamento de colunas na primeira vez por banco e guarda esse mapeamento.

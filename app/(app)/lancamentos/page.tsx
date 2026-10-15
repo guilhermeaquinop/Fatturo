@@ -11,8 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Metric } from "@/components/ui/metric";
 import { textLinkClassName } from "@/components/ui/text-link";
+import { Valor } from "@/components/valor";
 import { anoDe, hojeIso, mesDe, nomeDoMes } from "@/lib/datas";
-import { formatarReais } from "@/lib/dinheiro";
 import { empresaAtual } from "@/lib/empresa";
 import { dataDoUltimoLancamento, lancamentosDoPeriodo } from "@/lib/lancamentos";
 import {
@@ -117,8 +117,8 @@ async function Lancamentos({ searchParams }: Pick<PageProps<"/lancamentos">, "se
           )}
         </nav>
         <div className="flex flex-wrap gap-x-12 gap-y-5">
-          <Metric label="Entradas" value={formatarReais(resumo.entradasCentavos)} />
-          <Metric label="Saídas" value={formatarReais(resumo.saidasCentavos)} />
+          <Metric label="Entradas" value={<Valor centavos={resumo.entradasCentavos} />} />
+          <Metric label="Saídas" value={<Valor centavos={resumo.saidasCentavos} />} />
           <Metric
             label={SEM_CLASSIFICACAO}
             value={String(resumo.semClassificacao)}

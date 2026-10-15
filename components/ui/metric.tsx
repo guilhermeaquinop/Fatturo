@@ -4,9 +4,9 @@ import * as React from "react"
 
 type MetricProps = {
   label: string
-  value: string
+  value: React.ReactNode
   /** Linha de apoio abaixo do valor, opcional. */
-  hint?: string
+  hint?: React.ReactNode
 }
 
 function Metric({ label, value, hint }: MetricProps) {

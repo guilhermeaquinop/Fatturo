@@ -11,8 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select } from "@/components/ui/select";
 import { textLinkClassName } from "@/components/ui/text-link";
+import { Valor } from "@/components/valor";
 import { formatarDataBr } from "@/lib/datas";
-import { formatarReais } from "@/lib/dinheiro";
 import type { Lancamento } from "@/lib/lancamentos";
 import {
   CATEGORIAS,
@@ -162,7 +162,7 @@ export function LancamentosTabela({ lancamentos }: { lancamentos: Lancamento[] }
                 {/* O sinal vai escrito: entrada e saída não se distinguem só pela cor. */}
                 <td className={`${CELULA} text-right font-semibold whitespace-nowrap tabular-nums`}>
                   {item.sentido === "entrada" ? "+ " : "− "}
-                  {formatarReais(item.valorCentavos)}
+                  <Valor centavos={item.valorCentavos} />
                 </td>
                 <td className={`${CELULA} text-right`}>
                   <Link

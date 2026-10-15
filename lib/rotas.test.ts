@@ -28,7 +28,7 @@ describe("redirecionamento", () => {
   });
 
   it("mantém abertas para todos a confirmação por e-mail e os documentos legais", () => {
-    for (const rota of ["/auth/confirm", "/termos", "/privacidade"]) {
+    for (const rota of ["/auth/confirm", "/termos", "/privacidade", "/manifest.webmanifest"]) {
       expect(redirecionamento(rota, false)).toBeNull();
       expect(redirecionamento(rota, true)).toBeNull();
     }
